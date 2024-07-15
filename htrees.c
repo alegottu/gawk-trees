@@ -25,31 +25,31 @@ BINTREE* trees = NULL;
 
 static HTREE* create_tree(char* name, const int depth) 
 {
-    HTREE* array = HTreeAlloc(depth, TREE_ALLOC_ARGS);
-    foint data; data.v = array;
+	HTREE* array = HTreeAlloc(depth, TREE_ALLOC_ARGS);
+	foint data; data.v = array;
 	foint _name; _name.s = name;
-    BinTreeInsert(trees, _name, data);
+	BinTreeInsert(trees, _name, data);
 
-    return array;
+	return array;
 }
 
 static awk_value_t* do_create_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _)
 {
 	assert(result != NULL);
 
-    awk_value_t awk_name, awk_depth;
+	awk_value_t awk_name, awk_depth;
 	bool ret;
 
-    if (get_argument(0, AWK_STRING, &awk_name) && get_argument(1, AWK_NUMBER, &awk_depth))
-    {
-        char* name = awk_name.str_value.str;
-        int depth = (int) awk_depth.num_value;
-        ret = create_tree(name, depth) != NULL;
-    }
-    else
-    {
+	if (get_argument(0, AWK_STRING, &awk_name) && get_argument(1, AWK_NUMBER, &awk_depth))
+	{
+		char* name = awk_name.str_value.str;
+		int depth = (int) awk_depth.num_value;
+		ret = create_tree(name, depth) != NULL;
+	}
+	else
+	{
 		fatal(ext_id, "create_tree: Invalid arguments");
-    }
+	}
 
 	return make_bool(ret, result);
 }
@@ -82,18 +82,18 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 {
 	assert(result != NULL);
 
-    awk_value_t awk_split, awk_name, awk_subscripts, awk_value;
-    char* split = ","; 
-    char* name;
+	awk_value_t awk_split, awk_name, awk_subscripts, awk_value;
+	char* split = ","; 
+	char* name;
 	char* subscripts;
-    foint value;
+	foint value;
 
-    if (nargs > 3 && get_argument(3, AWK_STRING, &awk_split))
-    {
-       split = awk_split.str_value.str; 
-    }
+	if (nargs > 3 && get_argument(3, AWK_STRING, &awk_split))
+	{
+		split = awk_split.str_value.str; 
+	}
 
-    // handle value separately to discern between string or double
+	// handle value separately to discern between string or double
 	get_argument(2, AWK_STRING, &awk_value);
 
 	switch (awk_value.val_type)
@@ -112,14 +112,14 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 			fatal(ext_id, "tree_insert: Invalid value type given");
 	}
     
-    if (get_argument(0, AWK_STRING, &awk_name) &&
-        get_argument(1, AWK_STRING, &awk_subscripts))
-    {
+	if (get_argument(0, AWK_STRING, &awk_name) &&
+			get_argument(1, AWK_STRING, &awk_subscripts))
+	{
 		foint _tree, key;
 		HTREE* tree;
         
-        if (BinTreeLookup(trees, key, &_tree)) 
-        {
+		if (BinTreeLookup(trees, key, &_tree)) 
+		{
 			tree = (HTREE*) _tree.v;
 			foint keys[tree->depth];
 			parse_subscripts(subscripts, keys, split);
@@ -132,19 +132,19 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 			tree = create_tree(name, depth);
 			HTreeInsert(tree, keys, value);
 		}
-    }
-    else
-    {
+	}
+	else
+	{
 		fatal(ext_id, "tree_insert: Invalid arguments");
-    }
+	}
 
 	return make_bool(true, result); // No way to discern failure from void HTreeInsert
 }
 
 static bool query_tree(char* name, char* subscripts[], const int num_subscripts, foint* result)
 {
-    foint _name, _tree; _name.s = name; 
-    bool found = false;
+	foint _name, _tree; _name.s = name; 
+	bool found = false;
 	foint keys[num_subscripts]; 
 
 	for (int i = 0; i < num_subscripts; ++i)
@@ -152,27 +152,27 @@ static bool query_tree(char* name, char* subscripts[], const int num_subscripts,
 		keys[i].s = subscripts[i];
 	}
 
-    if (BinTreeLookup(trees, _name, &_tree))
-    {
-        HTREE* tree = _tree.v;
-        found = HTreeLookup(tree, keys, result);
-        
-        if (!found)
-        {
-            memset(result->s, '\0', 1);
-            HTreeInsert(tree, keys, *result);
-        }
-    }
-    else
-    {
+	if (BinTreeLookup(trees, _name, &_tree))
+	{
+		HTREE* tree = _tree.v;
+		found = HTreeLookup(tree, keys, result);
+		
+		if (!found)
+		{
+			memset(result->s, '\0', 1);
+			HTreeInsert(tree, keys, *result);
+		}
+	}
+	else
+	{
 		HTREE* tree = create_tree(name, num_subscripts);
-        _tree.v = tree;
-        BinTreeInsert(trees, _name, _tree);
-        memset(result->s, '\0', 1);
-        HTreeInsert(tree, keys, *result); 
-    }
+		_tree.v = tree;
+		BinTreeInsert(trees, _name, _tree);
+		memset(result->s, '\0', 1);
+		HTreeInsert(tree, keys, *result); 
+	}
 
-    return found;
+	return found;
 }
 
 /* 	usage: query_tree(name, subscripts, [split]);

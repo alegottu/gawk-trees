@@ -1,2 +1,3 @@
 lib
 .compile_flags.txt
+*.o
