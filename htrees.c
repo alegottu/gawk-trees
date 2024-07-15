@@ -1,24 +1,4 @@
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include <string.h>
-#include <stdio.h>
-#include <sys/stat.h>
-
-#include "gawkapi.h"
-#include "htree.h"
-
-#define MAX_SUBSCRIPTS 8 
-#define TREE_ALLOC_ARGS (pCmpFcn) strcmp, (pFointCopyFcn) strdup, (pFointFreeFcn) free, NULL, NULL
-
-static const gawk_api_t* api;	// for convenience macros to work
-static awk_ext_id_t ext_id;
-static const char* ext_version = "bintree extension: version 1.0";
-static awk_bool_t init_trees(void);
-static awk_bool_t (*init_func)(void) = init_trees;
-
-int plugin_is_GPL_compatible;
+#include "htrees.h"
 
 // HTrees, found by their name in a gawk program, are contained here
 BINTREE* trees = NULL; 
@@ -51,7 +31,7 @@ static awk_value_t* do_create_tree(const int nargs, awk_value_t* result, struct 
 		fatal(ext_id, "create_tree: Invalid arguments");
 	}
 
-	return make_bool(ret, result);
+	return make_null_string(result);
 }
 
 static int parse_subscripts(char* subs_str, foint* subscripts, const char* split)
@@ -74,10 +54,6 @@ static int parse_subscripts(char* subs_str, foint* subscripts, const char* split
 	return num_subscripts;
 }
 
-/* 	usage: tree_insert(name, subscripts, value, [split]);
-	where subscripts are a string split by ',' e.g. x,y = [x][y]
-	a custom token can be used to split the string through the optional 'split' parameter
-	creates a tree called "name" if one doesn't yet exist	*/
 static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct awk_ext_func* _)
 {
 	assert(result != NULL);
@@ -106,7 +82,8 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 			break;
 		case AWK_ARRAY:
 			// value.v = awk_value.array_cookie;
-			fatal(ext_id, "tree_insert: Arrays not allowed yet");
+			// TODO: turn array cookie into HTREE*
+			fatal(ext_id, "tree_insert: Array insert not yet implemented");
 			break;
 		default:
 			fatal(ext_id, "tree_insert: Invalid value type given");
@@ -138,7 +115,7 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 		fatal(ext_id, "tree_insert: Invalid arguments");
 	}
 
-	return make_bool(true, result); // No way to discern failure from void HTreeInsert
+	return make_null_string(result); // No way to discern failure from void HTreeInsert
 }
 
 static bool query_tree(char* name, char* subscripts[], const int num_subscripts, foint* result)
@@ -175,11 +152,6 @@ static bool query_tree(char* name, char* subscripts[], const int num_subscripts,
 	return found;
 }
 
-/* 	usage: query_tree(name, subscripts, [split]);
- 	where subscripts are a string split by ',' e.g. x,y = [x][y]
- 	a custom token can be used to split the string through the optional 'split' parameter
- 	instantiates the node for the subscript if there isn't one already
- 	instantiates the entire tree as well if there isn't one named that already	*/
 static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _)
 {
 	assert(result != NULL);
@@ -219,6 +191,7 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 	query_tree(name, subscripts, num_subscripts, &data);
 	return make_number(data.f, result);
 	// return make_malloced_string(data.s, strlen(data.s), result);
+	// TODO: No way to tell if number or string found yet, if void* is found, return nothing
 }
 
 static awk_bool_t init_trees()

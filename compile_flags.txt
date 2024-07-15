@@ -1,8 +1,0 @@
--fPIC
--shared
--DHAVE_CONFIG_H
--I../gawk
--I../gawk/pc
--Ilib/include
--Llib/
--llibwayne
