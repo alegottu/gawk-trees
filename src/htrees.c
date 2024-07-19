@@ -1,4 +1,6 @@
 #include "htrees.h"
+#include <gawkapi.h>
+#include <string.h>
 
 // HTrees, found by their name in a gawk program, are contained here
 BINTREE* trees = NULL; 
@@ -34,19 +36,19 @@ static awk_value_t* do_create_tree(const int nargs, awk_value_t* result, struct 
 	return make_null_string(result);
 }
 
-static int parse_subscripts(char* subs_str, foint* subscripts, const char* split)
+static int parse_subscripts(char* subs_str, foint* subscripts)
 {
-	char* token = strtok(subs_str, split);
-	int num_subscripts = 1;
-	subscripts[0].s = token;
+	// assuming the name of the tree has already been extracted
+	char* token = strtok(subs_str, "][");
+	int num_subscripts = 0;
 
 	while(token)
 	{ 
-		token = strtok(NULL, split);
 		subscripts[num_subscripts++].s = token;
+		token = strtok(NULL, "][");
 	}
 
-	if (--num_subscripts > MAX_SUBSCRIPTS)
+	if (num_subscripts > MAX_SUBSCRIPTS)
 	{
 		warning(ext_id, "Too many subscripts given");
 	}
@@ -58,19 +60,13 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 {
 	assert(result != NULL);
 
-	awk_value_t awk_split, awk_name, awk_subscripts, awk_value;
-	char* split = ","; 
+	awk_value_t awk_query, awk_value;
 	char* name;
 	char* subscripts;
 	foint value;
 
-	if (nargs > 3 && get_argument(3, AWK_STRING, &awk_split))
-	{
-		split = awk_split.str_value.str; 
-	}
-
 	// handle value separately to discern between string or double
-	get_argument(2, AWK_STRING, &awk_value);
+	get_argument(1, AWK_STRING, &awk_value);
 
 	switch (awk_value.val_type)
 	{
@@ -89,23 +85,27 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 			fatal(ext_id, "tree_insert: Invalid value type given");
 	}
     
-	if (get_argument(0, AWK_STRING, &awk_name) &&
-			get_argument(1, AWK_STRING, &awk_subscripts))
+	if (get_argument(0, AWK_STRING, &awk_query))
 	{
 		foint _tree, key;
+		name = awk_query.str_value.str;
+		name = strtok(name, "[");
+		key.s = name;
+		subscripts = strtok(name, "\0");
+		strcat(subscripts, "\0");
 		HTREE* tree;
         
 		if (BinTreeLookup(trees, key, &_tree)) 
 		{
 			tree = (HTREE*) _tree.v;
 			foint keys[tree->depth];
-			parse_subscripts(subscripts, keys, split);
+			parse_subscripts(subscripts, keys);
 			HTreeInsert(tree, keys, value);
 		}
 		else 
 		{
 			foint keys[MAX_SUBSCRIPTS];
-			int depth = parse_subscripts(subscripts, keys, split);
+			int depth = parse_subscripts(subscripts, keys);
 			tree = create_tree(name, depth);
 			HTreeInsert(tree, keys, value);
 		}
@@ -156,25 +156,22 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 {
 	assert(result != NULL);
 
- 	awk_value_t awk_name, awk_subscripts, awk_split;   
+ 	awk_value_t awk_query;   
 	char* name;
 	char* subs_str;
+	// TODO: start this array at 1 and dynamically expand ?
 	foint _subscripts[MAX_SUBSCRIPTS];
 	int num_subscripts;
-	char* split;
 	foint data;
 
-	if (nargs > 2 && get_argument(2, AWK_STRING, &awk_split))
-	{
-		split = awk_split.str_value.str;
-	}
 
-	if (get_argument(0, AWK_STRING, &awk_name)
-		&& get_argument(1, AWK_STRING, &awk_subscripts))
+	if (get_argument(0, AWK_STRING, &awk_query))
 	{
-		name = awk_name.str_value.str;
-		subs_str = awk_subscripts.str_value.str;
-		num_subscripts = parse_subscripts(subs_str, _subscripts, split);
+		name = awk_query.str_value.str;
+		name = strtok(name, "[");
+		subs_str = strtok(name, "\0");
+		strcat(subs_str, "\0");
+		num_subscripts = parse_subscripts(subs_str, _subscripts);
 	}
 	else 
 	{
@@ -189,8 +186,8 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 	}
 
 	query_tree(name, subscripts, num_subscripts, &data);
-	return make_number(data.f, result);
-	// return make_malloced_string(data.s, strlen(data.s), result);
+	return make_malloced_string(data.s, strlen(data.s), result);
+	// return make_number(data.f, result);
 	// TODO: No way to tell if number or string found yet, if void* is found, return nothing
 }
 
@@ -203,7 +200,7 @@ static awk_bool_t init_trees()
 static awk_ext_func_t func_table[] = 
 {
 	{ "create_tree", do_create_tree, 2, 2, awk_false, NULL },
-	{ "tree_insert",  do_tree_insert, 4, 3, awk_false, NULL },
-	{ "query_tree",  do_query_tree, 3, 2, awk_false, NULL }
+	{ "tree_insert",  do_tree_insert, 2, 2, awk_false, NULL },
+	{ "query_tree",  do_query_tree, 1, 1, awk_false, NULL }
 };
 dl_load_func(func_table, htrees, "");

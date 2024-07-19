@@ -1,5 +1,6 @@
 /*	NOTE: convention for an extension function in awk named 'foo' is to be bound to a function
 	in C named 'do_foo'	*/
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -26,15 +27,16 @@ int plugin_is_GPL_compatible;
 //	usage: create_tree(name, depth)
 static awk_value_t* do_create_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 
-/* 	usage: tree_insert(name, subscripts, value[, split])
-	where subscripts are a string split by ',' (by default) e.g. x,y = [x][y]
-	a custom string can be used to split the string through the optional 'split' parameter
-	creates a tree called "name" if one doesn't yet exist	*/
+/* 	usage: tree_insert(name+subscripts, value)
+	the first parameter is the name of the tree concatenated with the desired
+		subscripts, e.g. "name[x][y]"
+	creates a tree called "name" if one doesn't yet exist
+	creates a default value under the subscripts if one doesn't exit yet	*/
 static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 
-/* 	usage: query_tree(name, subscripts[, split]);
- 	where subscripts are a string split by ',' (by default) e.g. x,y = [x][y]
- 	a custom string can be used to split the string through the optional 'split' parameter
- 	instantiates the node for the subscript if there isn't one already
+/* 	usage: query_tree(name+subscripts);
+	as with tree_insert, the first and only parameter is the name of the tree
+		concatenated with the desired subscripts, e.g. "name[x][y]"
+ 	instantiates the value for the subscript(s) if there isn't one already
  	instantiates the entire tree as well if there isn't one named that already	*/
 static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _);
