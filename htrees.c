@@ -88,10 +88,11 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 	if (get_argument(0, AWK_STRING, &awk_query))
 	{
 		foint _tree, key;
-		name = awk_query.str_value.str;
+		name = calloc(strlen(awk_query.str_value.str) + 1, sizeof(char));
+		strcpy(name, awk_query.str_value.str);
 		name = strtok(name, "[");
 		key.s = name;
-		subscripts = strtok(name, "\0");
+		subscripts = strtok(NULL, "\0");
 		strcat(subscripts, "\0");
 		HTREE* tree;
         
@@ -109,6 +110,8 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 			tree = create_tree(name, depth);
 			HTreeInsert(tree, keys, value);
 		}
+
+		free(name);
 	}
 	else
 	{
@@ -132,20 +135,27 @@ static bool query_tree(char* name, char* subscripts[], const int num_subscripts,
 	if (BinTreeLookup(trees, _name, &_tree))
 	{
 		HTREE* tree = _tree.v;
+
+		if (num_subscripts != tree->depth)
+		{
+			fatal(ext_id, "query_tree: incorrect number of subcripts given for tree depth; returning arrays not yet implemented");
+		}
+
 		found = HTreeLookup(tree, keys, result);
 		
 		if (!found)
 		{
-			memset(result->s, '\0', 1);
+			result->s = "";
 			HTreeInsert(tree, keys, *result);
 		}
 	}
 	else
 	{
+		found = false;
 		HTREE* tree = create_tree(name, num_subscripts);
 		_tree.v = tree;
 		BinTreeInsert(trees, _name, _tree);
-		memset(result->s, '\0', 1);
+		result->s = "";
 		HTreeInsert(tree, keys, *result); 
 	}
 
@@ -159,7 +169,7 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
  	awk_value_t awk_query;   
 	char* name;
 	char* subs_str;
-	// TODO: start this array at 1 and dynamically expand ?
+	// TODO: start this array at size 1 and dynamically expand ?
 	foint _subscripts[MAX_SUBSCRIPTS];
 	int num_subscripts;
 	foint data;
@@ -167,9 +177,10 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 
 	if (get_argument(0, AWK_STRING, &awk_query))
 	{
-		name = awk_query.str_value.str;
+		name = calloc(strlen(awk_query.str_value.str) + 1, sizeof(char));
+		strcpy(name, awk_query.str_value.str);
 		name = strtok(name, "[");
-		subs_str = strtok(name, "\0");
+		subs_str = strtok(NULL, "\0");
 		strcat(subs_str, "\0");
 		num_subscripts = parse_subscripts(subs_str, _subscripts);
 	}
@@ -185,8 +196,16 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 		subscripts[i] = _subscripts[i].s;
 	}
 
-	query_tree(name, subscripts, num_subscripts, &data);
-	return make_malloced_string(data.s, strlen(data.s), result);
+	if (query_tree(name, subscripts, num_subscripts, &data))
+	{
+		free(name);
+		return make_const_string(data.s, strlen(data.s), result);
+	}
+	else 
+	{
+		free(name);
+		return make_null_string(result);
+	}
 	// return make_number(data.f, result);
 	// TODO: No way to tell if number or string found yet, if void* is found, return nothing
 }
