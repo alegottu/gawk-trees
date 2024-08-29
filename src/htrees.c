@@ -106,7 +106,6 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 		name = strtok(name, "[");
 		key.s = name;
 		subscripts = strtok(NULL, "\0");
-		strcat(subscripts, "\0");
 		HTREE* tree;
         
 		if (BinTreeLookup(trees, key, &_tree)) 
@@ -192,7 +191,6 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 		strcpy(name, awk_query.str_value.str);
 		name = strtok(name, "[");
 		subs_str = strtok(NULL, "\0");
-		strcat(subs_str, "\0");
 		num_subscripts = parse_subscripts(subs_str, _subscripts);
 	}
 	else 

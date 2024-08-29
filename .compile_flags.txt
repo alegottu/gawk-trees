@@ -1,5 +1,0 @@
--I../gawk
--I../gawk/pc
--Ilib/include
--Llib/
--llibwayne
