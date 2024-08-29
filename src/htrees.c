@@ -1,13 +1,22 @@
 #include "htrees.h"
+
 #include <gawkapi.h>
 #include <string.h>
 
 // HTrees, found by their name in a gawk program, are contained here
 BINTREE* trees = NULL; 
 
+static awk_bool_t init_trees()
+{
+	awk_atexit((void*)do_at_exit, NULL);
+	trees = BinTreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree); 
+	return trees != NULL;
+}
+
 static HTREE* create_tree(char* name, const int depth) 
 {
-	HTREE* array = HTreeAlloc(depth, TREE_ALLOC_ARGS);
+	// change comp, cpy, and free to work with foints, not just strs
+	HTREE* array = HTreeAlloc(depth, (pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free);
 	foint data; data.v = array;
 	foint _name; _name.s = name;
 	BinTreeInsert(trees, _name, data);
@@ -63,6 +72,7 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 	awk_value_t awk_query, awk_value;
 	char* name;
 	char* subscripts;
+	char* _value;
 	foint value;
 
 	// handle value separately to discern between string or double
@@ -71,7 +81,9 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 	switch (awk_value.val_type)
 	{
 		case AWK_STRING:
-			value.s = awk_value.str_value.str;
+			_value = calloc(strlen(awk_value.str_value.str) + 1, sizeof(char));
+			strcpy(_value, awk_value.str_value.str);
+			value.s = _value;
 			break;
 		case AWK_NUMBER:
 			value.f = awk_value.num_value;
@@ -88,6 +100,7 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 	if (get_argument(0, AWK_STRING, &awk_query))
 	{
 		foint _tree, key;
+		// TODO: fix free for name
 		name = calloc(strlen(awk_query.str_value.str) + 1, sizeof(char));
 		strcpy(name, awk_query.str_value.str);
 		name = strtok(name, "[");
@@ -110,8 +123,6 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 			tree = create_tree(name, depth);
 			HTreeInsert(tree, keys, value);
 		}
-
-		free(name);
 	}
 	else
 	{
@@ -210,10 +221,14 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 	// TODO: No way to tell if number or string found yet, if void* is found, return nothing
 }
 
-static awk_bool_t init_trees()
+static void free_htree(foint tree)
 {
-	trees = BinTreeAlloc(TREE_ALLOC_ARGS); 
-	return trees != NULL;
+	HTreeFree((HTREE*)tree.v);
+}
+
+static void do_at_exit(void* data, int exit_status)
+{
+	BinTreeFree(trees);
 }
 
 static awk_ext_func_t func_table[] = 
