@@ -1,25 +1,38 @@
 #include "htrees.h"
 
 #include <gawkapi.h>
+#include <stdio.h>
 #include <string.h>
 
+/* NOTE from gawk API documentation:
+ * All pointers filled in by gawk point to memory managed by gawk and should be treated by the extension as read-only.
+
+Memory for all strings passed into gawk from the extension must come from calling one of gawk_malloc(), gawk_calloc(), or gawk_realloc(), and is managed by gawk from then on */
+
 // HTrees, found by their name in a gawk program, are contained here
-BINTREE* trees = NULL; 
+TREETYPE* trees = NULL; 
 
 static awk_bool_t init_trees()
 {
+	trees = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree); 
 	awk_atexit((void*)do_at_exit, NULL);
-	trees = BinTreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree); 
+
 	return trees != NULL;
 }
 
-static HTREE* create_tree(char* name, const int depth) 
+static foint copy_str(foint info)
 {
-	// change comp, cpy, and free to work with foints, not just strs
-	HTREE* array = HTreeAlloc(depth, (pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free);
+	foint ret;
+	ret.s = malloc((strlen(info.s) + 1) * sizeof(char));
+	strcpy(ret.s, info.s);
+	return ret;
+}
+
+static HTREE* create_tree(const foint name, const int depth) 
+{
+	HTREE* array = HTreeAlloc(depth, (pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, (pFointCopyFcn)strdup, (pFointFreeFcn)free);
 	foint data; data.v = array;
-	foint _name; _name.s = name;
-	BinTreeInsert(trees, _name, data);
+	TreeInsert(trees, name, data);
 
 	return array;
 }
@@ -34,15 +47,16 @@ static awk_value_t* do_create_tree(const int nargs, awk_value_t* result, struct 
 	if (get_argument(0, AWK_STRING, &awk_name) && get_argument(1, AWK_NUMBER, &awk_depth))
 	{
 		char* name = awk_name.str_value.str;
-		int depth = (int) awk_depth.num_value;
-		ret = create_tree(name, depth) != NULL;
+		int depth = (int)awk_depth.num_value;
+		ret = create_tree((foint){.s=name}, depth) != NULL;
 	}
 	else
 	{
 		fatal(ext_id, "create_tree: Invalid arguments");
 	}
 
-	return make_null_string(result);
+	// no make_bool function in gawk api 3.0
+	return make_number((double)ret, result);
 }
 
 static int parse_subscripts(char* subs_str, foint* subscripts)
@@ -70,9 +84,6 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 	assert(result != NULL);
 
 	awk_value_t awk_query, awk_value;
-	char* name;
-	char* subscripts;
-	char* _value;
 	foint value;
 
 	// handle value separately to discern between string or double
@@ -81,9 +92,7 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 	switch (awk_value.val_type)
 	{
 		case AWK_STRING:
-			_value = calloc(strlen(awk_value.str_value.str) + 1, sizeof(char));
-			strcpy(_value, awk_value.str_value.str);
-			value.s = _value;
+			value.s = awk_value.str_value.str;
 			break;
 		case AWK_NUMBER:
 			value.f = awk_value.num_value;
@@ -100,17 +109,15 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 	if (get_argument(0, AWK_STRING, &awk_query))
 	{
 		foint _tree, key;
-		// TODO: fix free for name
-		name = calloc(strlen(awk_query.str_value.str) + 1, sizeof(char));
-		strcpy(name, awk_query.str_value.str);
+		char* name = strdup(awk_query.str_value.str);
 		name = strtok(name, "[");
 		key.s = name;
-		subscripts = strtok(NULL, "\0");
+		char* subscripts = strtok(NULL, "\0");
 		HTREE* tree;
         
-		if (BinTreeLookup(trees, key, &_tree)) 
+		if (TreeLookup(trees, key, &_tree)) 
 		{
-			tree = (HTREE*) _tree.v;
+			tree = (HTREE*)_tree.v;
 			foint keys[tree->depth];
 			parse_subscripts(subscripts, keys);
 			HTreeInsert(tree, keys, value);
@@ -119,30 +126,26 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 		{
 			foint keys[MAX_SUBSCRIPTS];
 			int depth = parse_subscripts(subscripts, keys);
-			tree = create_tree(name, depth);
+			tree = create_tree(key, depth);
 			HTreeInsert(tree, keys, value);
 		}
+
+		free(name);
 	}
 	else
 	{
 		fatal(ext_id, "tree_insert: Invalid arguments");
 	}
 
-	return make_null_string(result); // No way to discern failure from void HTreeInsert
+	return result; // No way to discern failure from void HTreeInsert
 }
 
-static bool query_tree(char* name, char* subscripts[], const int num_subscripts, foint* result)
+static bool query_tree(char* name, foint subscripts[], const int num_subscripts, foint* result)
 {
-	foint _name, _tree; _name.s = name; 
+	foint _tree, _name; _name.s = name;
 	bool found = false;
-	foint keys[num_subscripts]; 
 
-	for (int i = 0; i < num_subscripts; ++i)
-	{
-		keys[i].s = subscripts[i];
-	}
-
-	if (BinTreeLookup(trees, _name, &_tree))
+	if (TreeLookup(trees, _name, &_tree))
 	{
 		HTREE* tree = _tree.v;
 
@@ -151,22 +154,22 @@ static bool query_tree(char* name, char* subscripts[], const int num_subscripts,
 			fatal(ext_id, "query_tree: incorrect number of subcripts given for tree depth; returning arrays not yet implemented");
 		}
 
-		found = HTreeLookup(tree, keys, result);
+		found = HTreeLookup(tree, subscripts, result);
 		
 		if (!found)
 		{
 			result->s = "";
-			HTreeInsert(tree, keys, *result);
+			HTreeInsert(tree, subscripts, *result);
 		}
 	}
 	else
 	{
 		found = false;
-		HTREE* tree = create_tree(name, num_subscripts);
+		HTREE* tree = create_tree(_name, num_subscripts);
 		_tree.v = tree;
-		BinTreeInsert(trees, _name, _tree);
+		TreeInsert(trees, _name, _tree);
 		result->s = "";
-		HTreeInsert(tree, keys, *result); 
+		HTreeInsert(tree, subscripts, *result); 
 	}
 
 	return found;
@@ -180,34 +183,26 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 	char* name;
 	char* subs_str;
 	// TODO: start this array at size 1 and dynamically expand ?
-	foint _subscripts[MAX_SUBSCRIPTS];
-	int num_subscripts;
+	foint subscripts[MAX_SUBSCRIPTS];
+	unsigned char num_subscripts;
 	foint data;
-
 
 	if (get_argument(0, AWK_STRING, &awk_query))
 	{
-		name = calloc(strlen(awk_query.str_value.str) + 1, sizeof(char));
-		strcpy(name, awk_query.str_value.str);
+		name = strdup(awk_query.str_value.str);
 		name = strtok(name, "[");
 		subs_str = strtok(NULL, "\0");
-		num_subscripts = parse_subscripts(subs_str, _subscripts);
+		num_subscripts = parse_subscripts(subs_str, subscripts);
 	}
 	else 
 	{
 		fatal(ext_id, "query_tree: Invalid arguments");
 	}
 
-	char* subscripts[num_subscripts];
-
-	for (int i = 0; i < num_subscripts; ++i)
-	{
-		subscripts[i] = _subscripts[i].s;
-	}
-
 	if (query_tree(name, subscripts, num_subscripts, &data))
 	{
 		free(name);
+		// return make_malloced_string(data.s, strlen(data.s), result);
 		return make_const_string(data.s, strlen(data.s), result);
 	}
 	else 
@@ -226,7 +221,7 @@ static void free_htree(foint tree)
 
 static void do_at_exit(void* data, int exit_status)
 {
-	BinTreeFree(trees);
+	TreeFree(trees);
 }
 
 static awk_ext_func_t func_table[] = 

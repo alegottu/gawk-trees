@@ -25,6 +25,8 @@ static awk_bool_t (*init_func)(void) = init_trees;
 
 int plugin_is_GPL_compatible;
 
+static foint copy_str(foint info);
+
 //	usage: create_tree(name, depth)
 static awk_value_t* do_create_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 
