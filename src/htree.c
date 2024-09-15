@@ -44,10 +44,9 @@ static void HTreeInsertHelper(HTREE *h, int currentDepth, TREETYPE *tree, foint 
 		pFointFreeFcn freeInfo = h->freeInfo;
 
 		// Intermediary trees only store pointers, default copy and free should be used
-		if (currentDepth == (h->depth - 2))
+		if (currentDepth < (h->depth-2))
 		{
-			copyInfo = NULL;
-			freeInfo = NULL;
+			copyInfo = NULL; freeInfo = NULL;
 		}
 
 	    nextTree = TreeAlloc(h->cmpKey, h->copyKey, h->freeKey, copyInfo, freeInfo);
