@@ -7,6 +7,9 @@ BEGIN {
 	tree_insert(elem, 1)
 	print query_tree(elem)
 	print query_tree(elem) # test querying multiple times for the same value
+	elem = "pred[x][y]"
+	tree_insert(elem, "hello")
+	print query_tree(elem)
 
 	# test 2D tree
 	create_tree("test", 2)
@@ -30,12 +33,6 @@ BEGIN {
 	tree_insert("another[1]", 1)
 	print query_tree("another[1]")
 
-	#for (i=0; i<100; i++)
-	#{
-	#	tree_insert("test[x][y]", i)
-	#	print query_tree("test[x][y]")
-	#}
-
 	# test inserting many values
 	create_tree("new", 2)
 	for (i=0; i<10; i++)
@@ -44,23 +41,13 @@ BEGIN {
 		{
 			elem="new[\"i\"][\"j\"]"
 			tree_insert(elem, i + j)
-			print query_tree(elem)
 		}
 	}
-}
 
-END {
-	# test persistence of elements
-	print query_tree("test[x][y]")
-	print query_tree("test[x][z]")
-	print query_tree("another[1]")
-
-	for (i=0; i<10; i++)
+	# test iterator
+	elems = 10*10
+	for (i=0; i<elems; i++)
 	{
-		for (j=0; j<10; j++)
-		{
-			query_tree("new[\"i\"][\"j\"]")
-		}
+		print get_tree_next("new")
 	}
-	
 }

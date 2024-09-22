@@ -1,9 +1,12 @@
-/*	NOTE: convention for an extension function in awk named 'foo' is to be bound to a function
+/*	NOTE: convention for an extension function in gawk named 'foo' is to be bound to a function
 	in C named 'do_foo'	*/
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+
+#ifndef HTREES_H
+#define HTREES_H
 
 // needed for other included files below
 #include <string.h>
@@ -44,5 +47,14 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
  	instantiates the entire tree as well if there isn't one named that already	*/
 static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 
+// usage: get_tree_iter(name), returns an array for all the values of the tree, unordered
+// static awk_value_t* do_get_tree_iter(const int nargs, awk_value_t* result, struct awk_ext_func* _);
+
+// usage: get_tree_next(name), use in a loop to iterate through all elements
+// returns "__htree_end__" when there are no more elements left, then loops back to the beginning
+static awk_value_t* do_get_tree_next(const int nargs, awk_value_t* result, struct awk_ext_func* _);
+
 static void free_htree(foint tree);
 static void do_at_exit(void* data, int exit_status);
+
+#endif // !HTREES_H
