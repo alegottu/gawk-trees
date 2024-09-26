@@ -50,9 +50,29 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 // usage: get_tree_iter(name), returns an array for all the values of the tree, unordered
 // static awk_value_t* do_get_tree_iter(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 
+// usage: get_tree_length(name), returns the total number of elements in an htree
+// note that a side effect of calling this function is that the htree named "name"
+// into a standard array must be flattened in order to calculate the sum of elements.
+// at the moment, there is only one array held in memory by the extension, and using
+// this function will cause the tree called "name" to populate and replace that array,
+// unless the name supplied is "" or the same name as the tree currently being iterated
+// on with "get_tree_next"
+// if the name of the tree given is different or not the empty string, iteration will
+// reset back to the first element for any htree that was previously iterated through
+static awk_value_t* do_get_tree_length(const int nargs, awk_value_t* result, struct awk_ext_func* _);
+
 // usage: get_tree_next(name), use in a loop to iterate through all elements
-// returns "__htree_end__" when there are no more elements left, then loops back to the beginning
+// as with "get_tree_length", you can use "" to mean the same tree previously requested
+// another similarity is that requesting the next element of a different tree will reset
+// the previous tree back to its first element, since as mentioned previously only one
+// flattened htree in memory is supported as of now
+// once this function returns the final element, it will loop back to the first one
 static awk_value_t* do_get_tree_next(const int nargs, awk_value_t* result, struct awk_ext_func* _);
+
+// usage: is_current_tree_done(), returns 0 if the current tree being iterated on with
+// "get_tree_next" has more elements, or 1 if the final element was returned with the
+// most recent call of "get_tree_next"
+static awk_value_t* do_is_current_tree_done(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 
 static void free_htree(foint tree);
 static void do_at_exit(void* data, int exit_status);

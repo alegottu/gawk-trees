@@ -1,5 +1,6 @@
 #include "htrees.h"
 
+#include <gawkapi.h>
 #include <string.h>
 
 /* NOTE from gawk API documentation:
@@ -84,28 +85,27 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 	awk_value_t awk_query, awk_value;
 	foint value;
 
-	// handle value separately to discern between string or double
-	get_argument(1, AWK_STRING, &awk_value);
+	if (get_argument(0, AWK_STRING, &awk_query) && get_argument(1, AWK_STRING, &awk_value))
+	{
+		switch (awk_value.val_type)
+		{
+			case AWK_STRING:
+				value.s = awk_value.str_value.str;
+				break;
+			/* // no way to work with this for now
+			case AWK_NUMBER:
+				value.f = awk_value.num_value;
+				break;
+			*/
+			case AWK_ARRAY:
+				// value.v = awk_value.array_cookie;
+				// TODO: turn array cookie into HTREE*
+				fatal(ext_id, "tree_insert: Array insert not yet implemented");
+				break;
+			default:
+				fatal(ext_id, "tree_insert: Invalid value type given");
+		}
 
-	switch (awk_value.val_type)
-	{
-		case AWK_STRING:
-			value.s = awk_value.str_value.str;
-			break;
-		case AWK_NUMBER:
-			value.f = awk_value.num_value;
-			break;
-		case AWK_ARRAY:
-			// value.v = awk_value.array_cookie;
-			// TODO: turn array cookie into HTREE*
-			fatal(ext_id, "tree_insert: Array insert not yet implemented");
-			break;
-		default:
-			fatal(ext_id, "tree_insert: Invalid value type given");
-	}
-    
-	if (get_argument(0, AWK_STRING, &awk_query))
-	{
 		foint _tree, key;
 		char* name = strdup(awk_query.str_value.str);
 		name = strtok(name, "[");
@@ -229,7 +229,7 @@ static Boolean htree_traverse_lower(foint key, foint data)
 {
 	TREETYPE* tree = data.v;
 
-	if (current_depth++ == current_max_depth - 1)
+	if (current_depth++ == current_max_depth - 2)
 	{
 		return TreeTraverse(tree, (pFointTraverseFcn)htree_traverse_final);
 	}
@@ -279,7 +279,15 @@ static awk_value_t* do_get_tree_iter(const int nargs, awk_value_t* result, struc
 
 	current_max_depth = tree->depth;
 	current_depth = 0;
-	TreeTraverse(tree->tree, (pFointTraverseFcn)htree_traverse_lower);
+
+	if (current_max_depth == 1)
+	{
+		TreeTraverse(tree->tree, (pFointTraverseFcn)htree_traverse_final);
+	}
+	else
+	{
+		TreeTraverse(tree->tree, (pFointTraverseFcn)htree_traverse_lower);
+	}
 
 	return result;
 }
@@ -288,15 +296,14 @@ static awk_value_t* do_get_tree_iter(const int nargs, awk_value_t* result, struc
 static char* current_array_name = NULL;
 static char** current_array;
 static unsigned char current_length;
-static unsigned char current_element;
 static unsigned char current_depth;
 static unsigned char current_max_depth;
+static unsigned char current_element;
+static bool just_finished;
 
 static Boolean htree_traverse_final(foint key, foint data)
 {
-	// we never get here currently
 	current_array[current_element++] = data.s;	
-	current_depth = 0;
 	// true = continue to make sure we get all the elements on the final depth
 	return true;
 }
@@ -305,7 +312,7 @@ static Boolean htree_traverse_lower(foint key, foint data)
 {
 	TREETYPE* tree = data.v;
 
-	if (current_depth++ == current_max_depth - 1)
+	if (current_depth == current_max_depth - 2)
 	{
 		if (current_array == NULL)
 		{
@@ -318,12 +325,81 @@ static Boolean htree_traverse_lower(foint key, foint data)
 			current_array = realloc(current_array, current_length * sizeof(char*));
 		}
 
+		current_depth = 0; // reset depth for once final traversal is done
 		return TreeTraverse(tree, (pFointTraverseFcn)htree_traverse_final);
 	}
 	else
 	{
+		current_depth++;
 		return TreeTraverse(tree, (pFointTraverseFcn)htree_traverse_lower);
 	}
+}
+
+static void flatten_htree(const foint name)
+{
+	foint _tree;
+
+	if (current_array_name != NULL)
+	{
+		free(current_array_name);
+		free(current_array);
+	}
+
+	current_array_name = strdup(name.s);	
+	HTREE* htree;
+
+	if (TreeLookup(trees, name, &_tree))
+	{
+		htree = _tree.v;
+	}
+	else
+	{
+		fatal(ext_id, "get_tree_iter: Tree not found");
+	}
+
+	current_array = NULL;
+	current_max_depth = htree->depth;
+	current_element = 0;
+	current_depth = 0;
+	current_length = 0;
+
+	if (current_max_depth == 1)
+	{
+		TREETYPE* tree = htree->tree;
+		current_length = tree->n;
+		current_array = malloc(current_length * sizeof(char*));
+		TreeTraverse(tree, (pFointTraverseFcn)htree_traverse_final);
+	}
+	else
+	{
+		TreeTraverse(htree->tree, (pFointTraverseFcn)htree_traverse_lower);
+	}
+
+	current_element = 0;
+}
+
+static awk_value_t* do_get_tree_length(const int nargs, awk_value_t* result, struct awk_ext_func* _)
+{
+	assert(result != NULL);
+
+	awk_value_t awk_name;
+	foint name, _tree;
+
+	if (get_argument(0, AWK_STRING, &awk_name))
+	{
+		name.s = awk_name.str_value.str;
+	}
+	else 
+	{
+		fatal(ext_id, "get_tree_length: Invalid arguments");
+	}
+
+	if ( (current_array_name == NULL || strcmp(name.s, current_array_name) != 0) && strcmp(name.s, "") != 0)
+	{
+		flatten_htree(name);
+	}
+
+	return make_number(current_length, result);
 }
 
 static awk_value_t* do_get_tree_next(const int nargs, awk_value_t* result, struct awk_ext_func* _)
@@ -332,7 +408,6 @@ static awk_value_t* do_get_tree_next(const int nargs, awk_value_t* result, struc
 
 	awk_value_t awk_name;
 	foint name, _tree;
-	char* ret;
 
 	if (get_argument(0, AWK_STRING, &awk_name))
 	{
@@ -343,48 +418,37 @@ static awk_value_t* do_get_tree_next(const int nargs, awk_value_t* result, struc
 		fatal(ext_id, "get_tree_iter: Invalid arguments");
 	}
 	
-	if (current_array_name == NULL || strcmp(name.s, current_array_name) != 0)
+	if ( (current_array_name == NULL || strcmp(name.s, current_array_name) != 0) && strcmp(name.s, "") != 0)
 	{
-		if (current_array_name != NULL)
-		{
-			free(current_array_name);
-			free(current_array);
-		}
-
-		current_array_name = strdup(name.s);	
-		HTREE* tree;
-
-		if (TreeLookup(trees, name, &_tree))
-		{
-			tree = _tree.v;
-		}
-		else
-		{
-			fatal(ext_id, "get_tree_iter: Tree not found");
-		}
-
-		// flatten the HTREE into an array of char*
-		current_array = NULL;
-		current_max_depth = tree->depth;
-		current_element = 0;
-		current_depth = 0;
-		current_length = 0;
-		TreeTraverse(tree->tree, (pFointTraverseFcn)htree_traverse_lower);
-		current_element = 0;
+		flatten_htree(name);
 	}
 
-	if (current_element >= current_length)
+	char* ret = current_array[current_element];
+
+	if (current_element == current_length - 1)
 	{
-		ret = "__htree_end__";
+		just_finished = true;
 		current_element = 0;
 	}
 	else
 	{
-		ret = current_array[current_element];
+		just_finished = false;
 		current_element++;
 	}
 
 	return make_const_string(ret, strlen(ret), result);
+}
+
+static awk_value_t* do_is_current_tree_done(const int nargs, awk_value_t* result, struct awk_ext_func* _)
+{
+	assert(result != NULL);
+
+	if (current_array_name == NULL)
+	{
+		fatal(ext_id, "is_current_tree_done: No current tree iterator");
+	}
+
+	return make_number((double)just_finished, result);
 }
 
 static void free_htree(foint tree)
@@ -395,6 +459,12 @@ static void free_htree(foint tree)
 static void do_at_exit(void* data, int exit_status)
 {
 	TreeFree(trees);
+
+	if (current_array_name != NULL)
+	{
+		free(current_array_name);
+		free(current_array);
+	}
 }
 
 static awk_ext_func_t func_table[] = 
@@ -402,7 +472,9 @@ static awk_ext_func_t func_table[] =
 	{ "create_tree", do_create_tree, 2, 2, awk_false, NULL },
 	{ "tree_insert",  do_tree_insert, 2, 2, awk_false, NULL },
 	{ "query_tree",  do_query_tree, 1, 1, awk_false, NULL },
-	// { "get_tree_iter", do_get_tree_iter, 1, 1, awk_false, NULL }
-	{ "get_tree_next", do_get_tree_next, 1, 1, awk_false, NULL}
+	// { "get_tree_iter", do_get_tree_iter, 1, 1, awk_false, NULL },
+	{ "get_tree_length",  do_get_tree_length, 1, 1, awk_false, NULL },
+	{ "get_tree_next", do_get_tree_next, 1, 1, awk_false, NULL},
+	{ "is_current_tree_done",  do_is_current_tree_done, 0, 0, awk_false, NULL }
 };
 dl_load_func(func_table, htrees, "");

@@ -39,15 +39,29 @@ BEGIN {
 	{
 		for (j=0; j<10; j++)
 		{
-			elem="new[\"i\"][\"j\"]"
+			elem="new["i"]["j"]"
 			tree_insert(elem, i + j)
 		}
 	}
 
-	# test iterator
-	elems = 10*10
-	for (i=0; i<elems; i++)
+	# test iteration
+	create_tree("iter", 1)
+	tree_insert("iter[0]", "ello")
+	tree_insert("iter[1]", "again")
+	tree_insert("iter[2]", "more")
+	tree_insert("iter[3]", "once")
+	tree_insert("iter[4]", "more")
+	items = get_tree_length("iter")
+	print items
+	for (i=0; i<items; i++)
+	{
+		print get_tree_next("")
+	}
+	
+	# test flattening 2D array for iteration	
+	do
 	{
 		print get_tree_next("new")
 	}
+	while (is_current_tree_done() == 0)
 }
