@@ -12,9 +12,15 @@ Memory for all strings passed into gawk from the extension must come from callin
 // HTrees, found by their name in a gawk program, are contained here
 static TREETYPE* trees = NULL; 
 
+// these must be global because they have to persist over time through calls of get_tree_next
+static TREETYPE* current_iterators = NULL; // keys = tree or sub-tree name, value = node queue (LL*)
+static char* current_iterator_name = NULL;
+
 static awk_bool_t init_trees()
 {
 	trees = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree); 
+	current_iterators = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)LinkedListFree); 
+
 	awk_atexit((void*)do_at_exit, NULL);
 
 	return trees != NULL;
@@ -51,9 +57,7 @@ static awk_value_t* do_create_tree(const int nargs, awk_value_t* result, struct 
 		ret = create_tree((foint){.s=name}, depth) != NULL;
 	}
 	else
-	{
 		fatal(ext_id, "create_tree: Invalid arguments");
-	}
 
 	// no make_bool function in gawk api 3.0
 	return make_number((double)ret, result);
@@ -93,15 +97,8 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 			case AWK_STRING:
 				value.s = awk_value.str_value.str;
 				break;
-			/* // no way to work with this for now
-			case AWK_NUMBER:
-				value.f = awk_value.num_value;
-				break;
-			*/
 			case AWK_ARRAY:
-				// value.v = awk_value.array_cookie;
-				// TODO: turn array cookie into HTREE*
-				fatal(ext_id, "tree_insert: Array insert not yet implemented");
+				fatal(ext_id, "tree_insert: Attempt to use array value as a scalar");
 				break;
 			default:
 				fatal(ext_id, "tree_insert: Invalid value type given");
@@ -132,9 +129,7 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 		free(name);
 	}
 	else
-	{
 		fatal(ext_id, "tree_insert: Invalid arguments");
-	}
 
 	return make_number(1, result); // assume success if we get to this point
 }
@@ -149,9 +144,7 @@ static bool query_tree(char* name, foint subscripts[], const int num_subscripts,
 		HTREE* htree = _htree.v;
 
 		if (num_subscripts != htree->depth)
-		{
 			fatal(ext_id, "query_tree: Incorrect number of subcripts given for tree depth; returning arrays not yet implemented");
-		}
 
 		found = HTreeLookup(htree, subscripts, result);
 		
@@ -192,27 +185,17 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 		num_subscripts = parse_subscripts(subs_str, subscripts);
 	}
 	else 
-	{
 		fatal(ext_id, "query_tree: Invalid arguments");
-	}
 
 	query_tree(name, subscripts, num_subscripts, &data);
 	free(name);
 	return make_const_string(data.s, strlen(data.s), result);
-	
-	// return make_number(data.f, result);
-	// TODO: No way to tell if number or string found yet, if void* is found, return nothing
 }
 
-// these values are global because they have to persist over time through calls of get_tree_next
-static char* current_array_name = NULL;
-static LINKED_LIST** node_queues; // one queue for each depth level of a given htree
-static unsigned char current_max_depth;
-static bool just_finished = false;
-
-static Boolean visit_next_node(const unsigned char current_depth, foint* result)
+static Boolean visit_next_node(const foint tree_name, foint* result)
 {
-	LINKED_LIST* current_queue = node_queues[current_depth];
+	TreeLookup(current_iterators, tree_name, result);
+	LINKED_LIST* current_queue = result->v;
 
 	if (LinkedListSize(current_queue) == 0)
 		return false;
@@ -228,29 +211,6 @@ static Boolean visit_next_node(const unsigned char current_depth, foint* result)
 	return true;
 }
 
-static void fill_queues(unsigned char current_depth, foint init_info)
-{
-	LinkedListAppend(node_queues[current_depth], init_info);
-
-	while (current_depth < current_max_depth - 1)
-	{
-		foint result;
-		visit_next_node(current_depth, &result);
-		TREETYPE* next_tree = result.v;
-		LinkedListAppend(node_queues[++current_depth], (foint){.v=next_tree->root});
-	}
-}
-
-static void free_queues()
-{
-	for (unsigned char i = 0; i < current_max_depth; ++i)
-	{
-		LinkedListFree(node_queues[i]);
-	}
-
-	free(node_queues);
-}
-
 static awk_value_t* do_get_tree_next(const int nargs, awk_value_t* result, struct awk_ext_func* _)
 {
 	assert(result != NULL);
@@ -259,20 +219,17 @@ static awk_value_t* do_get_tree_next(const int nargs, awk_value_t* result, struc
 	foint name, _htree, _result;
 
 	if (get_argument(0, AWK_STRING, &awk_name))
-	{
 		name.s = awk_name.str_value.str;
-	}
-	else 
-	{
+	else if (current_iterator_name != NULL)
+		name.s = current_iterator_name;
+	else
 		fatal(ext_id, "get_tree_next: Invalid arguments");
-	}
-	
-	if (current_array_name == NULL || strcmp(name.s, current_array_name) != 0)
+
+	if (current_iterator_name == NULL || strcmp(name.s, current_iterator_name) != 0)
 	{
-		if (current_array_name != NULL)
+		if (current_iterator_name != NULL)
 		{
-			free(current_array_name);
-			free_queues();
+			free_iterator();
 		}
 
 		HTREE* htree;
@@ -282,16 +239,12 @@ static awk_value_t* do_get_tree_next(const int nargs, awk_value_t* result, struc
 			htree = _htree.v;
 		}
 		else
-		{
 			fatal(ext_id, "get_tree_next: Tree not found");
-		}
 
 		if (htree->tree->root == NULL)
-		{
 			fatal(ext_id, "get_tree_next: No items in tree"); 
-		}
 
-		current_array_name = strdup(name.s);
+		current_iterator_name = strdup(name.s);
 		current_max_depth = htree->depth;
 		node_queues = malloc(current_max_depth * sizeof(LINKED_LIST*));
 
@@ -340,20 +293,81 @@ static awk_value_t* do_get_tree_next(const int nargs, awk_value_t* result, struc
 
 		if (just_finished)
 		{
-			free_queues();
-			free(current_array_name);
-			current_array_name = NULL;
+			free_iterator();
 		}
 	}
 
 	return make_const_string(ret, strlen(ret), result);
 }
 
-static awk_value_t* do_is_current_tree_done(const int nargs, awk_value_t* result, struct awk_ext_func* _)
+static awk_value_t* do_tree_iter_done(const int nargs, awk_value_t* result, struct awk_ext_func* _)
 {
 	assert(result != NULL);
 
-	return make_number((double)just_finished, result);
+	awk_value_t awk_name, awk_force;
+	foint name, iterator;
+	LINKED_LIST* node_queue;
+	bool force = nargs > 1; // force argument should always come second
+
+	// TODO: Save possibilty of 0 arguments as current iterator for later; removing in next commit
+	if (get_argument(0, AWK_NUMBER, &awk_force))
+	{
+		if (current_iterator_name == NULL)
+			fatal(ext_id, "tree_iter_done: Cannot force exit of current iterator if there is no current iterator");
+
+		force = true;
+		name.s = current_iterator_name;
+		TreeLookup(current_iterators, name, &iterator);
+		node_queue = iterator.v;
+	}
+	else if (get_argument(0, AWK_STRING, &awk_name))
+	{
+		name.s = awk_name.str_value.str;
+		foint _htree;
+		
+		if (!TreeLookup(trees, name, &_htree))
+			fatal(ext_id, "tree_iter_done: No tree found");
+		
+		if (!TreeLookup(current_iterators, name, &iterator))
+		{
+			node_queue = LinkedListAlloc(NULL, false);
+			HTREE* htree = _htree.v;
+
+			if (htree->tree->root == NULL)
+				return make_number(1, result);
+			else
+			{
+				LinkedListAppend(node_queue, (foint){.v=htree->tree->root});
+				iterator.v = node_queue;
+				TreeInsert(current_iterators, name, iterator);
+				current_iterator_name = strdup(name.s);
+
+				return make_number(0, result);
+			}
+		}
+		else
+		{
+			node_queue = iterator.v;
+		}
+	}
+	else
+	{
+		if (current_iterator_name == NULL)
+			fatal(ext_id, "tree_iter_done: Cannot get status of current iterator if there is no current iterator");
+
+		name.s = current_iterator_name;
+		TreeLookup(current_iterators, name, &iterator);
+		node_queue = iterator.v;
+	}
+
+	if (force)
+	{
+		TreeDelete(current_iterators, name);
+		return make_number(1, result);
+	}
+
+	bool finished = LinkedListSize(node_queue) == 0;
+	return make_number((double)finished, result);
 }
 
 static void free_htree(foint tree)
@@ -364,12 +378,7 @@ static void free_htree(foint tree)
 static void do_at_exit(void* data, int exit_status)
 {
 	TreeFree(trees);
-
-	if (current_array_name != NULL)
-	{
-		free_queues();
-		free(current_array_name);
-	}
+	TreeFree(current_iterators);
 }
 
 static awk_ext_func_t func_table[] = 
@@ -378,6 +387,6 @@ static awk_ext_func_t func_table[] =
 	{ "tree_insert",  do_tree_insert, 2, 2, awk_false, NULL },
 	{ "query_tree",  do_query_tree, 1, 1, awk_false, NULL },
 	{ "get_tree_next", do_get_tree_next, 1, 1, awk_false, NULL},
-	{ "is_current_tree_done",  do_is_current_tree_done, 0, 0, awk_false, NULL }
+	{ "tree_iter_done",  do_tree_iter_done, 1, 2, awk_false, NULL }
 };
 dl_load_func(func_table, htrees, "");

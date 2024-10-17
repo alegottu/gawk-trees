@@ -18,6 +18,17 @@
 #include "gawkapi.h"
 #include "htree.h"
 
+#if HTREE_USES_AVL
+#include "avltree.h"
+#define NODETYPE AVLTREENODE
+#define TreeDelete(T,k) AvlTreeLookDel((T),(k),(foint*)1)
+#define AvlTreeDelete(T,k) AvlTreeLookDel((T),(k),(foint*)1)
+#else
+#include "bintree.h"
+#define NODETYPE BINTREENODE
+#define TreeDelete(t,k) BinTreeLookDel((t), (k), (foint*)1)
+#endif
+
 #define MAX_SUBSCRIPTS 8 
 
 static const gawk_api_t* api;	// for convenience macros to work
