@@ -12,9 +12,8 @@ Memory for all strings passed into gawk from the extension must come from callin
 // HTrees, found by their name in a gawk program, are contained here
 static TREETYPE* trees = NULL; 
 
-// these must be global because they have to persist over time through calls of get_tree_next
-static TREETYPE* current_iterators = NULL; // keys = tree or sub-tree name, value = node queue (LL*)
-static char* current_iterator_name = NULL;
+// keys = tree or sub-tree name, value = node queue (LL*)
+static TREETYPE* current_iterators = NULL; 
 
 static awk_bool_t init_trees()
 {
@@ -192,25 +191,57 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 	return make_const_string(data.s, strlen(data.s), result);
 }
 
-static Boolean visit_next_node(const foint tree_name, foint* result)
+// Creates an iterator if one is not found for the given name, and the HTREE of that name has valid elements to create one
+static LINKED_LIST* get_iterator(const foint name)
 {
-	TreeLookup(current_iterators, tree_name, result);
-	LINKED_LIST* current_queue = result->v;
+	foint iterator, _htree;
+	LINKED_LIST* result;
+	
+	// change this to look for root name (no "[")
+	if (!TreeLookup(trees, name, &_htree))
+		fatal(ext_id, "No tree found for an iterator");
+	
+	// here check for amount of "[" against max depth, then determine if final element or array
 
-	if (LinkedListSize(current_queue) == 0)
+	if (!TreeLookup(current_iterators, name, &iterator))
+	{
+		result = LinkedListAlloc(NULL, false);
+		HTREE* htree = _htree.v;
+
+		if (htree->tree->root == NULL)
+			return NULL;
+		else
+		{
+			LinkedListAppend(result, (foint){.v=htree->tree->root});
+			iterator.v = result;
+			TreeInsert(current_iterators, name, iterator);
+
+			return result;
+		}
+	}
+	else
+	{
+		return iterator.v;
+	}
+}
+
+static Boolean visit_next_node(LINKED_LIST* iterator, foint* result)
+{
+	if (LinkedListSize(iterator) == 0)
 		return false;
 
-	NODETYPE* current_node = LinkedListPop(current_queue).v;
+	NODETYPE* current_node = LinkedListPop(iterator).v;
 
 	if (current_node->left != NULL)
-		LinkedListAppend(current_queue, (foint){.v=current_node->left});
+		LinkedListAppend(iterator, (foint){.v=current_node->left});
 	if (current_node->right != NULL)
-		LinkedListAppend(current_queue, (foint){.v=current_node->right});
+		LinkedListAppend(iterator, (foint){.v=current_node->right});
 
-	*result = current_node->info;
+	*result = current_node->key;
 	return true;
 }
 
+// Returns the next indice, not the next element
 static awk_value_t* do_get_tree_next(const int nargs, awk_value_t* result, struct awk_ext_func* _)
 {
 	assert(result != NULL);
@@ -220,82 +251,27 @@ static awk_value_t* do_get_tree_next(const int nargs, awk_value_t* result, struc
 
 	if (get_argument(0, AWK_STRING, &awk_name))
 		name.s = awk_name.str_value.str;
-	else if (current_iterator_name != NULL)
-		name.s = current_iterator_name;
 	else
 		fatal(ext_id, "get_tree_next: Invalid arguments");
 
-	if (current_iterator_name == NULL || strcmp(name.s, current_iterator_name) != 0)
+	LINKED_LIST* node_queue = get_iterator(name);
+	char* ret;
+
+	if (node_queue != NULL)
 	{
-		if (current_iterator_name != NULL)
+		if (visit_next_node(node_queue, &_result))
 		{
-			free_iterator();
-		}
-
-		HTREE* htree;
-
-		if (TreeLookup(trees, name, &_htree))
-		{
-			htree = _htree.v;
+			// check here if array or not, how to tell what depth?
+			ret = _result.s;
 		}
 		else
-			fatal(ext_id, "get_tree_next: Tree not found");
-
-		if (htree->tree->root == NULL)
-			fatal(ext_id, "get_tree_next: No items in tree"); 
-
-		current_iterator_name = strdup(name.s);
-		current_max_depth = htree->depth;
-		node_queues = malloc(current_max_depth * sizeof(LINKED_LIST*));
-
-		for (unsigned char i = 0; i < current_max_depth; ++i)
 		{
-			node_queues[i] = LinkedListAlloc(NULL, false); // setting this to true would cause a double free
-		}
-
-		fill_queues(0, (foint){.v=htree->tree->root});
-	}
-
-	const unsigned char target_depth = current_max_depth - 1;
-	unsigned char current_depth = target_depth;
-
-	if (LinkedListSize(node_queues[current_depth]) == 0)
-	{
-		while(current_depth > 0)
-		{
-			if (visit_next_node(--current_depth, &_result))
-			{
-				TREETYPE* next_tree = _result.v;
-				fill_queues(++current_depth, (foint){.v=next_tree->root});
-				current_depth = target_depth;
-				break;
-			}
+			// finished
+			// find out when to free / restart here?
 		}
 	}
-
-	visit_next_node(current_depth, &_result);
-	const char* ret = _result.s;
-
-	if (LinkedListSize(node_queues[current_depth]) == 0)
-	{
-		for (unsigned char i = 0; i < current_depth; ++i)
-		{
-			if (LinkedListSize(node_queues[i]) != 0)
-			{
-				just_finished = false;
-				break;
-			}
-			else
-			{
-				just_finished = true;
-			}
-		}
-
-		if (just_finished)
-		{
-			free_iterator();
-		}
-	}
+	else
+		fatal(ext_id, "get_tree_next: No items in tree"); 
 
 	return make_const_string(ret, strlen(ret), result);
 }
@@ -305,66 +281,25 @@ static awk_value_t* do_tree_iter_done(const int nargs, awk_value_t* result, stru
 	assert(result != NULL);
 
 	awk_value_t awk_name, awk_force;
-	foint name, iterator;
 	LINKED_LIST* node_queue;
-	bool force = nargs > 1; // force argument should always come second
 
-	// TODO: Save possibilty of 0 arguments as current iterator for later; removing in next commit
-	if (get_argument(0, AWK_NUMBER, &awk_force))
+	if (get_argument(0, AWK_STRING, &awk_name))
 	{
-		if (current_iterator_name == NULL)
-			fatal(ext_id, "tree_iter_done: Cannot force exit of current iterator if there is no current iterator");
-
-		force = true;
-		name.s = current_iterator_name;
-		TreeLookup(current_iterators, name, &iterator);
-		node_queue = iterator.v;
-	}
-	else if (get_argument(0, AWK_STRING, &awk_name))
-	{
+		foint name;
 		name.s = awk_name.str_value.str;
-		foint _htree;
-		
-		if (!TreeLookup(trees, name, &_htree))
-			fatal(ext_id, "tree_iter_done: No tree found");
-		
-		if (!TreeLookup(current_iterators, name, &iterator))
-		{
-			node_queue = LinkedListAlloc(NULL, false);
-			HTREE* htree = _htree.v;
+		node_queue = get_iterator(name);
 
-			if (htree->tree->root == NULL)
-				return make_number(1, result);
-			else
-			{
-				LinkedListAppend(node_queue, (foint){.v=htree->tree->root});
-				iterator.v = node_queue;
-				TreeInsert(current_iterators, name, iterator);
-				current_iterator_name = strdup(name.s);
+		if (node_queue == NULL) // No elements found to iterate
+			return make_number(1, result);
 
-				return make_number(0, result);
-			}
-		}
-		else
+		if (nargs > 1) // Anything for 2nd arg = force exit
 		{
-			node_queue = iterator.v;
+			TreeDelete(current_iterators, name);
+			return make_number(1, result);
 		}
 	}
 	else
-	{
-		if (current_iterator_name == NULL)
-			fatal(ext_id, "tree_iter_done: Cannot get status of current iterator if there is no current iterator");
-
-		name.s = current_iterator_name;
-		TreeLookup(current_iterators, name, &iterator);
-		node_queue = iterator.v;
-	}
-
-	if (force)
-	{
-		TreeDelete(current_iterators, name);
-		return make_number(1, result);
-	}
+		fatal(ext_id, "tree_iter_done: Invalid args");
 
 	bool finished = LinkedListSize(node_queue) == 0;
 	return make_number((double)finished, result);
