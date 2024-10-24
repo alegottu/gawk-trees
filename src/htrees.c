@@ -197,16 +197,29 @@ static LINKED_LIST* get_iterator(const foint name)
 	foint iterator, _htree;
 	LINKED_LIST* result;
 	
-	// change this to look for root name (no "[")
+	char* _name = strdup(name.s);
+	const char* root_name = strtok(_name, "[");
+	foint subscripts[MAX_SUBSCRIPTS];
+	unsigned short num_subscripts = parse_subscripts(subscripts);
+	name.s = root_name;
+
 	if (!TreeLookup(trees, name, &_htree))
 		fatal(ext_id, "No tree found for an iterator");
 	
 	// here check for amount of "[" against max depth, then determine if final element or array
+	HTREE* htree = _htree.v;
+
+	// return depth info via extra arg
+	if (num_subscripts < htree.depth)
+		// iterator gives more arrays
+	else if (num_subscripts == htree.depth)
+		// final elements
+	else
+		fatal(ext_id, "Excess subscripts given for this tree's depth");
 
 	if (!TreeLookup(current_iterators, name, &iterator))
 	{
 		result = LinkedListAlloc(NULL, false);
-		HTREE* htree = _htree.v;
 
 		if (htree->tree->root == NULL)
 			return NULL;
@@ -241,7 +254,7 @@ static Boolean visit_next_node(LINKED_LIST* iterator, foint* result)
 	return true;
 }
 
-// Returns the next indice, not the next element
+// Returns the next index, not the next element
 static awk_value_t* do_get_tree_next(const int nargs, awk_value_t* result, struct awk_ext_func* _)
 {
 	assert(result != NULL);
