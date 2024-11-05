@@ -11,3 +11,5 @@ debug:
 	gcc -g -Og -Wl,--no-undefined -shared -o htrees.so *.o -lm
 	rm *.o
 
+test:
+	gcc -g -Og -Iinclude -I$(GAWK_PATH) -I$(LW_PATH)/include src/*.c $(LW_PATH)/src/bintree.c $(LW_PATH)/src/misc.c $(LW_PATH)/src/linked-list.c $(LW_PATH)/src/mem-debug.c test.c -o test -lm
