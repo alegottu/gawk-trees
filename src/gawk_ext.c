@@ -1,6 +1,9 @@
 #include "htrees.h"
 #include "gawk_ext.h"
 
+extern TREETYPE* trees;
+extern TREETYPE* current_iterators;
+
 static foint copy_str(foint info)
 {
 	foint ret;

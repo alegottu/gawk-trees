@@ -5,6 +5,13 @@
 
 Memory for all strings passed into gawk from the extension must come from calling one of gawk_malloc(), gawk_calloc(), or gawk_realloc(), and is managed by gawk from then on */
 
+
+// HTrees, found by their name in a gawk program, are contained here
+TREETYPE* trees = NULL; 
+
+// keys = tree or sub-tree name, value = node queue (LL*)
+TREETYPE* current_iterators = NULL; 
+
 void free_htree(foint tree)
 {
 	HTreeFree((HTREE*)tree.v);

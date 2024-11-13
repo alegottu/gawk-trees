@@ -23,12 +23,6 @@
 
 #define MAX_SUBSCRIPTS 8 
 
-// HTrees, found by their name in a gawk program, are contained here
-static TREETYPE* trees = NULL; 
-
-// keys = tree or sub-tree name, value = node queue (LL*)
-static TREETYPE* current_iterators = NULL; 
-
 void free_htree(foint tree);
 
 bool init_trees();
