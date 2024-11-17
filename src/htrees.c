@@ -46,7 +46,7 @@ HTREE* create_tree(char* name, const int depth)
 
 static int parse_subscripts(foint* subscripts)
 {
-	// assuming the name of the tree has already been extracted
+	// assuming the name of the tree was recently extracted
 	char* token = strtok(NULL, "][");
 	int num_subscripts = 0;
 

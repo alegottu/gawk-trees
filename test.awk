@@ -35,9 +35,9 @@ BEGIN {
 
 	print "testing inserting many values"
 	create_tree("new", 2)
-	for (i=0; i<10; i++)
+	for (i=0; i<2000; i++)
 	{
-		for (j=0; j<10; j++)
+		for (j=0; j<2000; j++)
 		{
 			elem="new["i"]["j"]"
 			tree_insert(elem, i + j)
