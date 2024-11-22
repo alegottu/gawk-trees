@@ -29,13 +29,17 @@ bool init_trees();
 
 HTREE* create_tree(char* name, const int depth);
 
-void tree_insert(const char* query, const foint value);
+const bool delete_tree(char* name);
 
-const bool query_tree(const char* query, foint* result);
+void tree_insert(const char* tree, char** subscripts, const foint value);
 
-// const bool delete_tree(const char* name);
+const bool query_tree(const char* tree, char** subscripts, foint* result);
 
-const unsigned short is_tree(const char* query);
+const bool tree_elem_exists(char* tree, char** subscripts);
+
+const bool tree_remove(char* tree, char** subscripts);
+
+const unsigned short is_tree(const char* tree, char** subscripts);
 
 const char* tree_next(char* query);
 

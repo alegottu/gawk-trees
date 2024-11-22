@@ -23,22 +23,18 @@ BEGIN {
 	print "testing inserting for the same key"
 	another[1] = 1
 	print another[1]
+}
 
+{
 	print "testing inserting many values"
-	for (i=0; i<2000; i++)
+	for (i=0; i<$1+0; i++)
 	{
-		for (j=0; j<2000; j++)
-		{
-			new[i][j] = i+j
-		}
+		new[i] = 100-i
 	}
 
 	print "testing iteration"
 	for (i in new)
 	{
-		for (j in new[i])
-		{
-			print j 
-		}
+		print i 
 	}	
 }

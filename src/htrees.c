@@ -44,6 +44,11 @@ HTREE* create_tree(char* name, const int depth)
 	return array;
 }
 
+const bool delete_tree(char* name)
+{
+	return TreeDelete(trees, (foint){.s=name});
+}
+
 static int parse_subscripts(foint* subscripts)
 {
 	// assuming the name of the tree was recently extracted
@@ -128,6 +133,39 @@ const bool query_tree(const char* query, foint* result)
 
 	free(_query);
 	return found;
+}
+
+const bool tree_elem_exists(char* tree, char** subscripts)
+{
+	foint _htree;
+	TreeLookup(trees, (foint){.s=tree}, &_htree);
+	HTREE* htree = _htree.v;
+	unsigned char depth = htree->depth;
+	foint _subscripts[depth];
+
+	for (unsigned char i = 0; i < depth; ++i)
+	{
+		_subscripts[i].s = subscripts[i];
+	}
+
+	foint result;
+	return HTreeLookup(htree, _subscripts, &result);
+}
+
+const bool tree_remove(char* tree, char** subscripts)
+{
+	foint _htree;
+	TreeLookup(trees, (foint){.s=tree}, &_htree);
+	HTREE* htree = _htree.v;
+	unsigned char depth = htree->depth;
+	foint _subscripts[depth];
+
+	for (unsigned char i = 0; i < depth; ++i)
+	{
+		_subscripts[i].s = subscripts[i];
+	}
+
+	return HTreeLookDel(htree, _subscripts, (foint*)1);
 }
 
 const unsigned short is_tree(const char* query)

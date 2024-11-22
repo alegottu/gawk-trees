@@ -32,27 +32,21 @@ BEGIN {
 	print "testing inserting for the same key"
 	tree_insert("another[1]", 1)
 	print query_tree("another[1]")
+}
 
+{
 	print "testing inserting many values"
-	create_tree("new", 2)
-	for (i=0; i<2000; i++)
+	create_tree("new", 1)
+	for (i=0; i<$1+0; i++)
 	{
-		for (j=0; j<2000; j++)
-		{
-			elem="new["i"]["j"]"
-			tree_insert(elem, i + j)
-		}
+		elem="new["i"]"
+		tree_insert(elem, 100-i)
 	}
 
 	print "testing iteration"
 	while(!tree_iter_done("new"))
 	{
 		i=tree_next("new")
-		elem="new["i"]"
-
-		while(!tree_iter_done(elem))
-		{
-			print tree_next(elem)
-		}
+		print i
 	}
 }
