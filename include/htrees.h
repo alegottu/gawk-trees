@@ -21,29 +21,27 @@
 #define TreeDelete(t,k) BinTreeLookDel((t), (k), (foint*)1)
 #endif
 
-#define MAX_SUBSCRIPTS 8 
-
-void free_htree(foint tree);
+void free_htree(const foint tree);
 
 bool init_trees();
 
-HTREE* create_tree(char* name, const int depth);
+HTREE* create_tree(const char* name, const int depth);
 
-const bool delete_tree(char* name);
+const bool delete_tree(const char* name);
 
-void tree_insert(const char* tree, char** subscripts, const foint value);
+void tree_insert(const char* tree, const char** subscripts, const foint value, const unsigned char depth);
 
-const bool query_tree(const char* tree, char** subscripts, foint* result);
+const bool query_tree(const char* tree, const char** subscripts, foint* result, const unsigned char depth);
 
-const bool tree_elem_exists(char* tree, char** subscripts);
+const bool tree_elem_exists(const char* tree, const char** subscripts);
 
-const bool tree_remove(char* tree, char** subscripts);
+const bool tree_remove(const char* tree, const char** subscripts, const unsigned char depth);
 
-const unsigned short is_tree(const char* tree, char** subscripts);
+const unsigned short is_tree(const char* tree, const char** subscripts, const unsigned char depth);
 
-const char* tree_next(char* query);
+const char* tree_next(const char* tree, const char** subscripts, const unsigned char depth);
 
-const bool tree_iter_done(char* query, const bool force);
+const bool tree_iter_done(const char* tree, const char** subscripts, const unsigned char depth, const bool force);
 
 void do_at_exit(void* data, int exit_status);
 

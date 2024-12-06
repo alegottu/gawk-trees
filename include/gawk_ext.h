@@ -19,13 +19,25 @@ static awk_bool_t (*init_func)(void) = do_at_init;
 
 int plugin_is_GPL_compatible;
 
+typedef struct query
+{
+	char* name;
+	char** subscripts;
+	unsigned char num_subs;
+	bool force;
+} query_t;
+
 static awk_value_t* do_create_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _);
+
+static awk_value_t* do_delete_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 
 static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 
 static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 
-//static awk_value_t* do_delete_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _);
+static awk_value_t* do_tree_remove(const int nargs, awk_value_t* result, struct awk_ext_func* _);
+
+static awk_value_t* do_tree_elem_exists(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 
 static awk_value_t* do_is_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 

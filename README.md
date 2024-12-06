@@ -18,33 +18,38 @@ How to use the extension:
 
 create_tree("name", depth)
 
-tree_insert("name+subscripts", value)
-	the first parameter is the name of the tree concatenated with the desired
-		subscripts, e.g. "name[x][y]"
+delete_tree("name")
+
+tree_insert("name", "subscript1", [...], value)
+    each subscript allows its own parameter
 	creates a tree called "name" if one doesn't yet exist
 	creates a default value under the subscripts if one doesn't exit yet
 
-query_tree("name+subscripts")
-	as with tree_insert, the first and only parameter is the name of the tree
-		concatenated with the desired subscripts, e.g. "name[x][y]"
+query_tree("name", "subscript1", [...])
+    as with tree_insert, each subscript allows its own parameter
  	instantiates the value for the subscript(s) if there isn't one already
  	instantiates the entire tree as well if there isn't one named that already
 
-delete_tree("name")
+tree_remove("name", "subscript1", [...])
+    removes the element at the query
 
-is_tree("query")
+tree_elem_exists("name", subscript1", [...])
+    returns 1 if the element at the query exists, 0 otherwise
+
+is_tree("name", "subscript1", [...])
 	checks whether the element within a given tree is an array (bintree) or scalar value
-	for example, is_tree("htree[x]") would return 1 if "htree" represents a 2D array
+	for example, is_tree("htree", "x") would return 1 if "htree" represents a 2D array
 
-tree_next("query")
+tree_next("name", "subscript1", [...])
 	use in a loop to iterate through all the indices for the immdiate
 	depth of the query; works the same as using "for index in array"
 	in gawk, where array would be a standard gawk array
 
-tree_iter_done("query", [force])
+tree_iter_done("name", "subscript1", [...], [force])
     returns 0 if the iterator for the binary tree
- 	at "query" has more elements remaining, or 1 if the final element was returned with the
+ 	at the query has more elements remaining, or 1 if the final element was returned with the
 	most recent call of "get_tree_next"
-	if the binary tree at "query" is not currently being iterated on, an iterator will be created
-	if the optional "force" argument is supplied (in any manner), the iterator will be freed
-	forcefully and this will return 1
+	if the binary tree at the query is not currently being iterated on, an iterator will be created
+	if the optional "force" argument is supplied, the iterator will be freed
+	forcefully and this will return 1. this argument must be supplied as an number to differentiate
+    it from all of the subscript parameters.

@@ -1,4 +1,7 @@
 #include "htrees.h"
+#include "gawkapi.h"
+#include <stdio.h>
+#include <string.h>
 #include "gawk_ext.h"
 
 extern TREETYPE* trees;
@@ -38,36 +41,77 @@ static awk_value_t* do_create_tree(const int nargs, awk_value_t* result, struct 
 	else
 		fatal(ext_id, "create_tree: Invalid arguments");
 
-	// no make_bool function in gawk api 3.0
 	return make_number((double)ret, result);
+}
+
+static awk_value_t* do_delete_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _)
+{
+	assert(result != NULL);
+
+	awk_value_t awk_name;
+	bool ret;
+
+	if (get_argument(0, AWK_STRING, &awk_name))
+	{
+		char* name = awk_name.str_value.str;
+		ret = delete_tree(name);
+	}
+	else
+		fatal(ext_id, "delete_tree: Invalid arguments");
+
+	return make_number((double)ret, result);
+}
+
+static query_t get_query()
+{
+	awk_value_t arg;
+	char* name;
+	char** subscripts;
+	subscripts = malloc(1 * sizeof(char*));
+	unsigned char i = 0;
+
+	if (get_argument(0, AWK_STRING, &arg))
+	{
+		name = strdup(arg.str_value.str);
+
+		while (get_argument(i+1, AWK_STRING, &arg))
+		{
+			i++;
+			subscripts = realloc(subscripts, i * sizeof(char*));
+			subscripts[i-1] = strdup(arg.str_value.str);
+		}
+	}
+	else
+		fatal(ext_id, "htrees: No name given");
+
+	get_argument(i, AWK_UNDEFINED, &arg);	
+	bool force = arg.val_type == AWK_NUMBER;
+	// NOTE: if we want number subscripts to be valid, move force functionality to a different function like do_iter_close
+
+	return (query_t){name, subscripts, i, force};
+}
+
+static void free_query(query_t query)
+{
+	for (unsigned char i = 0; i < query.num_subs; ++i)
+	{
+		free(query.subscripts[i]);
+	}
+
+	free(query.subscripts);
+	free(query.name);
 }
 
 static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct awk_ext_func* _)
 {
 	assert(result != NULL);
 
-	awk_value_t awk_query, awk_value;
-	foint value;
-
-	if (get_argument(0, AWK_STRING, &awk_query) && get_argument(1, AWK_STRING, &awk_value))
-	{
-		switch (awk_value.val_type)
-		{
-			case AWK_STRING:
-				value.s = awk_value.str_value.str;
-				break;
-			case AWK_ARRAY:
-				fatal(ext_id, "tree_insert: Attempt to use array value as a scalar");
-				break;
-			default:
-				fatal(ext_id, "tree_insert: Invalid value type given");
-		}
-		
-		tree_insert(awk_query.str_value.str, value);
-	}
-	else
-		fatal(ext_id, "tree_insert: Invalid arguments");
-
+	query_t query = get_query();
+	const char** subscripts = query.subscripts;
+	const unsigned char num_subs = query.num_subs;
+	
+	tree_insert(query.name, subscripts, (foint){.s=subscripts[num_subs - 1]}, num_subs - 1);
+	free_query(query);
 	return make_number(1, result); // assume success if we get to this point
 }
 
@@ -75,32 +119,48 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 {
 	assert(result != NULL);
 
- 	awk_value_t awk_query;   
+	query_t query = get_query();
+	const char** subscripts = query.subscripts;
+	
 	foint data;
-
-	if (!get_argument(0, AWK_STRING, &awk_query))
-		fatal(ext_id, "query_tree: Invalid arguments");
-
-	query_tree(awk_query.str_value.str, &data);
+	query_tree(query.name, subscripts, &data, query.num_subs);
+	free_query(query);
 	return make_const_string(data.s, strlen(data.s), result);
+}
+
+static awk_value_t* do_tree_remove(const int nargs, awk_value_t* result, struct awk_ext_func* _)
+{
+	assert(result != NULL);
+
+	query_t query = get_query();
+	const char** subscripts = query.subscripts;
+	
+	double ret = tree_remove(query.name, subscripts, query.num_subs);
+	free_query(query);
+	return make_number(ret, result);
+}
+
+static awk_value_t* do_tree_elem_exists(const int nargs, awk_value_t* result, struct awk_ext_func* _)
+{
+	assert(result != NULL);
+
+	query_t query = get_query();
+	const char** subscripts = query.subscripts;
+	
+	double ret = tree_elem_exists(query.name, subscripts);
+	free_query(query);
+	return make_number(ret, result);
 }
 
 static awk_value_t* do_is_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _)
 {
 	assert(result != NULL);
 
-	awk_value_t awk_query;
-	char* query;
+	query_t query = get_query();
+	const char** subscripts = query.subscripts;
 
-	if (get_argument(0, AWK_STRING, &awk_query))
-	{
-		query = awk_query.str_value.str;
-	}
-	else 
-		fatal(ext_id, "is_tree: Invalid arguments");
-
-
-	double ret = is_tree(query);
+	double ret = is_tree(query.name, subscripts, query.num_subs);
+	free_query(query);
 	return make_number(ret, result);
 }
 
@@ -108,16 +168,11 @@ static awk_value_t* do_tree_next(const int nargs, awk_value_t* result, struct aw
 {
 	assert(result != NULL);
 
-	awk_value_t awk_name;
-	foint _htree, _result;
-	char* query;
+	query_t query = get_query();
+	const char** subscripts = query.subscripts;
 
-	if (get_argument(0, AWK_STRING, &awk_name))
-		query = awk_name.str_value.str;
-	else
-		fatal(ext_id, "get_tree_next: Invalid arguments");
-
-	const char* ret = tree_next(query);
+	const char* ret = tree_next(query.name, subscripts, query.num_subs);
+	free_query(query);
 	return make_const_string(ret, strlen(ret), result);
 }
 
@@ -125,26 +180,30 @@ static awk_value_t* do_tree_iter_done(const int nargs, awk_value_t* result, stru
 {
 	assert(result != NULL);
 
-	awk_value_t awk_query;
-	char* query;
-
-	if (get_argument(0, AWK_STRING, &awk_query))
-		query = awk_query.str_value.str;
+	query_t query = get_query();
+	const char** subscripts = query.subscripts;
+	const bool force = query.force;
+	bool ret;
+	
+	if (force)
+		ret = tree_iter_done(query.name, subscripts, query.num_subs-1, force);
 	else
-		fatal(ext_id, "tree_iter_done: Invalid args");
+	 	ret = tree_iter_done(query.name, subscripts, query.num_subs, force);
 
-	const bool force = nargs > 1;
-	const bool ret = tree_iter_done(query, force);
+	free_query(query);
 	return make_number((double)ret, result);
 }
 
 static awk_ext_func_t func_table[] = 
 {
 	{ "create_tree", do_create_tree, 2, 2, awk_false, NULL },
-	{ "tree_insert",  do_tree_insert, 2, 2, awk_false, NULL },
-	{ "query_tree",  do_query_tree, 1, 1, awk_false, NULL },
-	{ "is_tree",  do_is_tree, 1, 1, awk_false, NULL },
-	{ "tree_next", do_tree_next, 1, 1, awk_false, NULL},
-	{ "tree_iter_done",  do_tree_iter_done, 2, 1, awk_false, NULL }
+	{ "delete_tree", do_delete_tree, 1, 1, awk_false, NULL },
+	{ "tree_insert", do_tree_insert, 0, 2, awk_true, NULL },
+	{ "query_tree", do_query_tree, 0, 2, awk_true, NULL },
+	{ "tree_remove", do_tree_remove, 0, 2, awk_true, NULL },
+	{ "tree_elem_exists", do_tree_elem_exists, 0, 2, awk_true, NULL },
+	{ "is_tree", do_is_tree, 0, 2, awk_true, NULL },
+	{ "tree_next", do_tree_next, 0, 1, awk_true, NULL},
+	{ "tree_iter_done", do_tree_iter_done, 0, 1, awk_true, NULL }
 };
 dl_load_func(func_table, htrees, "");

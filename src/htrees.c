@@ -35,7 +35,9 @@ bool init_trees()
 	return trees != NULL;
 }
 
-HTREE* create_tree(char* name, const int depth) 
+// NOTE: Ignoring "discards qualifiers" when it's only because it's being put into a foint;
+// e.g. TreeInsert creates a copy of the string/key, so the char* in foint may as well be const char*
+HTREE* create_tree(const char* name, const int depth) 
 {
 	// possibly need free foint fcn
 	HTREE* array = HTreeAlloc(depth, (pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, (pFointCopyFcn)copy_str, (pFointFreeFcn)free);
@@ -44,204 +46,199 @@ HTREE* create_tree(char* name, const int depth)
 	return array;
 }
 
-const bool delete_tree(char* name)
+const bool delete_tree(const char* name)
 {
 	return TreeDelete(trees, (foint){.s=name});
 }
 
-static int parse_subscripts(foint* subscripts)
+static void fill_foints(const char** strs, foint* result, const unsigned char count)
 {
-	// assuming the name of the tree was recently extracted
-	char* token = strtok(NULL, "][");
-	int num_subscripts = 0;
-
-	while(token)
-	{ 
-		subscripts[num_subscripts++].s = token;
-		token = strtok(NULL, "][");
-	}
-
-	if (num_subscripts > MAX_SUBSCRIPTS)
+	for (unsigned char i = 0; i < count; ++i)
 	{
-		fputs("Too many subscripts given, the rest will be ignored", stderr);
+		result[i].s = strs[i];
 	}
-
-	return num_subscripts;
 }
 
-void tree_insert(const char* query, const foint value)
+void tree_insert(const char* tree, const char** subscripts, const foint value, const unsigned char depth)
 {
 	foint _htree, key;
-	char* _query = strdup(query);
-	char* name = strtok(_query, "[");
-	key.s = name;
+	key.s = tree;
 	HTREE* htree;
 	
 	if (TreeLookup(trees, key, &_htree)) 
 	{
 		htree = _htree.v;
-		foint keys[htree->depth];
-		parse_subscripts(keys);
+		foint keys[depth];
+		fill_foints(subscripts, keys, depth);
 		HTreeInsert(htree, keys, value);
 	}
 	else 
 	{
-		foint keys[MAX_SUBSCRIPTS];
-		int depth = parse_subscripts(keys);
-		htree = create_tree(name, depth);
+		foint keys[depth];
+		fill_foints(subscripts, keys, depth);
+		htree = create_tree(tree, depth);
 		HTreeInsert(htree, keys, value);
 	}
-
-	free(_query);
 }
 
-const bool query_tree(const char* query, foint* result)
+const bool query_tree(const char* tree, const char** subscripts, foint* result, const unsigned char depth)
 {
-	char* _query = strdup(query);
-	char* name = strtok(_query, "[");
-	foint subscripts[MAX_SUBSCRIPTS]; // potentially expand this dynamically
-	unsigned short num_subscripts = parse_subscripts(subscripts);
-	foint _htree, _name; _name.s = name;
+	foint keys[depth];
+	fill_foints(subscripts, keys, depth);
+	foint _htree, _name; _name.s = tree;
 	bool found = false;
 
 	if (TreeLookup(trees, _name, &_htree))
 	{
 		HTREE* htree = _htree.v;
 
-		if (num_subscripts != htree->depth)
+		if (depth != htree->depth)
 		{
-			fputs("query_tree: Incorrect number of subcripts given for tree depth; returning arrays not yet implemented", stderr);
+			fputs("query_tree: Incorrect number of subcripts given for tree depth; returning arrays not yet implemented\n", stderr);
 			exit(1);
 			// May have to changes instances of fputs -> exit to a special return value checked by funcs in gawk_ext.c to then use fatal()
 		}
 
-		found = HTreeLookup(htree, subscripts, result);
+		found = HTreeLookup(htree, keys, result);
 		
 		if (!found)
 		{
 			result->s = "";
-			HTreeInsert(htree, subscripts, *result);
+			HTreeInsert(htree, keys, *result);
 		}
 	}
 	else
 	{
 		found = false;
-		HTREE* htree = create_tree(name, num_subscripts);
+		HTREE* htree = create_tree(tree, depth);
 		result->s = "";
-		HTreeInsert(htree, subscripts, *result); 
+		HTreeInsert(htree, keys, *result); 
 	}
 
-	free(_query);
 	return found;
 }
 
-const bool tree_elem_exists(char* tree, char** subscripts)
+// TODO: add depth parameter to test if non-final elem exists
+const bool tree_elem_exists(const char* tree, const char** subscripts)
 {
 	foint _htree;
 	TreeLookup(trees, (foint){.s=tree}, &_htree);
 	HTREE* htree = _htree.v;
-	unsigned char depth = htree->depth;
+	const unsigned char depth = htree->depth;
 	foint _subscripts[depth];
-
-	for (unsigned char i = 0; i < depth; ++i)
-	{
-		_subscripts[i].s = subscripts[i];
-	}
+	fill_foints(subscripts, _subscripts, depth);
 
 	foint result;
 	return HTreeLookup(htree, _subscripts, &result);
 }
 
-const bool tree_remove(char* tree, char** subscripts)
+const bool tree_remove(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	foint _htree;
 	TreeLookup(trees, (foint){.s=tree}, &_htree);
 	HTREE* htree = _htree.v;
-	unsigned char depth = htree->depth;
+	const unsigned char htree_depth = htree->depth;
 	foint _subscripts[depth];
+	fill_foints(subscripts, _subscripts, depth);
 
-	for (unsigned char i = 0; i < depth; ++i)
+	if (depth < htree_depth)
 	{
-		_subscripts[i].s = subscripts[i];
+		htree->depth = depth; // tricks HTreeLookDel to finish early	
+		foint tree;
+		HTreeLookDel(htree, _subscripts, &tree);
+		TreeFree(tree.v);
+		bool result = HTreeLookDel(htree, _subscripts, (foint*)1); // inefficient, but stops other code from breaking; revisit this and the other use like it
+		htree->depth = htree_depth;
+		return result;
 	}
 
 	return HTreeLookDel(htree, _subscripts, (foint*)1);
 }
 
-const unsigned short is_tree(const char* query)
+const unsigned short is_tree(const char* tree, const char** subscripts, const unsigned char depth)
 {
-	char* _query = strdup(query);
-	char* name = strtok(_query, "[");
-	foint subscripts[MAX_SUBSCRIPTS]; // same decision to dynamically expand
-	unsigned short num_subscripts = parse_subscripts(subscripts);
+	foint _subscripts[depth];
+	fill_foints(subscripts, _subscripts, depth);
 	foint _htree;
 
-	if (!TreeLookup(trees, (foint){.s=name}, &_htree))
+	if (!TreeLookup(trees, (foint){.s=tree}, &_htree))
 	{
-		free(_query);
-		fputs("Invalid tree name", stderr);
+		fputs("Invalid tree name\n", stderr);
 		exit(1);
 	}
 
-	free(_query);
 	HTREE* htree = _htree.v;
 
-	// could possibly use depth - num_subscripts instead
-	if (num_subscripts < htree->depth)
+	// could possibly use htree->depth - depth instead
+	if (depth < htree->depth)
 		return 1;
-	else if (num_subscripts == htree->depth)
+	else if (depth == htree->depth)
 		return 0;
 
-	fputs("Excess subscripts given for this tree's depth", stderr);
+	fputs("Excess subscripts given for this tree's depth\n", stderr);
 	exit(1);
 }
 
-// Creates an iterator if one is not found for the given name, and the HTREE of that name has valid elements to create one
-static LINKED_LIST* get_iterator(const foint query)
+// NOTE: Make sure to free the result of this function
+static const char* get_full_query(const char* tree, const char** subscripts, const unsigned char depth)
+{
+	unsigned int length = strlen(tree) + strlen(subscripts[0]);
+	char* result = malloc((length + 1) * sizeof(char));
+	strcpy(result, tree);
+	strcat(result, subscripts[0]);
+
+	for (unsigned char i = 1; i < depth; ++i)
+	{
+		length += strlen(subscripts[i]);
+		result = realloc(result, (length + 1) * sizeof(char));
+		strcat(result, subscripts[i]);
+	}
+
+	return result;
+	// might want to analyze this function and see if one alloc is better (maybe with sprintf or stpcpy), although might be insignificant
+}
+
+// Creates an iterator if one is not found for the given query, and the HTREE of that name has valid elements to create one
+static LINKED_LIST* get_iterator(const char* tree, const char* query, const unsigned char depth)
 {
 	foint iterator, _htree;
 	LINKED_LIST* result;
-	char* _query = strdup(query.s);
-	char* name = strtok(_query, "[");
 
-	if (!TreeLookup(trees, (foint){.s=name}, &_htree))
+	if (!TreeLookup(trees, (foint){.s=tree}, &_htree))
 	{
-		fputs("No tree found for an iterator", stderr);
+		fputs("No tree found for an iterator\n", stderr);
 		exit(1);
 	}
 
 	HTREE* htree = _htree.v;
-	foint subscripts[MAX_SUBSCRIPTS]; // same optimization to potentially expand dynamically
-	unsigned char num_subscripts = parse_subscripts(subscripts);
-
-	if (num_subscripts == htree->depth)
+	
+	if (depth == htree->depth)
 	{
-		fputs("Attempt to iterate through a scalar value", stderr);
+		fputs("Attempt to iterate through a scalar value\n", stderr);
 		exit(1);
 	}
-		
-	if (!TreeLookup(current_iterators, query, &iterator))
+
+	foint _query = {.s=query};
+			
+	if (!TreeLookup(current_iterators, _query, &iterator))
 	{
 		result = LinkedListAlloc(NULL, false);
 
 		if (htree->tree->root == NULL)
 		{
-			free(_query);
 			return NULL;
 		}
 		else
 		{
 			LinkedListAppend(result, (foint){.v=htree->tree->root});
 			iterator.v = result;
-			TreeInsert(current_iterators, query, iterator);
+			TreeInsert(current_iterators, _query, iterator);
 
-			free(_query);
 			return result;
 		}
 	}
 	else
 	{
-		free(_query);
 		return iterator.v;
 	}
 }
@@ -263,10 +260,19 @@ static Boolean visit_next_node(LINKED_LIST* iterator, foint* result)
 }
 
 // Returns the next index, not the next element
-const char* tree_next(char* query)
+const char* tree_next(const char* tree, const char** subscripts, const unsigned char depth)
 {
-	LINKED_LIST* node_queue = get_iterator((foint){.s=query});
+	LINKED_LIST* node_queue;
 	foint result;
+
+	if (depth == 0)
+		node_queue = get_iterator(tree, tree, depth);	
+	else
+	{
+		char* query = get_full_query(tree, subscripts, depth);
+		LINKED_LIST* node_queue = get_iterator(tree, query, depth);
+		free(query);
+	}
 
 	if (node_queue != NULL)
 	{
@@ -276,37 +282,61 @@ const char* tree_next(char* query)
 		}
 		else
 		{
-			fputs("get_tree_next: Attempt to infinitely iterate through the given tree", stderr);
+			fputs("get_tree_next: Attempt to infinitely iterate through the given tree\n", stderr);
 			exit(1);
 		}
 	}
 	else
-		fputs("get_tree_next: No items in tree", stderr); 
+		fputs("get_tree_next: No items in tree\n", stderr); 
 
 	return "ERROR";
 }
 
-const bool tree_iter_done(char* query, const bool force)
+static const bool tree_iter_done_exit(char* query, const bool result)
 {
-	foint _query = {.s=query};
-	LINKED_LIST* node_queue = get_iterator(_query);
+	free(query);	
+	return result;
+}
+
+static const bool tree_iter_done_exit_no_free(char* _, const bool result) { return result; }
+
+const bool tree_iter_done(const char* tree, const char** subscripts, const unsigned char depth, const bool force)
+{
+	LINKED_LIST* node_queue;
+	char* query;
+	foint result, _query;
+	const bool (*finish)(char*, const bool);
+
+	if (depth == 0)
+	{
+		_query.s = tree;
+		node_queue = get_iterator(tree, tree, depth);
+		finish = &tree_iter_done_exit_no_free;
+	}
+	else
+	{
+		query = get_full_query(tree, subscripts, depth);
+		_query.s = query;
+		node_queue = get_iterator(tree, query, depth);
+		finish = &tree_iter_done_exit;
+	}
 
 	if (node_queue == NULL) // No elements found to iterate
-		return true;
+		return finish(query, true);
 
 	if (force)
 	{
 		TreeDelete(current_iterators, _query);
-		return true;
+		return finish(query, true);
 	}
 
 	if (LinkedListSize(node_queue) == 0)
 	{
 		TreeDelete(current_iterators, _query);
-		return true;
+		return finish(query, true);
 	}
 
-	return false;
+	return finish(query, false);
 }
 
 void do_at_exit(void* data, int exit_status)
