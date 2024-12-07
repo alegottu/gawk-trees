@@ -49,16 +49,22 @@ BEGIN {
 
 {
 	print "testing inserting many values"
-	create_tree("new",1)
+	create_tree("new",2)
 	for (i=0; i<$1+0; i++)
 	{
-		tree_insert("new",i,i/2.0)
+		for (j=0; j<$1+0; j++)
+		{
+			tree_insert("new",i,j,i+j)
+		}
 	}
 
 	print "testing iteration"
 	while(!tree_iter_done("new"))
 	{
 		i=tree_next("new")
-		print i
+		while(!tree_iter_done("new",i))
+		{
+			print tree_next("new",i)
+		}
 	}
 }

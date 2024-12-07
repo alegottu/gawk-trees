@@ -270,7 +270,7 @@ const char* tree_next(const char* tree, const char** subscripts, const unsigned 
 	else
 	{
 		char* query = get_full_query(tree, subscripts, depth);
-		LINKED_LIST* node_queue = get_iterator(tree, query, depth);
+		node_queue = get_iterator(tree, query, depth);
 		free(query);
 	}
 
