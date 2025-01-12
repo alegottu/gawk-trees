@@ -176,7 +176,7 @@ static awk_value_t* do_tree_next(const int nargs, awk_value_t* result, struct aw
 	return make_const_string(ret, strlen(ret), result);
 }
 
-static awk_value_t* do_tree_iter_done(const int nargs, awk_value_t* result, struct awk_ext_func* _)
+static awk_value_t* do_tree_iters_remaining(const int nargs, awk_value_t* result, struct awk_ext_func* _)
 {
 	assert(result != NULL);
 
@@ -186,9 +186,9 @@ static awk_value_t* do_tree_iter_done(const int nargs, awk_value_t* result, stru
 	bool ret;
 	
 	if (force)
-		ret = tree_iter_done(query.name, subscripts, query.num_subs-1, force);
+		ret = tree_iters_remaining(query.name, subscripts, query.num_subs-1, force);
 	else
-	 	ret = tree_iter_done(query.name, subscripts, query.num_subs, force);
+	 	ret = tree_iters_remaining(query.name, subscripts, query.num_subs, force);
 
 	free_query(query);
 	return make_number((double)ret, result);
@@ -204,6 +204,6 @@ static awk_ext_func_t func_table[] =
 	{ "tree_elem_exists", do_tree_elem_exists, 0, 2, awk_true, NULL },
 	{ "is_tree", do_is_tree, 0, 2, awk_true, NULL },
 	{ "tree_next", do_tree_next, 0, 1, awk_true, NULL},
-	{ "tree_iter_done", do_tree_iter_done, 0, 1, awk_true, NULL }
+	{ "tree_iters_remaining", do_tree_iters_remaining, 0, 1, awk_true, NULL }
 };
 dl_load_func(func_table, htrees, "");

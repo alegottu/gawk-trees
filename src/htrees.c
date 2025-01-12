@@ -45,6 +45,7 @@ HTREE* create_tree(const char* name, const int depth)
 
 	return array;
 }
+// TODO: for some reason valgrind reporting false memory leak here
 
 const bool delete_tree(const char* name)
 {
@@ -190,8 +191,9 @@ static const char* get_full_query(const char* tree, const char** subscripts, con
 	for (unsigned char i = 1; i < depth; ++i)
 	{
 		length += strlen(subscripts[i]);
-		result = realloc(result, (length + 1) * sizeof(char));
+		result = realloc(result, (length + 2) * sizeof(char));
 		strcat(result, subscripts[i]);
+		strcat(result, " "); // space needed to prevent mismatches
 	}
 
 	return result;
@@ -199,7 +201,7 @@ static const char* get_full_query(const char* tree, const char** subscripts, con
 }
 
 // Creates an iterator if one is not found for the given query, and the HTREE of that name has valid elements to create one
-static LINKED_LIST* get_iterator(const char* tree, const char* query, const unsigned char depth)
+static LINKED_LIST* get_iterator(const char* tree, const char* query, const char** subscripts, const unsigned char depth)
 {
 	foint iterator, _htree;
 	LINKED_LIST* result;
@@ -211,8 +213,9 @@ static LINKED_LIST* get_iterator(const char* tree, const char* query, const unsi
 	}
 
 	HTREE* htree = _htree.v;
+	unsigned char htree_depth = htree->depth;
 	
-	if (depth == htree->depth)
+	if (depth == htree_depth)
 	{
 		fputs("Attempt to iterate through a scalar value\n", stderr);
 		exit(1);
@@ -222,15 +225,28 @@ static LINKED_LIST* get_iterator(const char* tree, const char* query, const unsi
 			
 	if (!TreeLookup(current_iterators, _query, &iterator))
 	{
-		result = LinkedListAlloc(NULL, false);
-
 		if (htree->tree->root == NULL)
 		{
 			return NULL;
 		}
 		else
 		{
-			LinkedListAppend(result, (foint){.v=htree->tree->root});
+			result = LinkedListAlloc(NULL, false);
+			foint root_node;
+
+			if (depth == 0)
+				root_node.v = htree->tree->root;
+			else
+			{
+				htree->depth = depth; // tricks HTreeLookDel to finish early
+				foint _subscripts[depth]; foint result;
+				fill_foints(subscripts, _subscripts, depth);
+				HTreeLookDel(htree, _subscripts, &result);
+				root_node.v = ((TREETYPE*)result.v)->root;
+				htree->depth = htree_depth;
+			}
+
+			LinkedListAppend(result, root_node);
 			iterator.v = result;
 			TreeInsert(current_iterators, _query, iterator);
 
@@ -266,11 +282,11 @@ const char* tree_next(const char* tree, const char** subscripts, const unsigned 
 	foint result;
 
 	if (depth == 0)
-		node_queue = get_iterator(tree, tree, depth);	
+		node_queue = get_iterator(tree, tree, subscripts, depth);	
 	else
 	{
 		char* query = get_full_query(tree, subscripts, depth);
-		node_queue = get_iterator(tree, query, depth);
+		node_queue = get_iterator(tree, query, subscripts, depth);
 		free(query);
 	}
 
@@ -292,51 +308,52 @@ const char* tree_next(const char* tree, const char** subscripts, const unsigned 
 	return "ERROR";
 }
 
-static const bool tree_iter_done_exit(char* query, const bool result)
+static void tree_iters_remaining_exit(char* query)
 {
 	free(query);	
-	return result;
 }
 
-static const bool tree_iter_done_exit_no_free(char* _, const bool result) { return result; }
+static void tree_iters_remaining_exit_no_free(char* _) { }
 
-const bool tree_iter_done(const char* tree, const char** subscripts, const unsigned char depth, const bool force)
+// might have to change to larger type
+const unsigned int tree_iters_remaining(const char* tree, const char** subscripts, const unsigned char depth, const bool force)
 {
 	LINKED_LIST* node_queue;
 	char* query;
 	foint result, _query;
-	const bool (*finish)(char*, const bool);
+	void (*finish)(char*);
 
 	if (depth == 0)
 	{
 		_query.s = tree;
-		node_queue = get_iterator(tree, tree, depth);
-		finish = &tree_iter_done_exit_no_free;
+		node_queue = get_iterator(tree, tree, subscripts, depth);
+		finish = &tree_iters_remaining_exit_no_free;
 	}
 	else
 	{
 		query = get_full_query(tree, subscripts, depth);
 		_query.s = query;
-		node_queue = get_iterator(tree, query, depth);
-		finish = &tree_iter_done_exit;
+		node_queue = get_iterator(tree, query, subscripts, depth);
+		finish = &tree_iters_remaining_exit;
 	}
 
 	if (node_queue == NULL) // No elements found to iterate
-		return finish(query, true);
-
-	if (force)
 	{
-		TreeDelete(current_iterators, _query);
-		return finish(query, true);
+		finish(query);
+		return 0;
 	}
 
-	if (LinkedListSize(node_queue) == 0)
+	const int remaining = LinkedListSize(node_queue);
+
+	if (force || remaining == 0)
 	{
 		TreeDelete(current_iterators, _query);
-		return finish(query, true);
+		finish(query);
+		return 0;
 	}
 
-	return finish(query, false);
+	finish(query);
+	return remaining;
 }
 
 void do_at_exit(void* data, int exit_status)

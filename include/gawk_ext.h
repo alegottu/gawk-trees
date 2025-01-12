@@ -43,6 +43,6 @@ static awk_value_t* do_is_tree(const int nargs, awk_value_t* result, struct awk_
 
 static awk_value_t* do_tree_next(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 
-static awk_value_t* do_tree_iter_done(const int nargs, awk_value_t* result, struct awk_ext_func* _);
+static awk_value_t* do_tree_iters_remaining(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 
 #endif // !GAWK_EXT_H

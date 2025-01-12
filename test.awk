@@ -48,23 +48,42 @@ BEGIN {
 }
 
 {
-	print "testing inserting many values"
-	create_tree("new",2)
-	for (i=0; i<$1+0; i++)
+	if (NF == 2)
 	{
-		for (j=0; j<$1+0; j++)
+		print "testing inserting many values"
+		create_tree("new",2)
+		for (i=0; i<$1+0; i++)
 		{
-			tree_insert("new",i,j,i+j)
+			for (j=0; j<$2+0; j++)
+			{
+				tree_insert("new",i,j,i+j)
+			}
+		}
+
+		print "testing iteration"
+		while(tree_iters_remaining("new") > 0)
+		{
+			i=tree_next("new")
+			while(tree_iters_remaining("new",i) > 0)
+			{
+				print tree_next("new",i)
+			}
 		}
 	}
-
-	print "testing iteration"
-	while(!tree_iter_done("new"))
+	else
 	{
-		i=tree_next("new")
-		while(!tree_iter_done("new",i))
+		print "testing inserting many values"
+		create_tree("new", 1)
+		for (i=0; i<$1+0; i++)
 		{
-			print tree_next("new",i)
+			tree_insert("new",i,i/2.0)
+		}
+
+		print "testing iteration"
+		while(tree_iters_remaining("new") > 0)
+		{
+			i = tree_next("new")
+			print query_tree("new",i)
 		}
 	}
 }
