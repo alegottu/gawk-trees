@@ -1,3 +1,4 @@
+#include "htrees.h"
 #include "print_info.h" // already includes htrees.h
 
 int main(int argc, char *argv[])
@@ -93,17 +94,33 @@ int main(int argc, char *argv[])
 	}
 
 	puts("testing iteration");
-	while(tree_iters_remaining("new", NULL, 0, false) > 0)
+	while(tree_iters_remaining("new", NULL, 0) > 0)
 	{
 		const char* i = tree_next("new", NULL, 0);
 		const char* got[1] = {i};
 
-		while(tree_iters_remaining("new", got, 1, false) > 0)
+		while(tree_iters_remaining("new", got, 1) > 0)
 		{
 			const char* ret = tree_next("new", got, 1);
 			puts(ret);
 		}
 	}
+
+	puts("testing force break");
+	while(tree_iters_remaining("new", NULL, 0) > 0)
+	{
+		const char* i = tree_next("new", NULL, 0);
+
+		if (strcmp(i, "3") == 0)
+		{
+			tree_iter_break("new", NULL, 0);
+			break;
+		}
+	}
+
+	const char* i = tree_next("new", NULL, 0);
+	test = strcmp(i, "3") != 0; // rough test for this tree, might just want to create a seperate one
+	printf("%i\n", test);
 
 	return 0;
 }

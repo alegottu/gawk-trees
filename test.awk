@@ -48,9 +48,10 @@ BEGIN {
 }
 
 {
+	print "testing inserting many values"
+
 	if (NF == 2)
 	{
-		print "testing inserting many values"
 		create_tree("new",2)
 		for (i=0; i<$1+0; i++)
 		{
@@ -72,7 +73,6 @@ BEGIN {
 	}
 	else
 	{
-		print "testing inserting many values"
 		create_tree("new", 1)
 		for (i=0; i<$1+0; i++)
 		{
@@ -86,4 +86,18 @@ BEGIN {
 			print query_tree("new",i)
 		}
 	}
+
+	print "testing force break"
+	while(tree_iters_remaining("new") > 0)
+	{
+		i=tree_next("new")
+		if(i=="3")
+		{
+			tree_iter_break("new")
+			break
+		}
+	}
+
+	i=tree_next("new")
+	print i!="3"
 }

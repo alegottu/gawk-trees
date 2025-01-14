@@ -315,14 +315,19 @@ static void tree_iters_remaining_exit(char* query)
 
 static void tree_iters_remaining_exit_no_free(char* _) { }
 
-// might have to change to larger type
-const unsigned int tree_iters_remaining(const char* tree, const char** subscripts, const unsigned char depth, const bool force)
+// NOTE: Might have to change to larger return type
+const unsigned int tree_iters_remaining(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	LINKED_LIST* node_queue;
 	char* query;
 	foint result, _query;
 	void (*finish)(char*);
 
+	/* NOTE: the stucture of the function is a bit convoluted because
+	  we can't safely delete an element from the iterators tree without
+	  the TreeLookDel function, even though we previously just found
+	  the same element with the same function; if the logic is seperated
+	  a bit in libwayne, we can optimize this	*/
 	if (depth == 0)
 	{
 		_query.s = tree;
@@ -345,15 +350,25 @@ const unsigned int tree_iters_remaining(const char* tree, const char** subscript
 
 	const int remaining = LinkedListSize(node_queue);
 
-	if (force || remaining == 0)
+	if (remaining == 0)
 	{
 		TreeDelete(current_iterators, _query);
-		finish(query);
-		return 0;
 	}
 
 	finish(query);
 	return remaining;
+}
+
+const bool tree_iter_break(const char* tree, const char** subscripts, const unsigned char depth)
+{
+	foint query;
+
+	if (depth == 0)
+		query.s = tree;
+	else
+		query.s = get_full_query(tree, subscripts, depth);
+
+	return TreeDelete(current_iterators, query);
 }
 
 void do_at_exit(void* data, int exit_status)

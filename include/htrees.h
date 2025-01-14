@@ -41,7 +41,9 @@ const unsigned short is_tree(const char* tree, const char** subscripts, const un
 
 const char* tree_next(const char* tree, const char** subscripts, const unsigned char depth);
 
-const unsigned int tree_iters_remaining(const char* tree, const char** subscripts, const unsigned char depth, const bool force);
+const unsigned int tree_iters_remaining(const char* tree, const char** subscripts, const unsigned char depth);
+
+const bool tree_iter_break(const char* tree, const char** subscripts, const unsigned char depth);
 
 void do_at_exit(void* data, int exit_status);
 
