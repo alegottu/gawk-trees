@@ -1,2 +1,2 @@
-echo "set env AWKLIBPATH /home/alegottu/Projects/C/gawk-trees" | xclip -selection clipboard
+echo "set env AWKLIBPATH $PWD" | xclip -selection clipboard
 gdb `which gawk`
