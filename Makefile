@@ -12,4 +12,7 @@ debug:
 	rm *.o
 
 test:
-	gcc -Wno-discarded-qualifiers -Wno-incompatible-pointer-types -g -Og -Iinclude -Itools -I$(GAWK_PATH) -I$(LW_PATH)/include src/*.c $(LW_PATH)/src/bintree.c $(LW_PATH)/src/misc.c $(LW_PATH)/src/linked-list.c $(LW_PATH)/src/mem-debug.c tools/print_info.c test.c -o test -lm
+	gcc -Wno-discarded-qualifiers -Wno-incompatible-pointer-types -g -Og -Iinclude -Itools -I$(GAWK_PATH) -I$(LW_PATH)/include src/*.c $(LW_PATH)/src/bintree.c $(LW_PATH)/src/misc.c $(LW_PATH)/src/linked-list.c $(LW_PATH)/src/mem-debug.c tools/print_info.c tools/test.c -o test -lm
+
+test-release:
+	gcc -Wno-discarded-qualifiers -Wno-incompatible-pointer-types -Os -Iinclude -Itools -I$(GAWK_PATH) -I$(LW_PATH)/include src/*.c $(LW_PATH)/src/bintree.c $(LW_PATH)/src/misc.c $(LW_PATH)/src/linked-list.c $(LW_PATH)/src/mem-debug.c tools/print_info.c tools/test.c -o test -lm

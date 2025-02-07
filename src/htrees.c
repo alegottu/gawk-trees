@@ -62,11 +62,10 @@ static void fill_foints(const char** strs, foint* result, const unsigned char co
 
 void tree_insert(const char* tree, const char** subscripts, const foint value, const unsigned char depth)
 {
-	foint _htree, key;
-	key.s = tree;
+	foint _htree;
 	HTREE* htree;
 	
-	if (TreeLookup(trees, key, &_htree)) 
+	if (TreeLookup(trees, (foint){.s=tree}, &_htree)) 
 	{
 		htree = _htree.v;
 		foint keys[depth];
@@ -86,10 +85,10 @@ const bool query_tree(const char* tree, const char** subscripts, foint* result, 
 {
 	foint keys[depth];
 	fill_foints(subscripts, keys, depth);
-	foint _htree, _name; _name.s = tree;
+	foint _htree;
 	bool found = false;
 
-	if (TreeLookup(trees, _name, &_htree))
+	if (TreeLookup(trees, (foint){.s=tree}, &_htree))
 	{
 		HTREE* htree = _htree.v;
 
@@ -129,8 +128,7 @@ const bool tree_elem_exists(const char* tree, const char** subscripts)
 	foint _subscripts[depth];
 	fill_foints(subscripts, _subscripts, depth);
 
-	foint result;
-	return HTreeLookup(htree, _subscripts, &result);
+	return HTreeLookup(htree, _subscripts, NULL);
 }
 
 const bool tree_remove(const char* tree, const char** subscripts, const unsigned char depth)
@@ -148,7 +146,7 @@ const bool tree_remove(const char* tree, const char** subscripts, const unsigned
 		foint tree;
 		HTreeLookDel(htree, _subscripts, &tree);
 		TreeFree(tree.v);
-		bool result = HTreeLookDel(htree, _subscripts, (foint*)1); // inefficient, but stops other code from breaking; revisit this and the other use like it
+		bool result = HTreeLookDel(htree, _subscripts, (foint*)1); // inefficient, but stops other code from breaking; TODO: revisit this and the other use like it
 		htree->depth = htree_depth;
 		return result;
 	}
