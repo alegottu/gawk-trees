@@ -21,7 +21,7 @@ BEGIN {
 	test[x][z] = 229
 	print test[y][z]
 	print test[x][z]
-	print test[x] # check if produces error
+	# print test[x] # also produces error
 	
 	print "testing inserting into a tree / value that does not yet exist"
 	example["sub"] = "hello"
@@ -54,9 +54,9 @@ BEGIN {
 		}
 
 		print "testing iteration"
-		for i in new
+		for (i in new)
 		{
-			for j in new[i]
+			for (j in new[i])
 			{
 				print j
 			}
@@ -70,22 +70,22 @@ BEGIN {
 		}
 
 		print "testing iteration"
-		for i in new
+		for (i in new)
 		{
 			print new[i]
 		}
 	}
 
 	print "testing force break"
-	for i in new
+	for (i in new)
 	{
-		if i == "3"
+		if (i == "3")
 		{
 			break
 		}
 	}
 
-	for i in new
+	for (i in new)
 	{
 		print i != "3"
 		break
