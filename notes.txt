@@ -14,3 +14,7 @@ yet another associative data structure. In the case where a
 gawk program rarely uses the same value for the given 
 variables within the program, this may actually waste more
 memory than simply using make_const_string.
+
+Use format:
+	command time -o logs/1eN/out --verbose ./test.sh "$@"
+for basic memory tests

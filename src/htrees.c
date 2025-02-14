@@ -45,8 +45,8 @@ HTREE* create_tree(const char* name, const int depth)
 
 	return array;
 }
-// TODO: for some reason valgrind reporting false memory leak here
 
+// TODO: valgrind reporting memleak here
 const bool delete_tree(const char* name)
 {
 	return TreeDelete(trees, (foint){.s=name});
@@ -94,7 +94,7 @@ const bool query_tree(const char* tree, const char** subscripts, foint* result, 
 
 		if (depth != htree->depth)
 		{
-			fputs("query_tree: Incorrect number of subcripts given for tree depth; returning arrays not yet implemented\n", stderr);
+			fputs("query_tree: Incorrect number of subcripts given for tree depth; treating array as a scalar value\n", stderr);
 			exit(1);
 			// May have to changes instances of fputs -> exit to a special return value checked by funcs in gawk_ext.c to then use fatal()
 		}
@@ -134,7 +134,12 @@ const bool tree_elem_exists(const char* tree, const char** subscripts)
 const bool tree_remove(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	foint _htree;
-	TreeLookup(trees, (foint){.s=tree}, &_htree);
+	bool result;
+	bool found = TreeLookup(trees, (foint){.s=tree}, &_htree);
+
+	if (!found)
+		return false;
+
 	HTREE* htree = _htree.v;
 	const unsigned char htree_depth = htree->depth;
 	foint _subscripts[depth];
@@ -146,12 +151,19 @@ const bool tree_remove(const char* tree, const char** subscripts, const unsigned
 		foint tree;
 		HTreeLookDel(htree, _subscripts, &tree);
 		TreeFree(tree.v);
-		bool result = HTreeLookDel(htree, _subscripts, (foint*)1); // inefficient, but stops other code from breaking; TODO: revisit this and the other use like it
+		result = HTreeLookDel(htree, _subscripts, (foint*)1); // inefficient, but stops other code from breaking; NOTE: need BinTreeDelNode to delete without having to search again, other portions of code like this
 		htree->depth = htree_depth;
-		return result;
 	}
+	else
+		result = HTreeLookDel(htree, _subscripts, (foint*)1);
 
-	return HTreeLookDel(htree, _subscripts, (foint*)1);
+	// if (htree->n <= 0)
+	// {
+	// 	result = delete_tree(tree);
+	// }
+	// don't yet have htree->n but complies with the assertion recently added in BinTreeFree; TODO: ask about this
+
+	return result;
 }
 
 const unsigned short is_tree(const char* tree, const char** subscripts, const unsigned char depth)
@@ -161,10 +173,7 @@ const unsigned short is_tree(const char* tree, const char** subscripts, const un
 	foint _htree;
 
 	if (!TreeLookup(trees, (foint){.s=tree}, &_htree))
-	{
-		fputs("Invalid tree name\n", stderr);
-		exit(1);
-	}
+		return 0;
 
 	HTREE* htree = _htree.v;
 
@@ -205,10 +214,7 @@ static LINKED_LIST* get_iterator(const char* tree, const char* query, const char
 	LINKED_LIST* result;
 
 	if (!TreeLookup(trees, (foint){.s=tree}, &_htree))
-	{
-		fputs("No tree found for an iterator\n", stderr);
-		exit(1);
-	}
+		return NULL; // NOTE: should possibly be forced exit
 
 	HTREE* htree = _htree.v;
 	unsigned char htree_depth = htree->depth;

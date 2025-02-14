@@ -39,18 +39,20 @@ is_tree("name", "subscript1", [...])
 - checks whether the element within a given tree is an array (bintree) or scalar value
 - for example, is_tree("htree", "x") would return 1 if "htree" represents a 2D array
 
-tree_next("name", "subscript1", [...])
+tree_next("name", ["subscript1", ...])
 - use in a loop to iterate through all the indices for the immediate
 depth of the query; works the same as using "for index in array"
 in gawk, where array would be a standard gawk array
 
-tree_iter_done("name", "subscript1", [...], [force])
-- returns 0 if the iterator for the binary tree
-at the query has more elements remaining, or 1 if the final element was returned with the
-most recent call of "get_tree_next"
+tree_iters_remaining("name", ["subscript1", ...])
+- returns the number of elements remaining in the iterator for a given part of a tree;
+note that this is distinct from the tree or subtree itself, and this method does not reflect
+the actual number of elements in a tree. It is only meant to be used with a while loop
+in tandem with tree_next.
 - if the binary tree at the query is not currently being iterated on, an iterator will be created
-- if the optional "force" argument is supplied, the iterator will be freed
-forcefully and this will return 1; this argument must be supplied as a number to differentiate
-it from all of the subscript parameters (may be changed later)
 - otherwise, an iterator will be freed once each element has been iterated through
-(once this function returns 1)
+(once this function returns 0)
+
+tree_iter_break("name", ["subscript1", ...])
+- forces the current iterator at "name + subcripts" to close. this is not required, but can
+manually free up memory, or forcefully restart an iterator. 

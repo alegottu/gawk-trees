@@ -1,5 +1,6 @@
 #include "htrees.h"
-#include "print_info.h" // already includes htrees.h
+
+// TODO: not up to date with awk/test.awk
 
 int main(int argc, char *argv[])
 {

@@ -1,43 +1,42 @@
 BEGIN {
 	print "testing basics"
-	pred[a][b] = 1
-	print pred[a][b]
-	print pred[a][b]
-	pred[x][y] = "hello"
-	print pred[x][y]
-	# for each in statement might need to expect only one level down
-	print pred[x][b] in pred == 0
-	print pred[x][y] in pred == 1
-	print isarray(pred[x]) == 1
-	print isarray(pred[a][b]) == 0
-	delete pred[x][y]
-	delete pred[x][y]
-	print pred[x][y] in pred == 0
+	pred["a"]["b"] = 1
+	print pred["a"]["b"]
+	print pred["a"]["b"]
+	pred["x"]["y"] = "hello"
+	print pred["x"]["y"]
+	print "b" in pred["x"] == 0
+	print "y" in pred["x"] == 1
+	print isarray(pred["x"]) == 1
+	print isarray(pred["a"]["b"]) == 0
+	delete pred["x"]["y"]
+	delete pred["x"]["y"]
+	print "y" in pred["x"] == 0
 	delete pred
 
 	print "testing 2D trees"
-	test[x][y] = 864
-	print test[x][y]
-	test[x][z] = 229
-	print test[y][z]
-	print test[x][z]
-	# print test[x] # also produces error
+	test["x"]["y"] = 864
+	print test["x"]["y"]
+	test["x"]["z"] = 229
+	print test["y"]["z"]
+	print test["x"]["z"]
+	# print test["x"] # also produces error
 	
 	print "testing inserting into a tree / value that does not yet exist"
 	example["sub"] = "hello"
 	print example["sub"]
 
 	print "testing querying into a tree that doesn't yet exist with number keys"
-	print another[1]
+	print another["1"]
 
 	print "testing inserting for the same key"
-	another[1] = 1
-	print another[1]
+	another["1"] = 1
+	print another["1"]
 
 	print "testing removing non-final elements"
-	delete test[x]
-	print test[x][y] in test == 0
-	print test[x][z] in test == 0
+	delete test["x"]
+	print "x" in test == 0
+	print isarray(test["x"]) == 0
 }
 
 {

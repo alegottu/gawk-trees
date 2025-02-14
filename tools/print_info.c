@@ -1,6 +1,7 @@
 #include "print_info.h"
+#include "htrees.h"
 
-static Boolean print_node(foint key, foint data)
+static Boolean print_node(foint _, foint key, foint data)
 {
 	printf("Key: %s\n", key.s);
 	printf("Data: %s\n\n", data.s);
@@ -12,7 +13,7 @@ static void print_htree_helper(NODETYPE* node, const unsigned char max_depth, co
 	if (depth == max_depth - 1)
 	{
 		TREETYPE* tree = node->info.v;
-		TreeTraverse(tree, &print_node);
+		TreeTraverse((foint)0, tree, (pFointTraverseFcn)print_node);
 	}
 	else
 	{
