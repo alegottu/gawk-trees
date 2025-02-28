@@ -12,11 +12,11 @@ heap_tree=empty
 #-----------
 snapshot=1
 #-----------
-time=1146695
+time=1146953
 mem_heap_B=15413248
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=peak
+heap_tree=detailed
 n4: 15413248 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
  n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
   n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
@@ -33,9 +33,9 @@ n4: 15413248 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
              n1: 7131136 0x4021597: _dl_start (rtld.c:596)
               n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
                n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF92: ???
-                 n1: 7131136 0x1FFEFFFF97: ???
-                  n0: 7131136 0x1FFEFFFF9A: ???
+                n1: 7131136 0x1FFEFFFF72: ???
+                 n1: 7131136 0x1FFEFFFF77: ???
+                  n0: 7131136 0x1FFEFFFF7A: ???
        n0: 20480 in 1 place, below massif's threshold (1.00%)
    n1: 6627328 0x4009098: _dl_map_segments (dl-map-segments.h:140)
     n1: 6627328 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
@@ -49,9 +49,9 @@ n4: 15413248 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
             n1: 6610944 0x4021597: _dl_start (rtld.c:596)
              n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
               n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF92: ???
-                n1: 6610944 0x1FFEFFFF97: ???
-                 n0: 6610944 0x1FFEFFFF9A: ???
+               n1: 6610944 0x1FFEFFFF72: ???
+                n1: 6610944 0x1FFEFFFF77: ???
+                 n0: 6610944 0x1FFEFFFF7A: ???
       n0: 16384 in 1 place, below massif's threshold (1.00%)
    n0: 86016 in 3 places, all below massif's threshold (1.00%)
  n0: 1003520 0x0: ???
@@ -69,42 +69,42 @@ n4: 15413248 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
 #-----------
 snapshot=2
 #-----------
-time=233334310
-mem_heap_B=18481152
+time=234662742
+mem_heap_B=18472960
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=3
 #-----------
-time=379524277
-mem_heap_B=20238336
+time=381812065
+mem_heap_B=20230144
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=4
 #-----------
-time=680531404
-mem_heap_B=24801280
+time=684638907
+mem_heap_B=24793088
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=5
 #-----------
-time=880608523
-mem_heap_B=26288128
+time=885993046
+mem_heap_B=26279936
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=detailed
-n5: 26288128 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 13967360 0x4026CB7: __mmap64 (mmap64.c:58)
-  n3: 13967360 0x4026CB7: mmap (mmap64.c:46)
-   n1: 7208960 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
-    n1: 7208960 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
-     n1: 7208960 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
-      n2: 7208960 0x400A600: _dl_map_object (dl-load.c:2327)
+n5: 26279936 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 13959168 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 13959168 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7204864 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7204864 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7204864 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7204864 0x400A600: _dl_map_object (dl-load.c:2327)
        n1: 7131136 0x4003494: openaux (dl-deps.c:64)
         n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
          n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
@@ -114,13 +114,13 @@ n5: 26288128 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
              n1: 7131136 0x4021597: _dl_start (rtld.c:596)
               n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
                n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF92: ???
-                 n1: 7131136 0x1FFEFFFF97: ???
-                  n0: 7131136 0x1FFEFFFF9A: ???
-       n0: 77824 in 2 places, all below massif's threshold (1.00%)
-   n1: 6672384 0x4009098: _dl_map_segments (dl-map-segments.h:140)
-    n1: 6672384 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
-     n2: 6672384 0x400A600: _dl_map_object (dl-load.c:2327)
+                n1: 7131136 0x1FFEFFFF72: ???
+                 n1: 7131136 0x1FFEFFFF77: ???
+                  n0: 7131136 0x1FFEFFFF7A: ???
+       n0: 73728 in 2 places, all below massif's threshold (1.00%)
+   n1: 6668288 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6668288 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6668288 0x400A600: _dl_map_object (dl-load.c:2327)
       n1: 6610944 0x4003494: openaux (dl-deps.c:64)
        n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
         n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
@@ -130,10 +130,10 @@ n5: 26288128 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
             n1: 6610944 0x4021597: _dl_start (rtld.c:596)
              n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
               n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF92: ???
-                n1: 6610944 0x1FFEFFFF97: ???
-                 n0: 6610944 0x1FFEFFFF9A: ???
-      n0: 61440 in 2 places, all below massif's threshold (1.00%)
+               n1: 6610944 0x1FFEFFFF72: ???
+                n1: 6610944 0x1FFEFFFF77: ???
+                 n0: 6610944 0x1FFEFFFF7A: ???
+      n0: 57344 in 2 places, all below massif's threshold (1.00%)
    n0: 86016 in 3 places, all below massif's threshold (1.00%)
  n1: 8380416 0x4DE282B: brk (brk.c:36)
   n1: 8380416 0x4DE28F3: __sbrk (sbrk.c:74)
@@ -142,38 +142,35 @@ n5: 26288128 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
      n1: 8380416 0x4D6B5F8: sysmalloc (malloc.c:2727)
       n3: 8380416 0x4D6C8DC: _int_malloc (malloc.c:4407)
        n3: 4730880 0x4D6D261: malloc (malloc.c:3321)
-        n1: 2433024 0x4D7058E: strdup (strdup.c:42)
-         n1: 2433024 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2433024 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2433024 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2433024 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2433024 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2433024 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2433024 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2433024 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2433024 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n1: 2162688 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 2162688 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2162688 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2162688 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2162688 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2162688 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2162688 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2162688 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2162688 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2162688 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 2297856 0x4D7058E: strdup (strdup.c:42)
+         n1: 2297856 0x4F811D9: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 2297856 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 2297856 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 2297856 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 2297856 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 2297856 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2297856 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2297856 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 2297856 0x4F82563: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 2297856 0x4F811E2: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 2297856 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 2297856 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 2297856 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 2297856 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 2297856 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2297856 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2297856 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
         n0: 135168 in 1 place, below massif's threshold (1.00%)
        n1: 3514368 0x4D6E5F8: calloc (malloc.c:3679)
-        n1: 3514368 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 3514368 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 3514368 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 3514368 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 3514368 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 3514368 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 3514368 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 3514368 0x4F84323: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 3514368 0x4F811D0: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 3514368 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 3514368 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 3514368 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 3514368 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
        n0: 135168 in 1 place, below massif's threshold (1.00%)
  n1: 2936832 0x4DE6A27: __mmap64 (mmap64.c:58)
   n3: 2936832 0x4DE6A27: mmap (mmap64.c:46)
@@ -181,27 +178,25 @@ n5: 26288128 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
     n1: 2535424 0x4D6B335: sysmalloc (malloc.c:2752)
      n2: 2535424 0x4D6C8DC: _int_malloc (malloc.c:4407)
       n1: 1859584 0x4D6D261: malloc (malloc.c:3321)
-       n1: 1859584 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 1859584 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 1859584 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 1859584 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 1859584 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 1859584 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 1859584 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 1859584 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 1859584 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 1859584 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 1859584 0x4F82563: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+        n1: 1859584 0x4F811E2: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 1859584 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 1859584 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 1859584 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 1859584 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 1859584 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 1859584 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 1859584 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
       n1: 675840 0x4D6E5F8: calloc (malloc.c:3679)
-       n1: 675840 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 675840 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 675840 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 675840 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 675840 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 675840 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 675840 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 675840 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 675840 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 675840 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 675840 0x4F84323: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+        n1: 675840 0x4F811D0: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 675840 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 675840 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 675840 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 675840 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 675840 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 675840 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 675840 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
    n1: 372736 0x4CFFC00: _nl_load_locale (loadlocale.c:223)
     n1: 372736 0x4CFF7D0: _nl_find_locale (findlocale.c:237)
      n1: 372736 0x4CFEA90: setlocale (setlocale.c:414)
@@ -215,729 +210,380 @@ n5: 26288128 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
 #-----------
 snapshot=6
 #-----------
-time=1014179842
-mem_heap_B=27910144
+time=1020377106
+mem_heap_B=27901952
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=7
 #-----------
-time=1305676153
-mem_heap_B=31424512
+time=1211915787
+mem_heap_B=30199808
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=detailed
-n5: 31424512 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 13967360 0x4026CB7: __mmap64 (mmap64.c:58)
-  n3: 13967360 0x4026CB7: mmap (mmap64.c:46)
-   n1: 7208960 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
-    n1: 7208960 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
-     n1: 7208960 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
-      n2: 7208960 0x400A600: _dl_map_object (dl-load.c:2327)
-       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
-        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
-           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
-             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
-              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-               n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF92: ???
-                 n1: 7131136 0x1FFEFFFF97: ???
-                  n0: 7131136 0x1FFEFFFF9A: ???
-       n0: 77824 in 2 places, all below massif's threshold (1.00%)
-   n1: 6672384 0x4009098: _dl_map_segments (dl-map-segments.h:140)
-    n1: 6672384 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
-     n2: 6672384 0x400A600: _dl_map_object (dl-load.c:2327)
-      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
-       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
-          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
-            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
-             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-              n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF92: ???
-                n1: 6610944 0x1FFEFFFF97: ???
-                 n0: 6610944 0x1FFEFFFF9A: ???
-      n0: 61440 in 2 places, all below massif's threshold (1.00%)
-   n0: 86016 in 3 places, all below massif's threshold (1.00%)
- n1: 8380416 0x4DE282B: brk (brk.c:36)
-  n1: 8380416 0x4DE28F3: __sbrk (sbrk.c:74)
-   n1: 8380416 0x4DE28F3: sbrk (sbrk.c:36)
-    n1: 8380416 0x4D6A5C5: __glibc_morecore (morecore.c:29)
-     n1: 8380416 0x4D6B5F8: sysmalloc (malloc.c:2727)
-      n3: 8380416 0x4D6C8DC: _int_malloc (malloc.c:4407)
-       n3: 4730880 0x4D6D261: malloc (malloc.c:3321)
-        n1: 2433024 0x4D7058E: strdup (strdup.c:42)
-         n1: 2433024 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2433024 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2433024 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2433024 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2433024 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2433024 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2433024 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2433024 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2433024 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n1: 2162688 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 2162688 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2162688 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2162688 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2162688 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2162688 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2162688 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2162688 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2162688 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2162688 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
-       n1: 3514368 0x4D6E5F8: calloc (malloc.c:3679)
-        n1: 3514368 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 3514368 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 3514368 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 3514368 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 3514368 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 3514368 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 3514368 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n0: 135168 in 1 place, below massif's threshold (1.00%)
- n1: 8073216 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n3: 8073216 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 7671808 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 7671808 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 7671808 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n1: 4427776 0x4D6D261: malloc (malloc.c:3321)
-       n1: 4427776 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 4427776 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 4427776 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 4427776 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 4427776 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 4427776 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 4427776 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 4427776 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 4427776 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 4427776 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n1: 3244032 0x4D6E5F8: calloc (malloc.c:3679)
-       n1: 3244032 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 3244032 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 3244032 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 3244032 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 3244032 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 3244032 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 3244032 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 3244032 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 3244032 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 3244032 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-   n1: 372736 0x4CFFC00: _nl_load_locale (loadlocale.c:223)
-    n1: 372736 0x4CFF7D0: _nl_find_locale (findlocale.c:237)
-     n1: 372736 0x4CFEA90: setlocale (setlocale.c:414)
-      n2: 372736 0x4CFEA90: setlocale (setlocale.c:217)
-       n1: 356352 0x115027: ??? (in /usr/bin/gawk)
-        n0: 356352 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n0: 16384 in 4 places, all below massif's threshold (1.00%)
-   n0: 28672 in 2 places, all below massif's threshold (1.00%)
- n0: 1003520 0x0: ???
- n0: 0 in 1 place, below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=8
 #-----------
-time=1584932275
-mem_heap_B=34803712
+time=1404664337
+mem_heap_B=32497664
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=9
 #-----------
-time=1888675730
-mem_heap_B=38453248
+time=1674131019
+mem_heap_B=35741696
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=10
 #-----------
-time=2125351941
-mem_heap_B=41291776
+time=1856148368
+mem_heap_B=37904384
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=11
 #-----------
-time=2284300563
-mem_heap_B=43184128
+time=2002148948
+mem_heap_B=39661568
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=12
 #-----------
-time=2497972058
-mem_heap_B=45752320
+time=2299215585
+mem_heap_B=43175936
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=detailed
-n5: 45752320 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 22401024 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 22401024 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 21999616 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 21999616 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 21999616 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 11726848 0x4D6D261: malloc (malloc.c:3321)
-       n1: 7806976 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 7806976 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 7806976 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 7806976 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 7806976 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 7806976 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 7806976 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 7806976 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 7806976 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 7806976 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n1: 3919872 0x4D7058E: strdup (strdup.c:42)
-        n1: 3919872 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 3919872 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 3919872 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 3919872 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 3919872 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 3919872 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 3919872 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 3919872 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 3919872 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n1: 10272768 0x4D6E5F8: calloc (malloc.c:3679)
-       n1: 10272768 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 10272768 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 10272768 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 10272768 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 10272768 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 10272768 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 10272768 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 10272768 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 10272768 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 10272768 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-   n0: 401408 in 3 places, all below massif's threshold (1.00%)
- n1: 13967360 0x4026CB7: __mmap64 (mmap64.c:58)
-  n3: 13967360 0x4026CB7: mmap (mmap64.c:46)
-   n1: 7208960 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
-    n1: 7208960 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
-     n1: 7208960 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
-      n2: 7208960 0x400A600: _dl_map_object (dl-load.c:2327)
-       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
-        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
-           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
-             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
-              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-               n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF92: ???
-                 n1: 7131136 0x1FFEFFFF97: ???
-                  n0: 7131136 0x1FFEFFFF9A: ???
-       n0: 77824 in 2 places, all below massif's threshold (1.00%)
-   n1: 6672384 0x4009098: _dl_map_segments (dl-map-segments.h:140)
-    n1: 6672384 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
-     n2: 6672384 0x400A600: _dl_map_object (dl-load.c:2327)
-      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
-       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
-          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
-            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
-             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-              n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF92: ???
-                n1: 6610944 0x1FFEFFFF97: ???
-                 n0: 6610944 0x1FFEFFFF9A: ???
-      n0: 61440 in 2 places, all below massif's threshold (1.00%)
-   n0: 86016 in 3 places, all below massif's threshold (1.00%)
- n1: 8380416 0x4DE282B: brk (brk.c:36)
-  n1: 8380416 0x4DE28F3: __sbrk (sbrk.c:74)
-   n1: 8380416 0x4DE28F3: sbrk (sbrk.c:36)
-    n1: 8380416 0x4D6A5C5: __glibc_morecore (morecore.c:29)
-     n1: 8380416 0x4D6B5F8: sysmalloc (malloc.c:2727)
-      n3: 8380416 0x4D6C8DC: _int_malloc (malloc.c:4407)
-       n3: 4730880 0x4D6D261: malloc (malloc.c:3321)
-        n1: 2433024 0x4D7058E: strdup (strdup.c:42)
-         n1: 2433024 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2433024 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2433024 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2433024 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2433024 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2433024 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2433024 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2433024 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2433024 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n1: 2162688 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 2162688 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2162688 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2162688 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2162688 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2162688 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2162688 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2162688 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2162688 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2162688 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
-       n1: 3514368 0x4D6E5F8: calloc (malloc.c:3679)
-        n1: 3514368 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 3514368 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 3514368 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 3514368 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 3514368 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 3514368 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 3514368 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n0: 135168 in 1 place, below massif's threshold (1.00%)
- n0: 1003520 0x0: ???
- n0: 0 in 1 place, below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=13
 #-----------
-time=2747287399
-mem_heap_B=48726016
+time=2514370821
+mem_heap_B=45744128
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=14
 #-----------
-time=2916236670
-mem_heap_B=50753536
+time=2673841424
+mem_heap_B=47636480
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=15
 #-----------
-time=3097971229
-mem_heap_B=52916224
+time=2867670745
+mem_heap_B=49934336
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=detailed
-n5: 52916224 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 29564928 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 29564928 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 29163520 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 29163520 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 29163520 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 15376384 0x4D6D261: malloc (malloc.c:3321)
-       n1: 7806976 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 7806976 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 7806976 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 7806976 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 7806976 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 7806976 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 7806976 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 7806976 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 7806976 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 7806976 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n1: 7569408 0x4D7058E: strdup (strdup.c:42)
-        n1: 7569408 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 7569408 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 7569408 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 7569408 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 7569408 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 7569408 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 7569408 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 7569408 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 7569408 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n1: 13787136 0x4D6E5F8: calloc (malloc.c:3679)
-       n1: 13787136 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 13787136 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 13787136 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 13787136 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 13787136 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 13787136 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 13787136 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 13787136 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 13787136 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 13787136 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-   n0: 401408 in 3 places, all below massif's threshold (1.00%)
- n1: 13967360 0x4026CB7: __mmap64 (mmap64.c:58)
-  n3: 13967360 0x4026CB7: mmap (mmap64.c:46)
-   n1: 7208960 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
-    n1: 7208960 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
-     n1: 7208960 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
-      n2: 7208960 0x400A600: _dl_map_object (dl-load.c:2327)
-       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
-        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
-           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
-             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
-              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-               n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF92: ???
-                 n1: 7131136 0x1FFEFFFF97: ???
-                  n0: 7131136 0x1FFEFFFF9A: ???
-       n0: 77824 in 2 places, all below massif's threshold (1.00%)
-   n1: 6672384 0x4009098: _dl_map_segments (dl-map-segments.h:140)
-    n1: 6672384 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
-     n2: 6672384 0x400A600: _dl_map_object (dl-load.c:2327)
-      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
-       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
-          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
-            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
-             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-              n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF92: ???
-                n1: 6610944 0x1FFEFFFF97: ???
-                 n0: 6610944 0x1FFEFFFF9A: ???
-      n0: 61440 in 2 places, all below massif's threshold (1.00%)
-   n0: 86016 in 3 places, all below massif's threshold (1.00%)
- n1: 8380416 0x4DE282B: brk (brk.c:36)
-  n1: 8380416 0x4DE28F3: __sbrk (sbrk.c:74)
-   n1: 8380416 0x4DE28F3: sbrk (sbrk.c:36)
-    n1: 8380416 0x4D6A5C5: __glibc_morecore (morecore.c:29)
-     n1: 8380416 0x4D6B5F8: sysmalloc (malloc.c:2727)
-      n3: 8380416 0x4D6C8DC: _int_malloc (malloc.c:4407)
-       n3: 4730880 0x4D6D261: malloc (malloc.c:3321)
-        n1: 2433024 0x4D7058E: strdup (strdup.c:42)
-         n1: 2433024 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2433024 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2433024 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2433024 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2433024 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2433024 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2433024 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2433024 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2433024 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n1: 2162688 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 2162688 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2162688 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2162688 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2162688 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2162688 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2162688 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2162688 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2162688 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2162688 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
-       n1: 3514368 0x4D6E5F8: calloc (malloc.c:3679)
-        n1: 3514368 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 3514368 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 3514368 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 3514368 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 3514368 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 3514368 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 3514368 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n0: 135168 in 1 place, below massif's threshold (1.00%)
- n0: 1003520 0x0: ???
- n0: 0 in 1 place, below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=16
 #-----------
-time=3280606509
-mem_heap_B=55078912
+time=3049856476
+mem_heap_B=52097024
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=17
 #-----------
-time=3461852065
-mem_heap_B=57241600
+time=3233812014
+mem_heap_B=54259712
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=18
 #-----------
-time=3645076273
-mem_heap_B=59404288
+time=3370762710
+mem_heap_B=55881728
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=19
 #-----------
-time=3918242589
-mem_heap_B=62648320
+time=3554338532
+mem_heap_B=58044416
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=20
 #-----------
-time=4101815287
-mem_heap_B=64811008
+time=3739301860
+mem_heap_B=60207104
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=21
 #-----------
-time=4375549387
-mem_heap_B=68055040
+time=3921938211
+mem_heap_B=62369792
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=22
 #-----------
-time=4559112201
-mem_heap_B=70217728
+time=4153378662
+mem_heap_B=65073152
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=23
 #-----------
-time=4841555815
-mem_heap_B=73596928
+time=4429345394
+mem_heap_B=68317184
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=24
 #-----------
-time=5021737591
-mem_heap_B=75759616
+time=4614506232
+mem_heap_B=70479872
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=25
 #-----------
-time=5268768044
-mem_heap_B=78733312
+time=4852904119
+mem_heap_B=73318400
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=26
 #-----------
-time=5426765798
-mem_heap_B=80625664
+time=5034233275
+mem_heap_B=75481088
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=27
 #-----------
-time=5585124448
-mem_heap_B=82518016
+time=5328298119
+mem_heap_B=78995456
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=detailed
-n5: 82518016 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 59166720 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 59166720 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 58765312 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 58765312 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 58765312 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 30109696 0x4D6D261: malloc (malloc.c:3321)
-       n1: 22302720 0x4D7058E: strdup (strdup.c:42)
-        n1: 22302720 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 22302720 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 22302720 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 22302720 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 22302720 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 22302720 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 22302720 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 22302720 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 22302720 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n1: 7806976 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 7806976 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 7806976 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 7806976 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 7806976 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 7806976 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 7806976 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 7806976 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 7806976 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 7806976 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n1: 28655616 0x4D6E5F8: calloc (malloc.c:3679)
-       n1: 28655616 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 28655616 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 28655616 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 28655616 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 28655616 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 28655616 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 28655616 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 28655616 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 28655616 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 28655616 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-   n0: 401408 in 3 places, all below massif's threshold (1.00%)
- n1: 13967360 0x4026CB7: __mmap64 (mmap64.c:58)
-  n3: 13967360 0x4026CB7: mmap (mmap64.c:46)
-   n1: 7208960 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
-    n1: 7208960 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
-     n1: 7208960 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
-      n2: 7208960 0x400A600: _dl_map_object (dl-load.c:2327)
-       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
-        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
-           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
-             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
-              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-               n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF92: ???
-                 n1: 7131136 0x1FFEFFFF97: ???
-                  n0: 7131136 0x1FFEFFFF9A: ???
-       n0: 77824 in 2 places, all below massif's threshold (1.00%)
-   n1: 6672384 0x4009098: _dl_map_segments (dl-map-segments.h:140)
-    n1: 6672384 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
-     n2: 6672384 0x400A600: _dl_map_object (dl-load.c:2327)
-      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
-       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
-          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
-            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
-             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-              n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF92: ???
-                n1: 6610944 0x1FFEFFFF97: ???
-                 n0: 6610944 0x1FFEFFFF9A: ???
-      n0: 61440 in 2 places, all below massif's threshold (1.00%)
-   n0: 86016 in 3 places, all below massif's threshold (1.00%)
- n1: 8380416 0x4DE282B: brk (brk.c:36)
-  n1: 8380416 0x4DE28F3: __sbrk (sbrk.c:74)
-   n1: 8380416 0x4DE28F3: sbrk (sbrk.c:36)
-    n1: 8380416 0x4D6A5C5: __glibc_morecore (morecore.c:29)
-     n1: 8380416 0x4D6B5F8: sysmalloc (malloc.c:2727)
-      n3: 8380416 0x4D6C8DC: _int_malloc (malloc.c:4407)
-       n3: 4730880 0x4D6D261: malloc (malloc.c:3321)
-        n1: 2433024 0x4D7058E: strdup (strdup.c:42)
-         n1: 2433024 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2433024 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2433024 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2433024 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2433024 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2433024 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2433024 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2433024 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2433024 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n1: 2162688 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 2162688 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2162688 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2162688 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2162688 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2162688 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2162688 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2162688 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2162688 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2162688 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
-       n1: 3514368 0x4D6E5F8: calloc (malloc.c:3679)
-        n1: 3514368 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 3514368 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 3514368 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 3514368 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 3514368 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 3514368 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 3514368 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n0: 135168 in 1 place, below massif's threshold (1.00%)
- n0: 1003520 0x0: ???
- n0: 0 in 1 place, below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=28
 #-----------
-time=5742845389
-mem_heap_B=84410368
+time=5487371278
+mem_heap_B=80887808
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=29
 #-----------
-time=5902840124
-mem_heap_B=86302720
+time=5647567715
+mem_heap_B=82780160
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=empty
+heap_tree=detailed
+n5: 82780160 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 59437056 0x4DE6A27: __mmap64 (mmap64.c:58)
+  n2: 59437056 0x4DE6A27: mmap (mmap64.c:46)
+   n1: 59035648 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 59035648 0x4D6B335: sysmalloc (malloc.c:2752)
+     n2: 59035648 0x4D6C8DC: _int_malloc (malloc.c:4407)
+      n2: 30244864 0x4D6D261: malloc (malloc.c:3321)
+       n1: 22437888 0x4D7058E: strdup (strdup.c:42)
+        n1: 22437888 0x4F811D9: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 22437888 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 22437888 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 22437888 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 22437888 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 22437888 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 22437888 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 22437888 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 7806976 0x4F82563: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+        n1: 7806976 0x4F811E2: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 7806976 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 7806976 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 7806976 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 7806976 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 7806976 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 7806976 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 7806976 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+      n1: 28790784 0x4D6E5F8: calloc (malloc.c:3679)
+       n1: 28790784 0x4F84323: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+        n1: 28790784 0x4F811D0: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 28790784 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 28790784 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 28790784 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 28790784 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 28790784 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 28790784 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 28790784 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+   n0: 401408 in 3 places, all below massif's threshold (1.00%)
+ n1: 13959168 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 13959168 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7204864 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7204864 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7204864 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7204864 0x400A600: _dl_map_object (dl-load.c:2327)
+       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
+        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
+           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
+             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
+              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+               n1: 7131136 0x2: ???
+                n1: 7131136 0x1FFEFFFF72: ???
+                 n1: 7131136 0x1FFEFFFF77: ???
+                  n0: 7131136 0x1FFEFFFF7A: ???
+       n0: 73728 in 2 places, all below massif's threshold (1.00%)
+   n1: 6668288 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6668288 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6668288 0x400A600: _dl_map_object (dl-load.c:2327)
+      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
+       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
+          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
+            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
+             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+              n1: 6610944 0x2: ???
+               n1: 6610944 0x1FFEFFFF72: ???
+                n1: 6610944 0x1FFEFFFF77: ???
+                 n0: 6610944 0x1FFEFFFF7A: ???
+      n0: 57344 in 2 places, all below massif's threshold (1.00%)
+   n0: 86016 in 3 places, all below massif's threshold (1.00%)
+ n1: 8380416 0x4DE282B: brk (brk.c:36)
+  n1: 8380416 0x4DE28F3: __sbrk (sbrk.c:74)
+   n1: 8380416 0x4DE28F3: sbrk (sbrk.c:36)
+    n1: 8380416 0x4D6A5C5: __glibc_morecore (morecore.c:29)
+     n1: 8380416 0x4D6B5F8: sysmalloc (malloc.c:2727)
+      n3: 8380416 0x4D6C8DC: _int_malloc (malloc.c:4407)
+       n3: 4730880 0x4D6D261: malloc (malloc.c:3321)
+        n1: 2297856 0x4D7058E: strdup (strdup.c:42)
+         n1: 2297856 0x4F811D9: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 2297856 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 2297856 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 2297856 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 2297856 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 2297856 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2297856 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2297856 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 2297856 0x4F82563: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 2297856 0x4F811E2: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 2297856 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 2297856 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 2297856 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 2297856 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 2297856 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2297856 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2297856 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n1: 3514368 0x4D6E5F8: calloc (malloc.c:3679)
+        n1: 3514368 0x4F84323: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 3514368 0x4F811D0: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 3514368 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 3514368 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 3514368 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 3514368 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n0: 1003520 0x0: ???
+ n0: 0 in 1 place, below massif's threshold (1.00%)
 #-----------
 snapshot=30
 #-----------
-time=6063444087
-mem_heap_B=88195072
+time=5806162269
+mem_heap_B=84672512
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=31
 #-----------
-time=6221085997
-mem_heap_B=90087424
+time=5967264636
+mem_heap_B=86564864
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=32
 #-----------
-time=6380392284
-mem_heap_B=91979776
+time=6129781826
+mem_heap_B=88457216
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=6448288956
+mem_heap_B=92241920
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=detailed
-n5: 91979776 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 68628480 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 68628480 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 68227072 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 68227072 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 68227072 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 34840576 0x4D6D261: malloc (malloc.c:3321)
-       n1: 27033600 0x4D7058E: strdup (strdup.c:42)
-        n1: 27033600 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 27033600 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 27033600 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 27033600 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 27033600 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 27033600 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 27033600 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 27033600 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 27033600 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n1: 7806976 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 7806976 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 7806976 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 7806976 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 7806976 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 7806976 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 7806976 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 7806976 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 7806976 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 7806976 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n1: 33386496 0x4D6E5F8: calloc (malloc.c:3679)
-       n1: 33386496 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 33386496 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 33386496 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 33386496 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 33386496 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 33386496 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 33386496 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 33386496 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 33386496 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 33386496 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+n5: 92241920 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 68898816 0x4DE6A27: __mmap64 (mmap64.c:58)
+  n2: 68898816 0x4DE6A27: mmap (mmap64.c:46)
+   n1: 68497408 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 68497408 0x4D6B335: sysmalloc (malloc.c:2752)
+     n2: 68497408 0x4D6C8DC: _int_malloc (malloc.c:4407)
+      n2: 34975744 0x4D6D261: malloc (malloc.c:3321)
+       n1: 27168768 0x4D7058E: strdup (strdup.c:42)
+        n1: 27168768 0x4F811D9: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 27168768 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 27168768 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 27168768 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 27168768 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 27168768 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 27168768 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 27168768 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 7806976 0x4F82563: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+        n1: 7806976 0x4F811E2: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 7806976 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 7806976 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 7806976 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 7806976 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 7806976 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 7806976 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 7806976 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+      n1: 33521664 0x4D6E5F8: calloc (malloc.c:3679)
+       n1: 33521664 0x4F84323: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+        n1: 33521664 0x4F811D0: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 33521664 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 33521664 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 33521664 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 33521664 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 33521664 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 33521664 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 33521664 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
    n0: 401408 in 3 places, all below massif's threshold (1.00%)
- n1: 13967360 0x4026CB7: __mmap64 (mmap64.c:58)
-  n3: 13967360 0x4026CB7: mmap (mmap64.c:46)
-   n1: 7208960 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
-    n1: 7208960 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
-     n1: 7208960 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
-      n2: 7208960 0x400A600: _dl_map_object (dl-load.c:2327)
+ n1: 13959168 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 13959168 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7204864 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7204864 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7204864 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7204864 0x400A600: _dl_map_object (dl-load.c:2327)
        n1: 7131136 0x4003494: openaux (dl-deps.c:64)
         n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
          n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
@@ -947,13 +593,13 @@ n5: 91979776 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
              n1: 7131136 0x4021597: _dl_start (rtld.c:596)
               n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
                n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF92: ???
-                 n1: 7131136 0x1FFEFFFF97: ???
-                  n0: 7131136 0x1FFEFFFF9A: ???
-       n0: 77824 in 2 places, all below massif's threshold (1.00%)
-   n1: 6672384 0x4009098: _dl_map_segments (dl-map-segments.h:140)
-    n1: 6672384 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
-     n2: 6672384 0x400A600: _dl_map_object (dl-load.c:2327)
+                n1: 7131136 0x1FFEFFFF72: ???
+                 n1: 7131136 0x1FFEFFFF77: ???
+                  n0: 7131136 0x1FFEFFFF7A: ???
+       n0: 73728 in 2 places, all below massif's threshold (1.00%)
+   n1: 6668288 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6668288 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6668288 0x400A600: _dl_map_object (dl-load.c:2327)
       n1: 6610944 0x4003494: openaux (dl-deps.c:64)
        n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
         n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
@@ -963,10 +609,10 @@ n5: 91979776 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
             n1: 6610944 0x4021597: _dl_start (rtld.c:596)
              n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
               n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF92: ???
-                n1: 6610944 0x1FFEFFFF97: ???
-                 n0: 6610944 0x1FFEFFFF9A: ???
-      n0: 61440 in 2 places, all below massif's threshold (1.00%)
+               n1: 6610944 0x1FFEFFFF72: ???
+                n1: 6610944 0x1FFEFFFF77: ???
+                 n0: 6610944 0x1FFEFFFF7A: ???
+      n0: 57344 in 2 places, all below massif's threshold (1.00%)
    n0: 86016 in 3 places, all below massif's threshold (1.00%)
  n1: 8380416 0x4DE282B: brk (brk.c:36)
   n1: 8380416 0x4DE28F3: __sbrk (sbrk.c:74)
@@ -975,126 +621,120 @@ n5: 91979776 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
      n1: 8380416 0x4D6B5F8: sysmalloc (malloc.c:2727)
       n3: 8380416 0x4D6C8DC: _int_malloc (malloc.c:4407)
        n3: 4730880 0x4D6D261: malloc (malloc.c:3321)
-        n1: 2433024 0x4D7058E: strdup (strdup.c:42)
-         n1: 2433024 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2433024 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2433024 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2433024 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2433024 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2433024 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2433024 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2433024 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2433024 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n1: 2162688 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 2162688 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2162688 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2162688 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2162688 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2162688 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2162688 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2162688 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2162688 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2162688 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 2297856 0x4D7058E: strdup (strdup.c:42)
+         n1: 2297856 0x4F811D9: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 2297856 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 2297856 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 2297856 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 2297856 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 2297856 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2297856 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2297856 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 2297856 0x4F82563: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 2297856 0x4F811E2: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 2297856 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 2297856 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 2297856 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 2297856 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 2297856 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2297856 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2297856 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
         n0: 135168 in 1 place, below massif's threshold (1.00%)
        n1: 3514368 0x4D6E5F8: calloc (malloc.c:3679)
-        n1: 3514368 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 3514368 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 3514368 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 3514368 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 3514368 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 3514368 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 3514368 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 3514368 0x4F84323: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 3514368 0x4F811D0: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 3514368 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 3514368 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 3514368 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 3514368 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
        n0: 135168 in 1 place, below massif's threshold (1.00%)
  n0: 1003520 0x0: ???
  n0: 0 in 1 place, below massif's threshold (1.00%)
 #-----------
-snapshot=33
-#-----------
-time=6540410979
-mem_heap_B=93872128
-mem_heap_extra_B=0
-mem_stacks_B=0
-heap_tree=empty
-#-----------
 snapshot=34
 #-----------
-time=6698677997
-mem_heap_B=95764480
+time=6609852514
+mem_heap_B=94134272
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=35
 #-----------
-time=6858845221
-mem_heap_B=97656832
+time=6769253665
+mem_heap_B=96026624
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=36
 #-----------
-time=7020332364
-mem_heap_B=99549184
+time=6930645217
+mem_heap_B=97918976
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=37
 #-----------
-time=7179249733
-mem_heap_B=101441536
+time=7093270033
+mem_heap_B=99811328
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=7253839949
+mem_heap_B=101703680
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=detailed
-n4: 101441536 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 78090240 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 78090240 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 77688832 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 77688832 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 77688832 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 39706624 0x4D6D261: malloc (malloc.c:3321)
-       n1: 31899648 0x4D7058E: strdup (strdup.c:42)
-        n1: 31899648 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 31899648 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 31899648 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 31899648 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 31899648 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 31899648 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 31899648 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 31899648 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 31899648 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n1: 7806976 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 7806976 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 7806976 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 7806976 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 7806976 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 7806976 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 7806976 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 7806976 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 7806976 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 7806976 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n1: 37982208 0x4D6E5F8: calloc (malloc.c:3679)
-       n1: 37982208 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 37982208 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 37982208 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 37982208 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 37982208 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 37982208 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 37982208 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 37982208 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 37982208 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 37982208 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+n4: 101703680 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 78360576 0x4DE6A27: __mmap64 (mmap64.c:58)
+  n2: 78360576 0x4DE6A27: mmap (mmap64.c:46)
+   n1: 77959168 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 77959168 0x4D6B335: sysmalloc (malloc.c:2752)
+     n2: 77959168 0x4D6C8DC: _int_malloc (malloc.c:4407)
+      n2: 39841792 0x4D6D261: malloc (malloc.c:3321)
+       n1: 32034816 0x4D7058E: strdup (strdup.c:42)
+        n1: 32034816 0x4F811D9: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 32034816 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 32034816 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 32034816 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 32034816 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 32034816 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 32034816 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 32034816 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 7806976 0x4F82563: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+        n1: 7806976 0x4F811E2: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 7806976 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 7806976 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 7806976 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 7806976 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 7806976 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 7806976 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 7806976 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+      n1: 38117376 0x4D6E5F8: calloc (malloc.c:3679)
+       n1: 38117376 0x4F84323: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+        n1: 38117376 0x4F811D0: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 38117376 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 38117376 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 38117376 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 38117376 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 38117376 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 38117376 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 38117376 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
    n0: 401408 in 3 places, all below massif's threshold (1.00%)
- n1: 13967360 0x4026CB7: __mmap64 (mmap64.c:58)
-  n3: 13967360 0x4026CB7: mmap (mmap64.c:46)
-   n1: 7208960 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
-    n1: 7208960 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
-     n1: 7208960 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
-      n2: 7208960 0x400A600: _dl_map_object (dl-load.c:2327)
+ n1: 13959168 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 13959168 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7204864 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7204864 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7204864 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7204864 0x400A600: _dl_map_object (dl-load.c:2327)
        n1: 7131136 0x4003494: openaux (dl-deps.c:64)
         n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
          n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
@@ -1104,13 +744,13 @@ n4: 101441536 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
              n1: 7131136 0x4021597: _dl_start (rtld.c:596)
               n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
                n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF92: ???
-                 n1: 7131136 0x1FFEFFFF97: ???
-                  n0: 7131136 0x1FFEFFFF9A: ???
-       n0: 77824 in 2 places, all below massif's threshold (1.00%)
-   n1: 6672384 0x4009098: _dl_map_segments (dl-map-segments.h:140)
-    n1: 6672384 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
-     n2: 6672384 0x400A600: _dl_map_object (dl-load.c:2327)
+                n1: 7131136 0x1FFEFFFF72: ???
+                 n1: 7131136 0x1FFEFFFF77: ???
+                  n0: 7131136 0x1FFEFFFF7A: ???
+       n0: 73728 in 2 places, all below massif's threshold (1.00%)
+   n1: 6668288 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6668288 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6668288 0x400A600: _dl_map_object (dl-load.c:2327)
       n1: 6610944 0x4003494: openaux (dl-deps.c:64)
        n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
         n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
@@ -1120,10 +760,10 @@ n4: 101441536 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
             n1: 6610944 0x4021597: _dl_start (rtld.c:596)
              n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
               n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF92: ???
-                n1: 6610944 0x1FFEFFFF97: ???
-                 n0: 6610944 0x1FFEFFFF9A: ???
-      n0: 61440 in 2 places, all below massif's threshold (1.00%)
+               n1: 6610944 0x1FFEFFFF72: ???
+                n1: 6610944 0x1FFEFFFF77: ???
+                 n0: 6610944 0x1FFEFFFF7A: ???
+      n0: 57344 in 2 places, all below massif's threshold (1.00%)
    n0: 86016 in 3 places, all below massif's threshold (1.00%)
  n1: 8380416 0x4DE282B: brk (brk.c:36)
   n1: 8380416 0x4DE28F3: __sbrk (sbrk.c:74)
@@ -1132,125 +772,119 @@ n4: 101441536 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
      n1: 8380416 0x4D6B5F8: sysmalloc (malloc.c:2727)
       n3: 8380416 0x4D6C8DC: _int_malloc (malloc.c:4407)
        n3: 4730880 0x4D6D261: malloc (malloc.c:3321)
-        n1: 2433024 0x4D7058E: strdup (strdup.c:42)
-         n1: 2433024 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2433024 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2433024 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2433024 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2433024 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2433024 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2433024 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2433024 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2433024 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n1: 2162688 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 2162688 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2162688 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2162688 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2162688 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2162688 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2162688 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2162688 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2162688 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2162688 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 2297856 0x4D7058E: strdup (strdup.c:42)
+         n1: 2297856 0x4F811D9: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 2297856 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 2297856 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 2297856 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 2297856 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 2297856 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2297856 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2297856 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 2297856 0x4F82563: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 2297856 0x4F811E2: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 2297856 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 2297856 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 2297856 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 2297856 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 2297856 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2297856 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2297856 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
         n0: 135168 in 1 place, below massif's threshold (1.00%)
        n1: 3514368 0x4D6E5F8: calloc (malloc.c:3679)
-        n1: 3514368 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 3514368 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 3514368 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 3514368 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 3514368 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 3514368 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 3514368 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 3514368 0x4F84323: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 3514368 0x4F811D0: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 3514368 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 3514368 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 3514368 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 3514368 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
        n0: 135168 in 1 place, below massif's threshold (1.00%)
  n0: 1003520 in 2 places, all below massif's threshold (1.00%)
 #-----------
-snapshot=38
-#-----------
-time=7340293720
-mem_heap_B=103333888
-mem_heap_extra_B=0
-mem_stacks_B=0
-heap_tree=empty
-#-----------
 snapshot=39
 #-----------
-time=7502586310
-mem_heap_B=105226240
+time=7416075255
+mem_heap_B=103596032
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=40
 #-----------
-time=7661911521
-mem_heap_B=107118592
+time=7579176634
+mem_heap_B=105488384
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=41
 #-----------
-time=7823873888
-mem_heap_B=109010944
+time=7740542392
+mem_heap_B=107380736
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=42
 #-----------
-time=7986498574
-mem_heap_B=110903296
+time=7903650959
+mem_heap_B=109273088
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=8066809128
+mem_heap_B=111165440
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=detailed
-n4: 110903296 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 87552000 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 87552000 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 87150592 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 87150592 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 87150592 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 44302336 0x4D6D261: malloc (malloc.c:3321)
-       n1: 36495360 0x4D7058E: strdup (strdup.c:42)
-        n1: 36495360 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 36495360 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 36495360 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 36495360 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 36495360 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 36495360 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 36495360 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 36495360 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 36495360 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n1: 7806976 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 7806976 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 7806976 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 7806976 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 7806976 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 7806976 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 7806976 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 7806976 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 7806976 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 7806976 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n1: 42848256 0x4D6E5F8: calloc (malloc.c:3679)
-       n1: 42848256 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 42848256 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 42848256 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 42848256 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 42848256 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 42848256 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 42848256 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 42848256 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 42848256 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 42848256 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+n4: 111165440 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 87822336 0x4DE6A27: __mmap64 (mmap64.c:58)
+  n2: 87822336 0x4DE6A27: mmap (mmap64.c:46)
+   n1: 87420928 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 87420928 0x4D6B335: sysmalloc (malloc.c:2752)
+     n2: 87420928 0x4D6C8DC: _int_malloc (malloc.c:4407)
+      n2: 44437504 0x4D6D261: malloc (malloc.c:3321)
+       n1: 36630528 0x4D7058E: strdup (strdup.c:42)
+        n1: 36630528 0x4F811D9: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 36630528 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 36630528 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 36630528 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 36630528 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 36630528 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 36630528 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 36630528 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 7806976 0x4F82563: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+        n1: 7806976 0x4F811E2: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 7806976 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 7806976 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 7806976 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 7806976 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 7806976 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 7806976 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 7806976 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+      n1: 42983424 0x4D6E5F8: calloc (malloc.c:3679)
+       n1: 42983424 0x4F84323: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+        n1: 42983424 0x4F811D0: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 42983424 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 42983424 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 42983424 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 42983424 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 42983424 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 42983424 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 42983424 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
    n0: 401408 in 3 places, all below massif's threshold (1.00%)
- n1: 13967360 0x4026CB7: __mmap64 (mmap64.c:58)
-  n3: 13967360 0x4026CB7: mmap (mmap64.c:46)
-   n1: 7208960 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
-    n1: 7208960 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
-     n1: 7208960 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
-      n2: 7208960 0x400A600: _dl_map_object (dl-load.c:2327)
+ n1: 13959168 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 13959168 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7204864 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7204864 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7204864 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7204864 0x400A600: _dl_map_object (dl-load.c:2327)
        n1: 7131136 0x4003494: openaux (dl-deps.c:64)
         n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
          n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
@@ -1260,13 +894,13 @@ n4: 110903296 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
              n1: 7131136 0x4021597: _dl_start (rtld.c:596)
               n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
                n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF92: ???
-                 n1: 7131136 0x1FFEFFFF97: ???
-                  n0: 7131136 0x1FFEFFFF9A: ???
-       n0: 77824 in 2 places, all below massif's threshold (1.00%)
-   n1: 6672384 0x4009098: _dl_map_segments (dl-map-segments.h:140)
-    n1: 6672384 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
-     n2: 6672384 0x400A600: _dl_map_object (dl-load.c:2327)
+                n1: 7131136 0x1FFEFFFF72: ???
+                 n1: 7131136 0x1FFEFFFF77: ???
+                  n0: 7131136 0x1FFEFFFF7A: ???
+       n0: 73728 in 2 places, all below massif's threshold (1.00%)
+   n1: 6668288 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6668288 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6668288 0x400A600: _dl_map_object (dl-load.c:2327)
       n1: 6610944 0x4003494: openaux (dl-deps.c:64)
        n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
         n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
@@ -1276,10 +910,10 @@ n4: 110903296 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
             n1: 6610944 0x4021597: _dl_start (rtld.c:596)
              n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
               n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF92: ???
-                n1: 6610944 0x1FFEFFFF97: ???
-                 n0: 6610944 0x1FFEFFFF9A: ???
-      n0: 61440 in 2 places, all below massif's threshold (1.00%)
+               n1: 6610944 0x1FFEFFFF72: ???
+                n1: 6610944 0x1FFEFFFF77: ???
+                 n0: 6610944 0x1FFEFFFF7A: ???
+      n0: 57344 in 2 places, all below massif's threshold (1.00%)
    n0: 86016 in 3 places, all below massif's threshold (1.00%)
  n1: 8380416 0x4DE282B: brk (brk.c:36)
   n1: 8380416 0x4DE28F3: __sbrk (sbrk.c:74)
@@ -1288,125 +922,151 @@ n4: 110903296 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
      n1: 8380416 0x4D6B5F8: sysmalloc (malloc.c:2727)
       n3: 8380416 0x4D6C8DC: _int_malloc (malloc.c:4407)
        n3: 4730880 0x4D6D261: malloc (malloc.c:3321)
-        n1: 2433024 0x4D7058E: strdup (strdup.c:42)
-         n1: 2433024 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2433024 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2433024 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2433024 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2433024 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2433024 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2433024 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2433024 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2433024 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n1: 2162688 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 2162688 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2162688 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2162688 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2162688 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2162688 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2162688 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2162688 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2162688 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2162688 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 2297856 0x4D7058E: strdup (strdup.c:42)
+         n1: 2297856 0x4F811D9: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 2297856 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 2297856 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 2297856 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 2297856 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 2297856 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2297856 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2297856 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 2297856 0x4F82563: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 2297856 0x4F811E2: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 2297856 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 2297856 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 2297856 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 2297856 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 2297856 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2297856 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2297856 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
         n0: 135168 in 1 place, below massif's threshold (1.00%)
        n1: 3514368 0x4D6E5F8: calloc (malloc.c:3679)
-        n1: 3514368 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 3514368 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 3514368 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 3514368 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 3514368 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 3514368 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 3514368 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 3514368 0x4F84323: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 3514368 0x4F811D0: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 3514368 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 3514368 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 3514368 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 3514368 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
        n0: 135168 in 1 place, below massif's threshold (1.00%)
  n0: 1003520 in 2 places, all below massif's threshold (1.00%)
 #-----------
-snapshot=43
-#-----------
-time=8145787596
-mem_heap_B=112795648
-mem_heap_extra_B=0
-mem_stacks_B=0
-heap_tree=empty
-#-----------
 snapshot=44
 #-----------
-time=8307060251
-mem_heap_B=114688000
+time=8228240127
+mem_heap_B=113057792
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=45
 #-----------
-time=8469403050
-mem_heap_B=116580352
+time=8390774329
+mem_heap_B=114950144
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=46
 #-----------
-time=8629657644
-mem_heap_B=118472704
+time=8634596291
+mem_heap_B=117788672
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=47
 #-----------
-time=8791760340
-mem_heap_B=120365056
+time=8797862333
+mem_heap_B=119681024
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=detailed
-n4: 120365056 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 97013760 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 97013760 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 96612352 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 96612352 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 96612352 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 49168384 0x4D6D261: malloc (malloc.c:3321)
-       n1: 41361408 0x4D7058E: strdup (strdup.c:42)
-        n1: 41361408 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 41361408 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 41361408 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 41361408 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 41361408 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 41361408 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 41361408 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 41361408 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 41361408 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n1: 7806976 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 7806976 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 7806976 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 7806976 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 7806976 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 7806976 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 7806976 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 7806976 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 7806976 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 7806976 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n1: 47443968 0x4D6E5F8: calloc (malloc.c:3679)
-       n1: 47443968 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-        n1: 47443968 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 47443968 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 47443968 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 47443968 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 47443968 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 47443968 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 47443968 0x14E71B: ??? (in /usr/bin/gawk)
-               n1: 47443968 0x1174A6: ??? (in /usr/bin/gawk)
-                n0: 47443968 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=8961889630
+mem_heap_B=121573376
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=9206143127
+mem_heap_B=124411904
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=9346607194
+mem_heap_B=126033920
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=9488373241
+mem_heap_B=127655936
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=18573716581
+mem_heap_B=127655936
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=peak
+n4: 127655936 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 104312832 0x4DE6A27: __mmap64 (mmap64.c:58)
+  n2: 104312832 0x4DE6A27: mmap (mmap64.c:46)
+   n1: 103911424 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 103911424 0x4D6B335: sysmalloc (malloc.c:2752)
+     n2: 103911424 0x4D6C8DC: _int_malloc (malloc.c:4407)
+      n2: 52817920 0x4D6D261: malloc (malloc.c:3321)
+       n1: 45010944 0x4D7058E: strdup (strdup.c:42)
+        n1: 45010944 0x4F811D9: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 45010944 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 45010944 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 45010944 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 45010944 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 45010944 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 45010944 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 45010944 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 7806976 0x4F82563: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+        n1: 7806976 0x4F811E2: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 7806976 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 7806976 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 7806976 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 7806976 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 7806976 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 7806976 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 7806976 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+      n1: 51093504 0x4D6E5F8: calloc (malloc.c:3679)
+       n1: 51093504 0x4F84323: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+        n1: 51093504 0x4F811D0: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 51093504 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 51093504 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 51093504 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 51093504 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 51093504 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 51093504 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 51093504 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
    n0: 401408 in 3 places, all below massif's threshold (1.00%)
- n1: 13967360 0x4026CB7: __mmap64 (mmap64.c:58)
-  n3: 13967360 0x4026CB7: mmap (mmap64.c:46)
-   n1: 7208960 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
-    n1: 7208960 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
-     n1: 7208960 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
-      n2: 7208960 0x400A600: _dl_map_object (dl-load.c:2327)
+ n1: 13959168 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 13959168 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7204864 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7204864 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7204864 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7204864 0x400A600: _dl_map_object (dl-load.c:2327)
        n1: 7131136 0x4003494: openaux (dl-deps.c:64)
         n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
          n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
@@ -1416,13 +1076,13 @@ n4: 120365056 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
              n1: 7131136 0x4021597: _dl_start (rtld.c:596)
               n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
                n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF92: ???
-                 n1: 7131136 0x1FFEFFFF97: ???
-                  n0: 7131136 0x1FFEFFFF9A: ???
-       n0: 77824 in 2 places, all below massif's threshold (1.00%)
-   n1: 6672384 0x4009098: _dl_map_segments (dl-map-segments.h:140)
-    n1: 6672384 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
-     n2: 6672384 0x400A600: _dl_map_object (dl-load.c:2327)
+                n1: 7131136 0x1FFEFFFF72: ???
+                 n1: 7131136 0x1FFEFFFF77: ???
+                  n0: 7131136 0x1FFEFFFF7A: ???
+       n0: 73728 in 2 places, all below massif's threshold (1.00%)
+   n1: 6668288 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6668288 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6668288 0x400A600: _dl_map_object (dl-load.c:2327)
       n1: 6610944 0x4003494: openaux (dl-deps.c:64)
        n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
         n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
@@ -1432,10 +1092,10 @@ n4: 120365056 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
             n1: 6610944 0x4021597: _dl_start (rtld.c:596)
              n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
               n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF92: ???
-                n1: 6610944 0x1FFEFFFF97: ???
-                 n0: 6610944 0x1FFEFFFF9A: ???
-      n0: 61440 in 2 places, all below massif's threshold (1.00%)
+               n1: 6610944 0x1FFEFFFF72: ???
+                n1: 6610944 0x1FFEFFFF77: ???
+                 n0: 6610944 0x1FFEFFFF7A: ???
+      n0: 57344 in 2 places, all below massif's threshold (1.00%)
    n0: 86016 in 3 places, all below massif's threshold (1.00%)
  n1: 8380416 0x4DE282B: brk (brk.c:36)
   n1: 8380416 0x4DE28F3: __sbrk (sbrk.c:74)
@@ -1444,77 +1104,34 @@ n4: 120365056 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
      n1: 8380416 0x4D6B5F8: sysmalloc (malloc.c:2727)
       n3: 8380416 0x4D6C8DC: _int_malloc (malloc.c:4407)
        n3: 4730880 0x4D6D261: malloc (malloc.c:3321)
-        n1: 2433024 0x4D7058E: strdup (strdup.c:42)
-         n1: 2433024 0x4F812CD: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2433024 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2433024 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2433024 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2433024 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2433024 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2433024 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2433024 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2433024 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n1: 2162688 0x4F827F0: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 2162688 0x4F812D6: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 2162688 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 2162688 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 2162688 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 2162688 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 2162688 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 2162688 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 2162688 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 2162688 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 2297856 0x4D7058E: strdup (strdup.c:42)
+         n1: 2297856 0x4F811D9: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 2297856 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 2297856 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 2297856 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 2297856 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 2297856 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2297856 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2297856 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 2297856 0x4F82563: copy_str (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 2297856 0x4F811E2: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 2297856 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 2297856 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 2297856 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 2297856 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 2297856 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2297856 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2297856 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
         n0: 135168 in 1 place, below massif's threshold (1.00%)
        n1: 3514368 0x4D6E5F8: calloc (malloc.c:3679)
-        n1: 3514368 0x4F847A1: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-         n1: 3514368 0x4F812C4: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-          n1: 3514368 0x4F8220F: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-           n1: 3514368 0x4F821BD: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-            n1: 3514368 0x4F82602: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-             n1: 3514368 0x4F82C4B: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-              n1: 3514368 0x4F81C1D: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
-               n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
-                n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
-                 n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n1: 3514368 0x4F84323: Calloc (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+         n1: 3514368 0x4F811D0: BinTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+          n1: 3514368 0x4F82034: HTreeInsertHelper (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+           n1: 3514368 0x4F823E5: HTreeInsert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+            n1: 3514368 0x4F829AC: tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+             n1: 3514368 0x4F81849: do_tree_insert (in /home/alegottu/Projects/C/gawk-trees/htrees.so)
+              n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 3514368 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
        n0: 135168 in 1 place, below massif's threshold (1.00%)
  n0: 1003520 in 2 places, all below massif's threshold (1.00%)
-#-----------
-snapshot=48
-#-----------
-time=8954614355
-mem_heap_B=122257408
-mem_heap_extra_B=0
-mem_stacks_B=0
-heap_tree=empty
-#-----------
-snapshot=49
-#-----------
-time=9115528209
-mem_heap_B=124149760
-mem_heap_extra_B=0
-mem_stacks_B=0
-heap_tree=empty
-#-----------
-snapshot=50
-#-----------
-time=9254800016
-mem_heap_B=125771776
-mem_heap_extra_B=0
-mem_stacks_B=0
-heap_tree=empty
-#-----------
-snapshot=51
-#-----------
-time=9394867031
-mem_heap_B=127393792
-mem_heap_extra_B=0
-mem_stacks_B=0
-heap_tree=empty
-#-----------
-snapshot=52
-#-----------
-time=18386085837
-mem_heap_B=127668224
-mem_heap_extra_B=0
-mem_stacks_B=0
-heap_tree=empty
