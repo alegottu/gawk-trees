@@ -1,4 +1,4 @@
-desc: --pages-as-heap=yes --massif-out-file=logs/100-100-100/noext.massif
+desc: --pages-as-heap=yes --massif-out-file=logs/1000-1000/noext.massif
 cmd: gawk -f mem-benchmark-noext.awk
 time_unit: i
 #-----------
@@ -69,915 +69,811 @@ n4: 15413248 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
 #-----------
 snapshot=2
 #-----------
-time=121007501
-mem_heap_B=27451392
+time=115972342
+mem_heap_B=27770880
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=3
 #-----------
-time=219557885
-mem_heap_B=37261312
+time=193984984
+mem_heap_B=36114432
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=4
 #-----------
-time=319157224
-mem_heap_B=47181824
+time=289591297
+mem_heap_B=46329856
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=5
 #-----------
-time=376559048
-mem_heap_B=52883456
+time=350684921
+mem_heap_B=52850688
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=6
 #-----------
-time=480531419
-mem_heap_B=63242240
+time=461229758
+mem_heap_B=64667648
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=7
 #-----------
-time=553318032
-mem_heap_B=70471680
+time=546600233
+mem_heap_B=73793536
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=8
 #-----------
-time=647317486
-mem_heap_B=79835136
+time=610221282
+mem_heap_B=80601088
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=9
 #-----------
-time=769832176
-mem_heap_B=92024832
+time=711269562
+mem_heap_B=91398144
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=10
 #-----------
-time=846927144
-mem_heap_B=99692544
+time=772278102
+mem_heap_B=97918976
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=11
 #-----------
-time=906883885
-mem_heap_B=105664512
+time=843952058
+mem_heap_B=105570304
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=12
 #-----------
-time=992212402
-mem_heap_B=114159616
+time=954538707
+mem_heap_B=117387264
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=13
 #-----------
-time=1100644112
-mem_heap_B=124940288
+time=1043920000
+mem_heap_B=126935040
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=14
 #-----------
-time=1170583213
-mem_heap_B=131907584
+time=1121278593
+mem_heap_B=135200768
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=detailed
-n4: 131907584 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 108740608 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 108740608 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 108339200 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 108339200 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 108339200 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n1: 90361856 0x4D6D261: malloc (malloc.c:3321)
-       n2: 90361856 0x171D20: ??? (in /usr/bin/gawk)
-        n2: 89358336 0x172504: ??? (in /usr/bin/gawk)
-         n1: 84627456 0x14DCB3: ??? (in /usr/bin/gawk)
-          n1: 84627456 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 84627456 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-         n1: 4730880 0x14DC94: ??? (in /usr/bin/gawk)
-          n1: 4730880 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 4730880 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 1003520 in 1 place, below massif's threshold (1.00%)
-      n3: 17977344 0x4D6E5F8: calloc (malloc.c:3679)
-       n1: 7839744 0x13B161: ??? (in /usr/bin/gawk)
-        n1: 7839744 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 7839744 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 7839744 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n1: 5406720 0x13B69E: ??? (in /usr/bin/gawk)
-        n1: 5406720 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 5406720 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 5406720 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n2: 4730880 0x13AF8C: ??? (in /usr/bin/gawk)
-        n1: 4595712 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 4595712 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 4595712 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
-   n0: 401408 in 3 places, all below massif's threshold (1.00%)
- n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
-  n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
-   n1: 7151616 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
-    n1: 7151616 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
-     n1: 7151616 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
-      n2: 7151616 0x400A600: _dl_map_object (dl-load.c:2327)
-       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
-        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
-           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
-             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
-              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-               n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF5E: ???
-                 n1: 7131136 0x1FFEFFFF63: ???
-                  n0: 7131136 0x1FFEFFFF66: ???
-       n0: 20480 in 1 place, below massif's threshold (1.00%)
-   n1: 6627328 0x4009098: _dl_map_segments (dl-map-segments.h:140)
-    n1: 6627328 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
-     n2: 6627328 0x400A600: _dl_map_object (dl-load.c:2327)
-      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
-       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
-          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
-            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
-             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-              n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF5E: ???
-                n1: 6610944 0x1FFEFFFF63: ???
-                 n0: 6610944 0x1FFEFFFF66: ???
-      n0: 16384 in 1 place, below massif's threshold (1.00%)
-   n0: 86016 in 3 places, all below massif's threshold (1.00%)
- n1: 8298496 0x4DE282B: brk (brk.c:36)
-  n1: 8298496 0x4DE28F3: __sbrk (sbrk.c:74)
-   n1: 8298496 0x4DE28F3: sbrk (sbrk.c:36)
-    n1: 8298496 0x4D6A5C5: __glibc_morecore (morecore.c:29)
-     n1: 8298496 0x4D6B5F8: sysmalloc (malloc.c:2727)
-      n2: 8298496 0x4D6C8DC: _int_malloc (malloc.c:4407)
-       n1: 8163328 0x4D6D261: malloc (malloc.c:3321)
-        n2: 8163328 0x171D20: ??? (in /usr/bin/gawk)
-         n2: 7888896 0x172504: ??? (in /usr/bin/gawk)
-          n1: 7606272 0x14DCB3: ??? (in /usr/bin/gawk)
-           n1: 7606272 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 7606272 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-          n0: 282624 in 1 place, below massif's threshold (1.00%)
-         n0: 274432 in 2 places, all below massif's threshold (1.00%)
-       n0: 135168 in 1 place, below massif's threshold (1.00%)
- n0: 1003520 in 2 places, all below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=15
 #-----------
-time=1242006891
-mem_heap_B=139010048
+time=1224489865
+mem_heap_B=141705216
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=16
 #-----------
-time=1366196809
-mem_heap_B=151375872
+time=1304806188
+mem_heap_B=143056896
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=17
 #-----------
-time=1449343257
-mem_heap_B=152727552
+time=1369054045
+mem_heap_B=144138240
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=empty
+heap_tree=detailed
+n4: 144138240 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 120938496 0x4DE6A27: __mmap64 (mmap64.c:58)
+  n2: 120938496 0x4DE6A27: mmap (mmap64.c:46)
+   n1: 120537088 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 120537088 0x4D6B335: sysmalloc (malloc.c:2752)
+     n2: 120537088 0x4D6C8DC: _int_malloc (malloc.c:4407)
+      n2: 103776256 0x4D6D261: malloc (malloc.c:3321)
+       n1: 100397056 0x171D20: ??? (in /usr/bin/gawk)
+        n2: 100397056 0x172504: ??? (in /usr/bin/gawk)
+         n1: 96526336 0x14DCB3: ??? (in /usr/bin/gawk)
+          n1: 96526336 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 96526336 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+         n1: 3870720 0x14DC94: ??? (in /usr/bin/gawk)
+          n1: 3870720 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 3870720 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 3379200 0x12D59C: ??? (in /usr/bin/gawk)
+        n1: 3379200 0x170920: ??? (in /usr/bin/gawk)
+         n1: 3379200 0x13CADA: ??? (in /usr/bin/gawk)
+          n1: 3379200 0x14EDF4: ??? (in /usr/bin/gawk)
+           n1: 3379200 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 3379200 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+      n2: 16760832 0x4D6E5F8: calloc (malloc.c:3679)
+       n2: 15679488 0x13B161: ??? (in /usr/bin/gawk)
+        n1: 15544320 0x14F63A: ??? (in /usr/bin/gawk)
+         n1: 15544320 0x1174A6: ??? (in /usr/bin/gawk)
+          n0: 15544320 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 1081344 in 2 places, all below massif's threshold (1.00%)
+   n0: 401408 in 3 places, all below massif's threshold (1.00%)
+ n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7151616 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7151616 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7151616 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7151616 0x400A600: _dl_map_object (dl-load.c:2327)
+       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
+        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
+           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
+             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
+              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+               n1: 7131136 0x2: ???
+                n1: 7131136 0x1FFEFFFF5E: ???
+                 n1: 7131136 0x1FFEFFFF63: ???
+                  n0: 7131136 0x1FFEFFFF66: ???
+       n0: 20480 in 1 place, below massif's threshold (1.00%)
+   n1: 6627328 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6627328 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6627328 0x400A600: _dl_map_object (dl-load.c:2327)
+      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
+       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
+          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
+            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
+             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+              n1: 6610944 0x2: ???
+               n1: 6610944 0x1FFEFFFF5E: ???
+                n1: 6610944 0x1FFEFFFF63: ???
+                 n0: 6610944 0x1FFEFFFF66: ???
+      n0: 16384 in 1 place, below massif's threshold (1.00%)
+   n0: 86016 in 3 places, all below massif's threshold (1.00%)
+ n1: 8331264 0x4DE282B: brk (brk.c:36)
+  n1: 8331264 0x4DE28F3: __sbrk (sbrk.c:74)
+   n1: 8331264 0x4DE28F3: sbrk (sbrk.c:36)
+    n1: 8331264 0x4D6A5C5: __glibc_morecore (morecore.c:29)
+     n1: 8331264 0x4D6B5F8: sysmalloc (malloc.c:2727)
+      n3: 8331264 0x4D6C8DC: _int_malloc (malloc.c:4407)
+       n1: 6303744 0x4D6D261: malloc (malloc.c:3321)
+        n2: 6303744 0x171D20: ??? (in /usr/bin/gawk)
+         n2: 6168576 0x172504: ??? (in /usr/bin/gawk)
+          n1: 6025216 0x14DCB3: ??? (in /usr/bin/gawk)
+           n1: 6025216 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 6025216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+          n0: 143360 in 1 place, below massif's threshold (1.00%)
+         n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n2: 1892352 0x4D6E5F8: calloc (malloc.c:3679)
+        n1: 1757184 0x13B161: ??? (in /usr/bin/gawk)
+         n1: 1757184 0x14F63A: ??? (in /usr/bin/gawk)
+          n1: 1757184 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 1757184 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n0: 1003520 in 2 places, all below massif's threshold (1.00%)
 #-----------
 snapshot=18
 #-----------
-time=1565822827
-mem_heap_B=154619904
+time=1449374669
+mem_heap_B=145489920
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=19
 #-----------
-time=1682325871
-mem_heap_B=156512256
+time=1513639964
+mem_heap_B=146571264
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=20
 #-----------
-time=1748880485
-mem_heap_B=157593600
+time=1593956934
+mem_heap_B=147922944
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=21
 #-----------
-time=1832099129
-mem_heap_B=158945280
+time=1722478404
+mem_heap_B=150085632
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=empty
+heap_tree=detailed
+n4: 150085632 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 126885888 0x4DE6A27: __mmap64 (mmap64.c:58)
+  n2: 126885888 0x4DE6A27: mmap (mmap64.c:46)
+   n1: 126484480 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 126484480 0x4D6B335: sysmalloc (malloc.c:2752)
+     n2: 126484480 0x4D6C8DC: _int_malloc (malloc.c:4407)
+      n2: 109723648 0x4D6D261: malloc (malloc.c:3321)
+       n1: 100397056 0x171D20: ??? (in /usr/bin/gawk)
+        n2: 100397056 0x172504: ??? (in /usr/bin/gawk)
+         n1: 96526336 0x14DCB3: ??? (in /usr/bin/gawk)
+          n1: 96526336 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 96526336 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+         n1: 3870720 0x14DC94: ??? (in /usr/bin/gawk)
+          n1: 3870720 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 3870720 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 9326592 0x12D59C: ??? (in /usr/bin/gawk)
+        n1: 9326592 0x170920: ??? (in /usr/bin/gawk)
+         n1: 9326592 0x13CADA: ??? (in /usr/bin/gawk)
+          n1: 9326592 0x14EDF4: ??? (in /usr/bin/gawk)
+           n1: 9326592 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 9326592 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+      n2: 16760832 0x4D6E5F8: calloc (malloc.c:3679)
+       n2: 15679488 0x13B161: ??? (in /usr/bin/gawk)
+        n1: 15544320 0x14F63A: ??? (in /usr/bin/gawk)
+         n1: 15544320 0x1174A6: ??? (in /usr/bin/gawk)
+          n0: 15544320 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 1081344 in 2 places, all below massif's threshold (1.00%)
+   n0: 401408 in 3 places, all below massif's threshold (1.00%)
+ n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7151616 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7151616 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7151616 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7151616 0x400A600: _dl_map_object (dl-load.c:2327)
+       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
+        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
+           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
+             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
+              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+               n1: 7131136 0x2: ???
+                n1: 7131136 0x1FFEFFFF5E: ???
+                 n1: 7131136 0x1FFEFFFF63: ???
+                  n0: 7131136 0x1FFEFFFF66: ???
+       n0: 20480 in 1 place, below massif's threshold (1.00%)
+   n1: 6627328 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6627328 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6627328 0x400A600: _dl_map_object (dl-load.c:2327)
+      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
+       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
+          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
+            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
+             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+              n1: 6610944 0x2: ???
+               n1: 6610944 0x1FFEFFFF5E: ???
+                n1: 6610944 0x1FFEFFFF63: ???
+                 n0: 6610944 0x1FFEFFFF66: ???
+      n0: 16384 in 1 place, below massif's threshold (1.00%)
+   n0: 86016 in 3 places, all below massif's threshold (1.00%)
+ n1: 8331264 0x4DE282B: brk (brk.c:36)
+  n1: 8331264 0x4DE28F3: __sbrk (sbrk.c:74)
+   n1: 8331264 0x4DE28F3: sbrk (sbrk.c:36)
+    n1: 8331264 0x4D6A5C5: __glibc_morecore (morecore.c:29)
+     n1: 8331264 0x4D6B5F8: sysmalloc (malloc.c:2727)
+      n3: 8331264 0x4D6C8DC: _int_malloc (malloc.c:4407)
+       n1: 6303744 0x4D6D261: malloc (malloc.c:3321)
+        n2: 6303744 0x171D20: ??? (in /usr/bin/gawk)
+         n2: 6168576 0x172504: ??? (in /usr/bin/gawk)
+          n1: 6025216 0x14DCB3: ??? (in /usr/bin/gawk)
+           n1: 6025216 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 6025216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+          n0: 143360 in 1 place, below massif's threshold (1.00%)
+         n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n2: 1892352 0x4D6E5F8: calloc (malloc.c:3679)
+        n1: 1757184 0x13B161: ??? (in /usr/bin/gawk)
+         n1: 1757184 0x14F63A: ??? (in /usr/bin/gawk)
+          n1: 1757184 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 1757184 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n0: 1003520 in 2 places, all below massif's threshold (1.00%)
 #-----------
 snapshot=22
 #-----------
-time=1940276223
-mem_heap_B=160702464
+time=1794765086
+mem_heap_B=151302144
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=23
 #-----------
-time=2015164988
-mem_heap_B=161918976
+time=1891153964
+mem_heap_B=152924160
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=detailed
-n4: 161918976 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 138752000 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 138752000 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 138350592 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 138350592 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 138350592 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 117534720 0x4D6D261: malloc (malloc.c:3321)
-       n2: 106991616 0x171D20: ??? (in /usr/bin/gawk)
-        n2: 105701376 0x172504: ??? (in /usr/bin/gawk)
-         n1: 100253696 0x14DCB3: ??? (in /usr/bin/gawk)
-          n1: 100253696 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 100253696 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-         n1: 5447680 0x14DC94: ??? (in /usr/bin/gawk)
-          n1: 5447680 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 5447680 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 1290240 in 1 place, below massif's threshold (1.00%)
-       n1: 10543104 0x12D59C: ??? (in /usr/bin/gawk)
-        n1: 10543104 0x170920: ??? (in /usr/bin/gawk)
-         n1: 10543104 0x13CADA: ??? (in /usr/bin/gawk)
-          n1: 10543104 0x14EDF4: ??? (in /usr/bin/gawk)
-           n1: 10543104 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 10543104 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n3: 20815872 0x4D6E5F8: calloc (malloc.c:3679)
-       n2: 9461760 0x13B161: ??? (in /usr/bin/gawk)
-        n1: 9326592 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 9326592 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 9326592 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
-       n1: 6217728 0x13B69E: ??? (in /usr/bin/gawk)
-        n1: 6217728 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 6217728 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 6217728 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n2: 5136384 0x13AF8C: ??? (in /usr/bin/gawk)
-        n1: 5001216 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 5001216 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 5001216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
-   n0: 401408 in 3 places, all below massif's threshold (1.00%)
- n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
-  n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
-   n1: 7151616 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
-    n1: 7151616 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
-     n1: 7151616 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
-      n2: 7151616 0x400A600: _dl_map_object (dl-load.c:2327)
-       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
-        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
-           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
-             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
-              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-               n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF5E: ???
-                 n1: 7131136 0x1FFEFFFF63: ???
-                  n0: 7131136 0x1FFEFFFF66: ???
-       n0: 20480 in 1 place, below massif's threshold (1.00%)
-   n1: 6627328 0x4009098: _dl_map_segments (dl-map-segments.h:140)
-    n1: 6627328 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
-     n2: 6627328 0x400A600: _dl_map_object (dl-load.c:2327)
-      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
-       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
-          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
-            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
-             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-              n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF5E: ???
-                n1: 6610944 0x1FFEFFFF63: ???
-                 n0: 6610944 0x1FFEFFFF66: ???
-      n0: 16384 in 1 place, below massif's threshold (1.00%)
-   n0: 86016 in 3 places, all below massif's threshold (1.00%)
- n1: 8298496 0x4DE282B: brk (brk.c:36)
-  n1: 8298496 0x4DE28F3: __sbrk (sbrk.c:74)
-   n1: 8298496 0x4DE28F3: sbrk (sbrk.c:36)
-    n1: 8298496 0x4D6A5C5: __glibc_morecore (morecore.c:29)
-     n1: 8298496 0x4D6B5F8: sysmalloc (malloc.c:2727)
-      n2: 8298496 0x4D6C8DC: _int_malloc (malloc.c:4407)
-       n1: 8163328 0x4D6D261: malloc (malloc.c:3321)
-        n2: 8163328 0x171D20: ??? (in /usr/bin/gawk)
-         n2: 7888896 0x172504: ??? (in /usr/bin/gawk)
-          n1: 7606272 0x14DCB3: ??? (in /usr/bin/gawk)
-           n1: 7606272 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 7606272 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-          n0: 282624 in 1 place, below massif's threshold (1.00%)
-         n0: 274432 in 2 places, all below massif's threshold (1.00%)
-       n0: 135168 in 1 place, below massif's threshold (1.00%)
- n0: 1003520 in 2 places, all below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=24
 #-----------
-time=2139979014
-mem_heap_B=163946496
+time=1955407204
+mem_heap_B=154005504
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=25
 #-----------
-time=2264805113
-mem_heap_B=165974016
+time=2043775960
+mem_heap_B=155492352
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=detailed
-n4: 165974016 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 142807040 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 142807040 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 142405632 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 142405632 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 142405632 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 121589760 0x4D6D261: malloc (malloc.c:3321)
-       n2: 106991616 0x171D20: ??? (in /usr/bin/gawk)
-        n2: 105701376 0x172504: ??? (in /usr/bin/gawk)
-         n1: 100253696 0x14DCB3: ??? (in /usr/bin/gawk)
-          n1: 100253696 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 100253696 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-         n1: 5447680 0x14DC94: ??? (in /usr/bin/gawk)
-          n1: 5447680 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 5447680 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 1290240 in 1 place, below massif's threshold (1.00%)
-       n1: 14598144 0x12D59C: ??? (in /usr/bin/gawk)
-        n1: 14598144 0x170920: ??? (in /usr/bin/gawk)
-         n1: 14598144 0x13CADA: ??? (in /usr/bin/gawk)
-          n1: 14598144 0x14EDF4: ??? (in /usr/bin/gawk)
-           n1: 14598144 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 14598144 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n3: 20815872 0x4D6E5F8: calloc (malloc.c:3679)
-       n2: 9461760 0x13B161: ??? (in /usr/bin/gawk)
-        n1: 9326592 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 9326592 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 9326592 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
-       n1: 6217728 0x13B69E: ??? (in /usr/bin/gawk)
-        n1: 6217728 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 6217728 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 6217728 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n2: 5136384 0x13AF8C: ??? (in /usr/bin/gawk)
-        n1: 5001216 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 5001216 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 5001216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
-   n0: 401408 in 3 places, all below massif's threshold (1.00%)
- n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
-  n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
-   n1: 7151616 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
-    n1: 7151616 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
-     n1: 7151616 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
-      n2: 7151616 0x400A600: _dl_map_object (dl-load.c:2327)
-       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
-        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
-           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
-             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
-              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-               n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF5E: ???
-                 n1: 7131136 0x1FFEFFFF63: ???
-                  n0: 7131136 0x1FFEFFFF66: ???
-       n0: 20480 in 1 place, below massif's threshold (1.00%)
-   n1: 6627328 0x4009098: _dl_map_segments (dl-map-segments.h:140)
-    n1: 6627328 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
-     n2: 6627328 0x400A600: _dl_map_object (dl-load.c:2327)
-      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
-       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
-          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
-            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
-             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-              n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF5E: ???
-                n1: 6610944 0x1FFEFFFF63: ???
-                 n0: 6610944 0x1FFEFFFF66: ???
-      n0: 16384 in 1 place, below massif's threshold (1.00%)
-   n0: 86016 in 3 places, all below massif's threshold (1.00%)
- n1: 8298496 0x4DE282B: brk (brk.c:36)
-  n1: 8298496 0x4DE28F3: __sbrk (sbrk.c:74)
-   n1: 8298496 0x4DE28F3: sbrk (sbrk.c:36)
-    n1: 8298496 0x4D6A5C5: __glibc_morecore (morecore.c:29)
-     n1: 8298496 0x4D6B5F8: sysmalloc (malloc.c:2727)
-      n2: 8298496 0x4D6C8DC: _int_malloc (malloc.c:4407)
-       n1: 8163328 0x4D6D261: malloc (malloc.c:3321)
-        n2: 8163328 0x171D20: ??? (in /usr/bin/gawk)
-         n2: 7888896 0x172504: ??? (in /usr/bin/gawk)
-          n1: 7606272 0x14DCB3: ??? (in /usr/bin/gawk)
-           n1: 7606272 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 7606272 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-          n0: 282624 in 1 place, below massif's threshold (1.00%)
-         n0: 274432 in 2 places, all below massif's threshold (1.00%)
-       n0: 135168 in 1 place, below massif's threshold (1.00%)
- n0: 1003520 in 2 places, all below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=26
 #-----------
-time=2339694999
-mem_heap_B=167190528
+time=2124094107
+mem_heap_B=156844032
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=27
 #-----------
-time=2414583858
-mem_heap_B=168407040
+time=2252618423
+mem_heap_B=159006720
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=28
 #-----------
-time=2514450155
-mem_heap_B=170029056
+time=2357046744
+mem_heap_B=160763904
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=detailed
-n4: 170029056 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 146862080 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 146862080 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 146460672 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 146460672 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 146460672 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 125644800 0x4D6D261: malloc (malloc.c:3321)
-       n2: 106991616 0x171D20: ??? (in /usr/bin/gawk)
-        n2: 105701376 0x172504: ??? (in /usr/bin/gawk)
-         n1: 100253696 0x14DCB3: ??? (in /usr/bin/gawk)
-          n1: 100253696 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 100253696 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-         n1: 5447680 0x14DC94: ??? (in /usr/bin/gawk)
-          n1: 5447680 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 5447680 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 1290240 in 1 place, below massif's threshold (1.00%)
-       n1: 18653184 0x12D59C: ??? (in /usr/bin/gawk)
-        n1: 18653184 0x170920: ??? (in /usr/bin/gawk)
-         n1: 18653184 0x13CADA: ??? (in /usr/bin/gawk)
-          n1: 18653184 0x14EDF4: ??? (in /usr/bin/gawk)
-           n1: 18653184 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 18653184 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n3: 20815872 0x4D6E5F8: calloc (malloc.c:3679)
-       n2: 9461760 0x13B161: ??? (in /usr/bin/gawk)
-        n1: 9326592 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 9326592 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 9326592 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
-       n1: 6217728 0x13B69E: ??? (in /usr/bin/gawk)
-        n1: 6217728 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 6217728 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 6217728 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n2: 5136384 0x13AF8C: ??? (in /usr/bin/gawk)
-        n1: 5001216 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 5001216 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 5001216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
-   n0: 401408 in 3 places, all below massif's threshold (1.00%)
- n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
-  n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
-   n1: 7151616 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
-    n1: 7151616 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
-     n1: 7151616 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
-      n2: 7151616 0x400A600: _dl_map_object (dl-load.c:2327)
-       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
-        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
-           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
-             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
-              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-               n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF5E: ???
-                 n1: 7131136 0x1FFEFFFF63: ???
-                  n0: 7131136 0x1FFEFFFF66: ???
-       n0: 20480 in 1 place, below massif's threshold (1.00%)
-   n1: 6627328 0x4009098: _dl_map_segments (dl-map-segments.h:140)
-    n1: 6627328 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
-     n2: 6627328 0x400A600: _dl_map_object (dl-load.c:2327)
-      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
-       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
-          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
-            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
-             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-              n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF5E: ???
-                n1: 6610944 0x1FFEFFFF63: ???
-                 n0: 6610944 0x1FFEFFFF66: ???
-      n0: 16384 in 1 place, below massif's threshold (1.00%)
-   n0: 86016 in 3 places, all below massif's threshold (1.00%)
- n1: 8298496 0x4DE282B: brk (brk.c:36)
-  n1: 8298496 0x4DE28F3: __sbrk (sbrk.c:74)
-   n1: 8298496 0x4DE28F3: sbrk (sbrk.c:36)
-    n1: 8298496 0x4D6A5C5: __glibc_morecore (morecore.c:29)
-     n1: 8298496 0x4D6B5F8: sysmalloc (malloc.c:2727)
-      n2: 8298496 0x4D6C8DC: _int_malloc (malloc.c:4407)
-       n1: 8163328 0x4D6D261: malloc (malloc.c:3321)
-        n2: 8163328 0x171D20: ??? (in /usr/bin/gawk)
-         n2: 7888896 0x172504: ??? (in /usr/bin/gawk)
-          n1: 7606272 0x14DCB3: ??? (in /usr/bin/gawk)
-           n1: 7606272 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 7606272 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-          n0: 282624 in 1 place, below massif's threshold (1.00%)
-         n0: 274432 in 2 places, all below massif's threshold (1.00%)
-       n0: 135168 in 1 place, below massif's threshold (1.00%)
- n0: 1003520 in 2 places, all below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=29
 #-----------
-time=2614310691
-mem_heap_B=171651072
+time=2421314441
+mem_heap_B=161845248
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=30
 #-----------
-time=2739145596
-mem_heap_B=173678592
+time=2517716281
+mem_heap_B=163467264
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=31
 #-----------
-time=2814038584
-mem_heap_B=174895104
+time=2557874658
+mem_heap_B=164143104
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=empty
+heap_tree=detailed
+n4: 164143104 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 140943360 0x4DE6A27: __mmap64 (mmap64.c:58)
+  n2: 140943360 0x4DE6A27: mmap (mmap64.c:46)
+   n1: 140541952 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 140541952 0x4D6B335: sysmalloc (malloc.c:2752)
+     n2: 140541952 0x4D6C8DC: _int_malloc (malloc.c:4407)
+      n2: 123781120 0x4D6D261: malloc (malloc.c:3321)
+       n1: 100397056 0x171D20: ??? (in /usr/bin/gawk)
+        n2: 100397056 0x172504: ??? (in /usr/bin/gawk)
+         n1: 96526336 0x14DCB3: ??? (in /usr/bin/gawk)
+          n1: 96526336 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 96526336 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+         n1: 3870720 0x14DC94: ??? (in /usr/bin/gawk)
+          n1: 3870720 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 3870720 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 23384064 0x12D59C: ??? (in /usr/bin/gawk)
+        n1: 23384064 0x170920: ??? (in /usr/bin/gawk)
+         n1: 23384064 0x13CADA: ??? (in /usr/bin/gawk)
+          n1: 23384064 0x14EDF4: ??? (in /usr/bin/gawk)
+           n1: 23384064 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 23384064 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+      n2: 16760832 0x4D6E5F8: calloc (malloc.c:3679)
+       n2: 15679488 0x13B161: ??? (in /usr/bin/gawk)
+        n1: 15544320 0x14F63A: ??? (in /usr/bin/gawk)
+         n1: 15544320 0x1174A6: ??? (in /usr/bin/gawk)
+          n0: 15544320 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 1081344 in 2 places, all below massif's threshold (1.00%)
+   n0: 401408 in 3 places, all below massif's threshold (1.00%)
+ n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7151616 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7151616 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7151616 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7151616 0x400A600: _dl_map_object (dl-load.c:2327)
+       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
+        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
+           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
+             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
+              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+               n1: 7131136 0x2: ???
+                n1: 7131136 0x1FFEFFFF5E: ???
+                 n1: 7131136 0x1FFEFFFF63: ???
+                  n0: 7131136 0x1FFEFFFF66: ???
+       n0: 20480 in 1 place, below massif's threshold (1.00%)
+   n1: 6627328 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6627328 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6627328 0x400A600: _dl_map_object (dl-load.c:2327)
+      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
+       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
+          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
+            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
+             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+              n1: 6610944 0x2: ???
+               n1: 6610944 0x1FFEFFFF5E: ???
+                n1: 6610944 0x1FFEFFFF63: ???
+                 n0: 6610944 0x1FFEFFFF66: ???
+      n0: 16384 in 1 place, below massif's threshold (1.00%)
+   n0: 86016 in 3 places, all below massif's threshold (1.00%)
+ n1: 8331264 0x4DE282B: brk (brk.c:36)
+  n1: 8331264 0x4DE28F3: __sbrk (sbrk.c:74)
+   n1: 8331264 0x4DE28F3: sbrk (sbrk.c:36)
+    n1: 8331264 0x4D6A5C5: __glibc_morecore (morecore.c:29)
+     n1: 8331264 0x4D6B5F8: sysmalloc (malloc.c:2727)
+      n3: 8331264 0x4D6C8DC: _int_malloc (malloc.c:4407)
+       n1: 6303744 0x4D6D261: malloc (malloc.c:3321)
+        n2: 6303744 0x171D20: ??? (in /usr/bin/gawk)
+         n2: 6168576 0x172504: ??? (in /usr/bin/gawk)
+          n1: 6025216 0x14DCB3: ??? (in /usr/bin/gawk)
+           n1: 6025216 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 6025216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+          n0: 143360 in 1 place, below massif's threshold (1.00%)
+         n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n2: 1892352 0x4D6E5F8: calloc (malloc.c:3679)
+        n1: 1757184 0x13B161: ??? (in /usr/bin/gawk)
+         n1: 1757184 0x14F63A: ??? (in /usr/bin/gawk)
+          n1: 1757184 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 1757184 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n0: 1003520 in 2 places, all below massif's threshold (1.00%)
 #-----------
 snapshot=32
 #-----------
-time=2938855312
-mem_heap_B=176922624
+time=2654267213
+mem_heap_B=165765120
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=33
 #-----------
-time=3038710201
-mem_heap_B=178544640
+time=2718527461
+mem_heap_B=166846464
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=34
 #-----------
-time=3113599038
-mem_heap_B=179761152
+time=2822940380
+mem_heap_B=168603648
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=35
 #-----------
-time=3205141364
-mem_heap_B=181248000
+time=2887211858
+mem_heap_B=169684992
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=empty
+heap_tree=detailed
+n4: 169684992 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 146485248 0x4DE6A27: __mmap64 (mmap64.c:58)
+  n2: 146485248 0x4DE6A27: mmap (mmap64.c:46)
+   n1: 146083840 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 146083840 0x4D6B335: sysmalloc (malloc.c:2752)
+     n2: 146083840 0x4D6C8DC: _int_malloc (malloc.c:4407)
+      n2: 129323008 0x4D6D261: malloc (malloc.c:3321)
+       n1: 100397056 0x171D20: ??? (in /usr/bin/gawk)
+        n2: 100397056 0x172504: ??? (in /usr/bin/gawk)
+         n1: 96526336 0x14DCB3: ??? (in /usr/bin/gawk)
+          n1: 96526336 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 96526336 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+         n1: 3870720 0x14DC94: ??? (in /usr/bin/gawk)
+          n1: 3870720 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 3870720 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 28925952 0x12D59C: ??? (in /usr/bin/gawk)
+        n1: 28925952 0x170920: ??? (in /usr/bin/gawk)
+         n1: 28925952 0x13CADA: ??? (in /usr/bin/gawk)
+          n1: 28925952 0x14EDF4: ??? (in /usr/bin/gawk)
+           n1: 28925952 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 28925952 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+      n2: 16760832 0x4D6E5F8: calloc (malloc.c:3679)
+       n2: 15679488 0x13B161: ??? (in /usr/bin/gawk)
+        n1: 15544320 0x14F63A: ??? (in /usr/bin/gawk)
+         n1: 15544320 0x1174A6: ??? (in /usr/bin/gawk)
+          n0: 15544320 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 1081344 in 2 places, all below massif's threshold (1.00%)
+   n0: 401408 in 3 places, all below massif's threshold (1.00%)
+ n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7151616 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7151616 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7151616 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7151616 0x400A600: _dl_map_object (dl-load.c:2327)
+       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
+        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
+           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
+             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
+              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+               n1: 7131136 0x2: ???
+                n1: 7131136 0x1FFEFFFF5E: ???
+                 n1: 7131136 0x1FFEFFFF63: ???
+                  n0: 7131136 0x1FFEFFFF66: ???
+       n0: 20480 in 1 place, below massif's threshold (1.00%)
+   n1: 6627328 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6627328 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6627328 0x400A600: _dl_map_object (dl-load.c:2327)
+      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
+       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
+          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
+            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
+             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+              n1: 6610944 0x2: ???
+               n1: 6610944 0x1FFEFFFF5E: ???
+                n1: 6610944 0x1FFEFFFF63: ???
+                 n0: 6610944 0x1FFEFFFF66: ???
+      n0: 16384 in 1 place, below massif's threshold (1.00%)
+   n0: 86016 in 3 places, all below massif's threshold (1.00%)
+ n1: 8331264 0x4DE282B: brk (brk.c:36)
+  n1: 8331264 0x4DE28F3: __sbrk (sbrk.c:74)
+   n1: 8331264 0x4DE28F3: sbrk (sbrk.c:36)
+    n1: 8331264 0x4D6A5C5: __glibc_morecore (morecore.c:29)
+     n1: 8331264 0x4D6B5F8: sysmalloc (malloc.c:2727)
+      n3: 8331264 0x4D6C8DC: _int_malloc (malloc.c:4407)
+       n1: 6303744 0x4D6D261: malloc (malloc.c:3321)
+        n2: 6303744 0x171D20: ??? (in /usr/bin/gawk)
+         n2: 6168576 0x172504: ??? (in /usr/bin/gawk)
+          n1: 6025216 0x14DCB3: ??? (in /usr/bin/gawk)
+           n1: 6025216 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 6025216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+          n0: 143360 in 1 place, below massif's threshold (1.00%)
+         n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n2: 1892352 0x4D6E5F8: calloc (malloc.c:3679)
+        n1: 1757184 0x13B161: ??? (in /usr/bin/gawk)
+         n1: 1757184 0x14F63A: ??? (in /usr/bin/gawk)
+          n1: 1757184 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 1757184 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n0: 1003520 in 2 places, all below massif's threshold (1.00%)
 #-----------
 snapshot=36
 #-----------
-time=3338265530
-mem_heap_B=183410688
+time=2959503804
+mem_heap_B=170901504
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=37
 #-----------
-time=3438107104
-mem_heap_B=185032704
+time=3023763920
+mem_heap_B=171982848
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=38
 #-----------
-time=3562915039
-mem_heap_B=187060224
+time=3104071204
+mem_heap_B=173334528
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=39
 #-----------
-time=3687744014
-mem_heap_B=189087744
+time=3208480791
+mem_heap_B=175091712
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=40
 #-----------
-time=3804256189
-mem_heap_B=190980096
+time=3288793761
+mem_heap_B=176443392
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=41
 #-----------
-time=3920758787
-mem_heap_B=192872448
+time=3417323825
+mem_heap_B=178606080
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=detailed
-n4: 192872448 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 169705472 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 169705472 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 169304064 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 169304064 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 169304064 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 148488192 0x4D6D261: malloc (malloc.c:3321)
-       n2: 106991616 0x171D20: ??? (in /usr/bin/gawk)
-        n2: 105701376 0x172504: ??? (in /usr/bin/gawk)
-         n1: 100253696 0x14DCB3: ??? (in /usr/bin/gawk)
-          n1: 100253696 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 100253696 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-         n1: 5447680 0x14DC94: ??? (in /usr/bin/gawk)
-          n1: 5447680 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 5447680 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 1290240 in 1 place, below massif's threshold (1.00%)
-       n1: 41496576 0x12D59C: ??? (in /usr/bin/gawk)
-        n1: 41496576 0x170920: ??? (in /usr/bin/gawk)
-         n1: 41496576 0x13CADA: ??? (in /usr/bin/gawk)
-          n1: 41496576 0x14EDF4: ??? (in /usr/bin/gawk)
-           n1: 41496576 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 41496576 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n3: 20815872 0x4D6E5F8: calloc (malloc.c:3679)
-       n2: 9461760 0x13B161: ??? (in /usr/bin/gawk)
-        n1: 9326592 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 9326592 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 9326592 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
-       n1: 6217728 0x13B69E: ??? (in /usr/bin/gawk)
-        n1: 6217728 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 6217728 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 6217728 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n2: 5136384 0x13AF8C: ??? (in /usr/bin/gawk)
-        n1: 5001216 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 5001216 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 5001216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
-   n0: 401408 in 3 places, all below massif's threshold (1.00%)
- n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
-  n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
-   n1: 7151616 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
-    n1: 7151616 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
-     n1: 7151616 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
-      n2: 7151616 0x400A600: _dl_map_object (dl-load.c:2327)
-       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
-        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
-           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
-             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
-              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-               n1: 7131136 0x2: ???
-                n1: 7131136 0x1FFEFFFF5E: ???
-                 n1: 7131136 0x1FFEFFFF63: ???
-                  n0: 7131136 0x1FFEFFFF66: ???
-       n0: 20480 in 1 place, below massif's threshold (1.00%)
-   n1: 6627328 0x4009098: _dl_map_segments (dl-map-segments.h:140)
-    n1: 6627328 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
-     n2: 6627328 0x400A600: _dl_map_object (dl-load.c:2327)
-      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
-       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
-        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
-         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
-          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
-           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
-            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
-             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-              n1: 6610944 0x2: ???
-               n1: 6610944 0x1FFEFFFF5E: ???
-                n1: 6610944 0x1FFEFFFF63: ???
-                 n0: 6610944 0x1FFEFFFF66: ???
-      n0: 16384 in 1 place, below massif's threshold (1.00%)
-   n0: 86016 in 3 places, all below massif's threshold (1.00%)
- n1: 8298496 0x4DE282B: brk (brk.c:36)
-  n1: 8298496 0x4DE28F3: __sbrk (sbrk.c:74)
-   n1: 8298496 0x4DE28F3: sbrk (sbrk.c:36)
-    n1: 8298496 0x4D6A5C5: __glibc_morecore (morecore.c:29)
-     n1: 8298496 0x4D6B5F8: sysmalloc (malloc.c:2727)
-      n2: 8298496 0x4D6C8DC: _int_malloc (malloc.c:4407)
-       n1: 8163328 0x4D6D261: malloc (malloc.c:3321)
-        n2: 8163328 0x171D20: ??? (in /usr/bin/gawk)
-         n2: 7888896 0x172504: ??? (in /usr/bin/gawk)
-          n1: 7606272 0x14DCB3: ??? (in /usr/bin/gawk)
-           n1: 7606272 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 7606272 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-          n0: 282624 in 1 place, below massif's threshold (1.00%)
-         n0: 274432 in 2 places, all below massif's threshold (1.00%)
-       n0: 135168 in 1 place, below massif's threshold (1.00%)
- n0: 1003520 in 2 places, all below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=42
 #-----------
-time=3987327702
-mem_heap_B=193953792
+time=3481599720
+mem_heap_B=179687424
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=43
 #-----------
-time=4087171374
-mem_heap_B=195575808
+time=3545857361
+mem_heap_B=180768768
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=44
 #-----------
-time=4178710631
-mem_heap_B=197062656
+time=3618147401
+mem_heap_B=181985280
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=45
 #-----------
-time=4311858260
-mem_heap_B=199225344
+time=3682412772
+mem_heap_B=183066624
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=46
 #-----------
-time=4444984387
-mem_heap_B=201388032
+time=3754705685
+mem_heap_B=184283136
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=47
 #-----------
-time=4511551833
-mem_heap_B=202469376
+time=3859123418
+mem_heap_B=186040320
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=48
 #-----------
-time=4611401563
-mem_heap_B=204091392
+time=3963545897
+mem_heap_B=187797504
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=49
 #-----------
-time=4711260844
-mem_heap_B=205713408
+time=4059940229
+mem_heap_B=189419520
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=50
 #-----------
-time=4769505456
-mem_heap_B=206659584
+time=4108125419
+mem_heap_B=190230528
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=51
 #-----------
-time=4827749514
-mem_heap_B=207605760
+time=4156311294
+mem_heap_B=191041536
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=52
 #-----------
-time=4885989373
-mem_heap_B=208551936
+time=4196471344
+mem_heap_B=191717376
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=53
 #-----------
-time=4944241822
-mem_heap_B=209498112
+time=4236631747
+mem_heap_B=192393216
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=54
 #-----------
-time=5002479376
-mem_heap_B=210444288
+time=4284819800
+mem_heap_B=193204224
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=55
 #-----------
-time=5060725527
-mem_heap_B=211390464
+time=4324981335
+mem_heap_B=193880064
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=detailed
-n4: 211390464 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 188223488 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 188223488 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 187822080 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 187822080 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 187822080 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 167006208 0x4D6D261: malloc (malloc.c:3321)
-       n2: 106991616 0x171D20: ??? (in /usr/bin/gawk)
-        n2: 105701376 0x172504: ??? (in /usr/bin/gawk)
-         n1: 100253696 0x14DCB3: ??? (in /usr/bin/gawk)
-          n1: 100253696 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 100253696 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-         n1: 5447680 0x14DC94: ??? (in /usr/bin/gawk)
-          n1: 5447680 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 5447680 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 1290240 in 1 place, below massif's threshold (1.00%)
-       n1: 60014592 0x12D59C: ??? (in /usr/bin/gawk)
-        n1: 60014592 0x170920: ??? (in /usr/bin/gawk)
-         n1: 60014592 0x13CADA: ??? (in /usr/bin/gawk)
-          n1: 60014592 0x14EDF4: ??? (in /usr/bin/gawk)
-           n1: 60014592 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 60014592 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n3: 20815872 0x4D6E5F8: calloc (malloc.c:3679)
-       n2: 9461760 0x13B161: ??? (in /usr/bin/gawk)
-        n1: 9326592 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 9326592 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 9326592 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+n4: 193880064 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 170680320 0x4DE6A27: __mmap64 (mmap64.c:58)
+  n2: 170680320 0x4DE6A27: mmap (mmap64.c:46)
+   n1: 170278912 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 170278912 0x4D6B335: sysmalloc (malloc.c:2752)
+     n2: 170278912 0x4D6C8DC: _int_malloc (malloc.c:4407)
+      n2: 153518080 0x4D6D261: malloc (malloc.c:3321)
+       n1: 100397056 0x171D20: ??? (in /usr/bin/gawk)
+        n2: 100397056 0x172504: ??? (in /usr/bin/gawk)
+         n1: 96526336 0x14DCB3: ??? (in /usr/bin/gawk)
+          n1: 96526336 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 96526336 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+         n1: 3870720 0x14DC94: ??? (in /usr/bin/gawk)
+          n1: 3870720 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 3870720 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 53121024 0x12D59C: ??? (in /usr/bin/gawk)
+        n1: 53121024 0x170920: ??? (in /usr/bin/gawk)
+         n1: 53121024 0x13CADA: ??? (in /usr/bin/gawk)
+          n1: 53121024 0x14EDF4: ??? (in /usr/bin/gawk)
+           n1: 53121024 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 53121024 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+      n2: 16760832 0x4D6E5F8: calloc (malloc.c:3679)
+       n2: 15679488 0x13B161: ??? (in /usr/bin/gawk)
+        n1: 15544320 0x14F63A: ??? (in /usr/bin/gawk)
+         n1: 15544320 0x1174A6: ??? (in /usr/bin/gawk)
+          n0: 15544320 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
         n0: 135168 in 1 place, below massif's threshold (1.00%)
-       n1: 6217728 0x13B69E: ??? (in /usr/bin/gawk)
-        n1: 6217728 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 6217728 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 6217728 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n2: 5136384 0x13AF8C: ??? (in /usr/bin/gawk)
-        n1: 5001216 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 5001216 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 5001216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 1081344 in 2 places, all below massif's threshold (1.00%)
    n0: 401408 in 3 places, all below massif's threshold (1.00%)
  n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
   n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
@@ -1015,139 +911,130 @@ n4: 211390464 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
                  n0: 6610944 0x1FFEFFFF66: ???
       n0: 16384 in 1 place, below massif's threshold (1.00%)
    n0: 86016 in 3 places, all below massif's threshold (1.00%)
- n1: 8298496 0x4DE282B: brk (brk.c:36)
-  n1: 8298496 0x4DE28F3: __sbrk (sbrk.c:74)
-   n1: 8298496 0x4DE28F3: sbrk (sbrk.c:36)
-    n1: 8298496 0x4D6A5C5: __glibc_morecore (morecore.c:29)
-     n1: 8298496 0x4D6B5F8: sysmalloc (malloc.c:2727)
-      n2: 8298496 0x4D6C8DC: _int_malloc (malloc.c:4407)
-       n1: 8163328 0x4D6D261: malloc (malloc.c:3321)
-        n2: 8163328 0x171D20: ??? (in /usr/bin/gawk)
-         n2: 7888896 0x172504: ??? (in /usr/bin/gawk)
-          n1: 7606272 0x14DCB3: ??? (in /usr/bin/gawk)
-           n1: 7606272 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 7606272 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-          n0: 282624 in 1 place, below massif's threshold (1.00%)
-         n0: 274432 in 2 places, all below massif's threshold (1.00%)
-       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n1: 8331264 0x4DE282B: brk (brk.c:36)
+  n1: 8331264 0x4DE28F3: __sbrk (sbrk.c:74)
+   n1: 8331264 0x4DE28F3: sbrk (sbrk.c:36)
+    n1: 8331264 0x4D6A5C5: __glibc_morecore (morecore.c:29)
+     n1: 8331264 0x4D6B5F8: sysmalloc (malloc.c:2727)
+      n2: 8331264 0x4D6C8DC: _int_malloc (malloc.c:4407)
+       n1: 6303744 0x4D6D261: malloc (malloc.c:3321)
+        n2: 6303744 0x171D20: ??? (in /usr/bin/gawk)
+         n2: 6168576 0x172504: ??? (in /usr/bin/gawk)
+          n1: 6025216 0x14DCB3: ??? (in /usr/bin/gawk)
+           n1: 6025216 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 6025216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+          n0: 143360 in 1 place, below massif's threshold (1.00%)
+         n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 2027520 in 2 places, all below massif's threshold (1.00%)
  n0: 1003520 in 2 places, all below massif's threshold (1.00%)
 #-----------
 snapshot=56
 #-----------
-time=5118980382
-mem_heap_B=212336640
+time=4365145156
+mem_heap_B=194555904
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=57
 #-----------
-time=5177227391
-mem_heap_B=213282816
+time=4405311349
+mem_heap_B=195231744
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=58
 #-----------
-time=5235485120
-mem_heap_B=214228992
+time=4445470574
+mem_heap_B=195907584
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=59
 #-----------
-time=5293732950
-mem_heap_B=215175168
+time=4485634176
+mem_heap_B=196583424
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=60
 #-----------
-time=5351988085
-mem_heap_B=216121344
+time=4533820284
+mem_heap_B=197394432
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=61
 #-----------
-time=5410230972
-mem_heap_B=217067520
+time=4582009477
+mem_heap_B=198205440
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=62
 #-----------
-time=5468475282
-mem_heap_B=218013696
+time=4622175727
+mem_heap_B=198881280
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=63
 #-----------
-time=5526723414
-mem_heap_B=218959872
+time=4670359852
+mem_heap_B=199692288
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=64
 #-----------
-time=5584969788
-mem_heap_B=219906048
+time=4710518302
+mem_heap_B=200368128
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=65
 #-----------
-time=5643223297
-mem_heap_B=220852224
+time=4750683497
+mem_heap_B=201043968
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=detailed
-n4: 220852224 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 197685248 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 197685248 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 197283840 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 197283840 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 197283840 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 176467968 0x4D6D261: malloc (malloc.c:3321)
-       n2: 106991616 0x171D20: ??? (in /usr/bin/gawk)
-        n2: 105701376 0x172504: ??? (in /usr/bin/gawk)
-         n1: 100253696 0x14DCB3: ??? (in /usr/bin/gawk)
-          n1: 100253696 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 100253696 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-         n1: 5447680 0x14DC94: ??? (in /usr/bin/gawk)
-          n1: 5447680 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 5447680 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 1290240 in 1 place, below massif's threshold (1.00%)
-       n1: 69476352 0x12D59C: ??? (in /usr/bin/gawk)
-        n1: 69476352 0x170920: ??? (in /usr/bin/gawk)
-         n1: 69476352 0x13CADA: ??? (in /usr/bin/gawk)
-          n1: 69476352 0x14EDF4: ??? (in /usr/bin/gawk)
-           n1: 69476352 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 69476352 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n3: 20815872 0x4D6E5F8: calloc (malloc.c:3679)
-       n2: 9461760 0x13B161: ??? (in /usr/bin/gawk)
-        n1: 9326592 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 9326592 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 9326592 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+n4: 201043968 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 177844224 0x4DE6A27: __mmap64 (mmap64.c:58)
+  n2: 177844224 0x4DE6A27: mmap (mmap64.c:46)
+   n1: 177442816 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 177442816 0x4D6B335: sysmalloc (malloc.c:2752)
+     n2: 177442816 0x4D6C8DC: _int_malloc (malloc.c:4407)
+      n2: 160681984 0x4D6D261: malloc (malloc.c:3321)
+       n1: 100397056 0x171D20: ??? (in /usr/bin/gawk)
+        n2: 100397056 0x172504: ??? (in /usr/bin/gawk)
+         n1: 96526336 0x14DCB3: ??? (in /usr/bin/gawk)
+          n1: 96526336 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 96526336 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+         n1: 3870720 0x14DC94: ??? (in /usr/bin/gawk)
+          n1: 3870720 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 3870720 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 60284928 0x12D59C: ??? (in /usr/bin/gawk)
+        n1: 60284928 0x170920: ??? (in /usr/bin/gawk)
+         n1: 60284928 0x13CADA: ??? (in /usr/bin/gawk)
+          n1: 60284928 0x14EDF4: ??? (in /usr/bin/gawk)
+           n1: 60284928 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 60284928 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+      n2: 16760832 0x4D6E5F8: calloc (malloc.c:3679)
+       n2: 15679488 0x13B161: ??? (in /usr/bin/gawk)
+        n1: 15544320 0x14F63A: ??? (in /usr/bin/gawk)
+         n1: 15544320 0x1174A6: ??? (in /usr/bin/gawk)
+          n0: 15544320 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
         n0: 135168 in 1 place, below massif's threshold (1.00%)
-       n1: 6217728 0x13B69E: ??? (in /usr/bin/gawk)
-        n1: 6217728 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 6217728 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 6217728 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n2: 5136384 0x13AF8C: ??? (in /usr/bin/gawk)
-        n1: 5001216 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 5001216 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 5001216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 1081344 in 2 places, all below massif's threshold (1.00%)
    n0: 401408 in 3 places, all below massif's threshold (1.00%)
  n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
   n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
@@ -1185,139 +1072,130 @@ n4: 220852224 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
                  n0: 6610944 0x1FFEFFFF66: ???
       n0: 16384 in 1 place, below massif's threshold (1.00%)
    n0: 86016 in 3 places, all below massif's threshold (1.00%)
- n1: 8298496 0x4DE282B: brk (brk.c:36)
-  n1: 8298496 0x4DE28F3: __sbrk (sbrk.c:74)
-   n1: 8298496 0x4DE28F3: sbrk (sbrk.c:36)
-    n1: 8298496 0x4D6A5C5: __glibc_morecore (morecore.c:29)
-     n1: 8298496 0x4D6B5F8: sysmalloc (malloc.c:2727)
-      n2: 8298496 0x4D6C8DC: _int_malloc (malloc.c:4407)
-       n1: 8163328 0x4D6D261: malloc (malloc.c:3321)
-        n2: 8163328 0x171D20: ??? (in /usr/bin/gawk)
-         n2: 7888896 0x172504: ??? (in /usr/bin/gawk)
-          n1: 7606272 0x14DCB3: ??? (in /usr/bin/gawk)
-           n1: 7606272 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 7606272 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-          n0: 282624 in 1 place, below massif's threshold (1.00%)
-         n0: 274432 in 2 places, all below massif's threshold (1.00%)
-       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n1: 8331264 0x4DE282B: brk (brk.c:36)
+  n1: 8331264 0x4DE28F3: __sbrk (sbrk.c:74)
+   n1: 8331264 0x4DE28F3: sbrk (sbrk.c:36)
+    n1: 8331264 0x4D6A5C5: __glibc_morecore (morecore.c:29)
+     n1: 8331264 0x4D6B5F8: sysmalloc (malloc.c:2727)
+      n2: 8331264 0x4D6C8DC: _int_malloc (malloc.c:4407)
+       n1: 6303744 0x4D6D261: malloc (malloc.c:3321)
+        n2: 6303744 0x171D20: ??? (in /usr/bin/gawk)
+         n2: 6168576 0x172504: ??? (in /usr/bin/gawk)
+          n1: 6025216 0x14DCB3: ??? (in /usr/bin/gawk)
+           n1: 6025216 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 6025216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+          n0: 143360 in 1 place, below massif's threshold (1.00%)
+         n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 2027520 in 2 places, all below massif's threshold (1.00%)
  n0: 1003520 in 2 places, all below massif's threshold (1.00%)
 #-----------
 snapshot=66
 #-----------
-time=5701467129
-mem_heap_B=221798400
+time=4790849093
+mem_heap_B=201719808
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=67
 #-----------
-time=5759707347
-mem_heap_B=222744576
+time=4831012596
+mem_heap_B=202395648
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=68
 #-----------
-time=5817967215
-mem_heap_B=223690752
+time=4871177688
+mem_heap_B=203071488
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=69
 #-----------
-time=5876213970
-mem_heap_B=224636928
+time=4911341910
+mem_heap_B=203747328
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=70
 #-----------
-time=5934463080
-mem_heap_B=225583104
+time=4951503725
+mem_heap_B=204423168
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=71
 #-----------
-time=5992709602
-mem_heap_B=226529280
+time=4991664923
+mem_heap_B=205099008
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=72
 #-----------
-time=6050953172
-mem_heap_B=227475456
+time=5031835660
+mem_heap_B=205774848
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=73
 #-----------
-time=6109209479
-mem_heap_B=228421632
+time=5080022473
+mem_heap_B=206585856
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=74
 #-----------
-time=6167449720
-mem_heap_B=229367808
+time=5128211391
+mem_heap_B=207396864
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=75
 #-----------
-time=6225685459
-mem_heap_B=230313984
+time=5168377714
+mem_heap_B=208072704
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=detailed
-n4: 230313984 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 207147008 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 207147008 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 206745600 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 206745600 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 206745600 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 185929728 0x4D6D261: malloc (malloc.c:3321)
-       n2: 106991616 0x171D20: ??? (in /usr/bin/gawk)
-        n2: 105701376 0x172504: ??? (in /usr/bin/gawk)
-         n1: 100253696 0x14DCB3: ??? (in /usr/bin/gawk)
-          n1: 100253696 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 100253696 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-         n1: 5447680 0x14DC94: ??? (in /usr/bin/gawk)
-          n1: 5447680 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 5447680 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 1290240 in 1 place, below massif's threshold (1.00%)
-       n1: 78938112 0x12D59C: ??? (in /usr/bin/gawk)
-        n1: 78938112 0x170920: ??? (in /usr/bin/gawk)
-         n1: 78938112 0x13CADA: ??? (in /usr/bin/gawk)
-          n1: 78938112 0x14EDF4: ??? (in /usr/bin/gawk)
-           n1: 78938112 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 78938112 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n3: 20815872 0x4D6E5F8: calloc (malloc.c:3679)
-       n2: 9461760 0x13B161: ??? (in /usr/bin/gawk)
-        n1: 9326592 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 9326592 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 9326592 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+n4: 208072704 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 184872960 0x4DE6A27: __mmap64 (mmap64.c:58)
+  n2: 184872960 0x4DE6A27: mmap (mmap64.c:46)
+   n1: 184471552 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 184471552 0x4D6B335: sysmalloc (malloc.c:2752)
+     n2: 184471552 0x4D6C8DC: _int_malloc (malloc.c:4407)
+      n2: 167710720 0x4D6D261: malloc (malloc.c:3321)
+       n1: 100397056 0x171D20: ??? (in /usr/bin/gawk)
+        n2: 100397056 0x172504: ??? (in /usr/bin/gawk)
+         n1: 96526336 0x14DCB3: ??? (in /usr/bin/gawk)
+          n1: 96526336 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 96526336 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+         n1: 3870720 0x14DC94: ??? (in /usr/bin/gawk)
+          n1: 3870720 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 3870720 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 67313664 0x12D59C: ??? (in /usr/bin/gawk)
+        n1: 67313664 0x170920: ??? (in /usr/bin/gawk)
+         n1: 67313664 0x13CADA: ??? (in /usr/bin/gawk)
+          n1: 67313664 0x14EDF4: ??? (in /usr/bin/gawk)
+           n1: 67313664 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 67313664 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+      n2: 16760832 0x4D6E5F8: calloc (malloc.c:3679)
+       n2: 15679488 0x13B161: ??? (in /usr/bin/gawk)
+        n1: 15544320 0x14F63A: ??? (in /usr/bin/gawk)
+         n1: 15544320 0x1174A6: ??? (in /usr/bin/gawk)
+          n0: 15544320 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
         n0: 135168 in 1 place, below massif's threshold (1.00%)
-       n1: 6217728 0x13B69E: ??? (in /usr/bin/gawk)
-        n1: 6217728 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 6217728 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 6217728 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n2: 5136384 0x13AF8C: ??? (in /usr/bin/gawk)
-        n1: 5001216 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 5001216 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 5001216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 1081344 in 2 places, all below massif's threshold (1.00%)
    n0: 401408 in 3 places, all below massif's threshold (1.00%)
  n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
   n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
@@ -1355,75 +1233,130 @@ n4: 230313984 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
                  n0: 6610944 0x1FFEFFFF66: ???
       n0: 16384 in 1 place, below massif's threshold (1.00%)
    n0: 86016 in 3 places, all below massif's threshold (1.00%)
- n1: 8298496 0x4DE282B: brk (brk.c:36)
-  n1: 8298496 0x4DE28F3: __sbrk (sbrk.c:74)
-   n1: 8298496 0x4DE28F3: sbrk (sbrk.c:36)
-    n1: 8298496 0x4D6A5C5: __glibc_morecore (morecore.c:29)
-     n1: 8298496 0x4D6B5F8: sysmalloc (malloc.c:2727)
-      n2: 8298496 0x4D6C8DC: _int_malloc (malloc.c:4407)
-       n1: 8163328 0x4D6D261: malloc (malloc.c:3321)
-        n2: 8163328 0x171D20: ??? (in /usr/bin/gawk)
-         n2: 7888896 0x172504: ??? (in /usr/bin/gawk)
-          n1: 7606272 0x14DCB3: ??? (in /usr/bin/gawk)
-           n1: 7606272 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 7606272 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-          n0: 282624 in 1 place, below massif's threshold (1.00%)
-         n0: 274432 in 2 places, all below massif's threshold (1.00%)
-       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n1: 8331264 0x4DE282B: brk (brk.c:36)
+  n1: 8331264 0x4DE28F3: __sbrk (sbrk.c:74)
+   n1: 8331264 0x4DE28F3: sbrk (sbrk.c:36)
+    n1: 8331264 0x4D6A5C5: __glibc_morecore (morecore.c:29)
+     n1: 8331264 0x4D6B5F8: sysmalloc (malloc.c:2727)
+      n2: 8331264 0x4D6C8DC: _int_malloc (malloc.c:4407)
+       n1: 6303744 0x4D6D261: malloc (malloc.c:3321)
+        n2: 6303744 0x171D20: ??? (in /usr/bin/gawk)
+         n2: 6168576 0x172504: ??? (in /usr/bin/gawk)
+          n1: 6025216 0x14DCB3: ??? (in /usr/bin/gawk)
+           n1: 6025216 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 6025216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+          n0: 143360 in 1 place, below massif's threshold (1.00%)
+         n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 2027520 in 2 places, all below massif's threshold (1.00%)
  n0: 1003520 in 2 places, all below massif's threshold (1.00%)
 #-----------
 snapshot=76
 #-----------
-time=6283930724
-mem_heap_B=231260160
+time=5216564718
+mem_heap_B=208883712
 mem_heap_extra_B=0
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=77
 #-----------
-time=6292600718
-mem_heap_B=231395328
+time=5256725704
+mem_heap_B=209559552
 mem_heap_extra_B=0
 mem_stacks_B=0
-heap_tree=peak
-n4: 231395328 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
- n1: 208228352 0x4DE6A27: __mmap64 (mmap64.c:58)
-  n2: 208228352 0x4DE6A27: mmap (mmap64.c:46)
-   n1: 207826944 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
-    n1: 207826944 0x4D6B335: sysmalloc (malloc.c:2752)
-     n2: 207826944 0x4D6C8DC: _int_malloc (malloc.c:4407)
-      n2: 187011072 0x4D6D261: malloc (malloc.c:3321)
-       n2: 106991616 0x171D20: ??? (in /usr/bin/gawk)
-        n2: 105701376 0x172504: ??? (in /usr/bin/gawk)
-         n1: 100253696 0x14DCB3: ??? (in /usr/bin/gawk)
-          n1: 100253696 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 100253696 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-         n1: 5447680 0x14DC94: ??? (in /usr/bin/gawk)
-          n1: 5447680 0x1174A6: ??? (in /usr/bin/gawk)
-           n0: 5447680 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 1290240 in 1 place, below massif's threshold (1.00%)
-       n1: 80019456 0x12D59C: ??? (in /usr/bin/gawk)
-        n1: 80019456 0x170920: ??? (in /usr/bin/gawk)
-         n1: 80019456 0x13CADA: ??? (in /usr/bin/gawk)
-          n1: 80019456 0x14EDF4: ??? (in /usr/bin/gawk)
-           n1: 80019456 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 80019456 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-      n3: 20815872 0x4D6E5F8: calloc (malloc.c:3679)
-       n2: 9461760 0x13B161: ??? (in /usr/bin/gawk)
-        n1: 9326592 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 9326592 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 9326592 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+heap_tree=empty
+#-----------
+snapshot=78
+#-----------
+time=5296891070
+mem_heap_B=210235392
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=79
+#-----------
+time=5337050440
+mem_heap_B=210911232
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=80
+#-----------
+time=5385240317
+mem_heap_B=211722240
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=81
+#-----------
+time=5425403154
+mem_heap_B=212398080
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=82
+#-----------
+time=5465572057
+mem_heap_B=213073920
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=83
+#-----------
+time=5505735321
+mem_heap_B=213749760
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=84
+#-----------
+time=5545895511
+mem_heap_B=214425600
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=85
+#-----------
+time=5586056954
+mem_heap_B=215101440
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n4: 215101440 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 191901696 0x4DE6A27: __mmap64 (mmap64.c:58)
+  n2: 191901696 0x4DE6A27: mmap (mmap64.c:46)
+   n1: 191500288 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 191500288 0x4D6B335: sysmalloc (malloc.c:2752)
+     n2: 191500288 0x4D6C8DC: _int_malloc (malloc.c:4407)
+      n2: 174739456 0x4D6D261: malloc (malloc.c:3321)
+       n1: 100397056 0x171D20: ??? (in /usr/bin/gawk)
+        n2: 100397056 0x172504: ??? (in /usr/bin/gawk)
+         n1: 96526336 0x14DCB3: ??? (in /usr/bin/gawk)
+          n1: 96526336 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 96526336 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+         n1: 3870720 0x14DC94: ??? (in /usr/bin/gawk)
+          n1: 3870720 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 3870720 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 74342400 0x12D59C: ??? (in /usr/bin/gawk)
+        n1: 74342400 0x170920: ??? (in /usr/bin/gawk)
+         n1: 74342400 0x13CADA: ??? (in /usr/bin/gawk)
+          n1: 74342400 0x14EDF4: ??? (in /usr/bin/gawk)
+           n1: 74342400 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 74342400 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+      n2: 16760832 0x4D6E5F8: calloc (malloc.c:3679)
+       n2: 15679488 0x13B161: ??? (in /usr/bin/gawk)
+        n1: 15544320 0x14F63A: ??? (in /usr/bin/gawk)
+         n1: 15544320 0x1174A6: ??? (in /usr/bin/gawk)
+          n0: 15544320 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
         n0: 135168 in 1 place, below massif's threshold (1.00%)
-       n1: 6217728 0x13B69E: ??? (in /usr/bin/gawk)
-        n1: 6217728 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 6217728 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 6217728 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-       n2: 5136384 0x13AF8C: ??? (in /usr/bin/gawk)
-        n1: 5001216 0x14F63A: ??? (in /usr/bin/gawk)
-         n1: 5001216 0x1174A6: ??? (in /usr/bin/gawk)
-          n0: 5001216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 1081344 in 2 places, all below massif's threshold (1.00%)
    n0: 401408 in 3 places, all below massif's threshold (1.00%)
  n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
   n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
@@ -1461,19 +1394,164 @@ n4: 231395328 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
                  n0: 6610944 0x1FFEFFFF66: ???
       n0: 16384 in 1 place, below massif's threshold (1.00%)
    n0: 86016 in 3 places, all below massif's threshold (1.00%)
- n1: 8298496 0x4DE282B: brk (brk.c:36)
-  n1: 8298496 0x4DE28F3: __sbrk (sbrk.c:74)
-   n1: 8298496 0x4DE28F3: sbrk (sbrk.c:36)
-    n1: 8298496 0x4D6A5C5: __glibc_morecore (morecore.c:29)
-     n1: 8298496 0x4D6B5F8: sysmalloc (malloc.c:2727)
-      n2: 8298496 0x4D6C8DC: _int_malloc (malloc.c:4407)
-       n1: 8163328 0x4D6D261: malloc (malloc.c:3321)
-        n2: 8163328 0x171D20: ??? (in /usr/bin/gawk)
-         n2: 7888896 0x172504: ??? (in /usr/bin/gawk)
-          n1: 7606272 0x14DCB3: ??? (in /usr/bin/gawk)
-           n1: 7606272 0x1174A6: ??? (in /usr/bin/gawk)
-            n0: 7606272 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
-          n0: 282624 in 1 place, below massif's threshold (1.00%)
-         n0: 274432 in 2 places, all below massif's threshold (1.00%)
-       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n1: 8331264 0x4DE282B: brk (brk.c:36)
+  n1: 8331264 0x4DE28F3: __sbrk (sbrk.c:74)
+   n1: 8331264 0x4DE28F3: sbrk (sbrk.c:36)
+    n1: 8331264 0x4D6A5C5: __glibc_morecore (morecore.c:29)
+     n1: 8331264 0x4D6B5F8: sysmalloc (malloc.c:2727)
+      n2: 8331264 0x4D6C8DC: _int_malloc (malloc.c:4407)
+       n1: 6303744 0x4D6D261: malloc (malloc.c:3321)
+        n2: 6303744 0x171D20: ??? (in /usr/bin/gawk)
+         n2: 6168576 0x172504: ??? (in /usr/bin/gawk)
+          n1: 6025216 0x14DCB3: ??? (in /usr/bin/gawk)
+           n1: 6025216 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 6025216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+          n0: 143360 in 1 place, below massif's threshold (1.00%)
+         n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 2027520 in 2 places, all below massif's threshold (1.00%)
+ n0: 1003520 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=86
+#-----------
+time=5626218030
+mem_heap_B=215777280
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=87
+#-----------
+time=5674408950
+mem_heap_B=216588288
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=88
+#-----------
+time=5714570789
+mem_heap_B=217264128
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=89
+#-----------
+time=5754737368
+mem_heap_B=217939968
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=90
+#-----------
+time=5802923915
+mem_heap_B=218750976
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=91
+#-----------
+time=5851106983
+mem_heap_B=219561984
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=92
+#-----------
+time=5891265722
+mem_heap_B=220237824
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=93
+#-----------
+time=5929949983
+mem_heap_B=220778496
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=peak
+n4: 220778496 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 197578752 0x4DE6A27: __mmap64 (mmap64.c:58)
+  n2: 197578752 0x4DE6A27: mmap (mmap64.c:46)
+   n1: 197177344 0x4D69E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 197177344 0x4D6B335: sysmalloc (malloc.c:2752)
+     n2: 197177344 0x4D6C8DC: _int_malloc (malloc.c:4407)
+      n2: 180416512 0x4D6D261: malloc (malloc.c:3321)
+       n1: 100397056 0x171D20: ??? (in /usr/bin/gawk)
+        n2: 100397056 0x172504: ??? (in /usr/bin/gawk)
+         n1: 96526336 0x14DCB3: ??? (in /usr/bin/gawk)
+          n1: 96526336 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 96526336 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+         n1: 3870720 0x14DC94: ??? (in /usr/bin/gawk)
+          n1: 3870720 0x1174A6: ??? (in /usr/bin/gawk)
+           n0: 3870720 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+       n1: 80019456 0x12D59C: ??? (in /usr/bin/gawk)
+        n1: 80019456 0x170920: ??? (in /usr/bin/gawk)
+         n1: 80019456 0x13CADA: ??? (in /usr/bin/gawk)
+          n1: 80019456 0x14EDF4: ??? (in /usr/bin/gawk)
+           n1: 80019456 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 80019456 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+      n2: 16760832 0x4D6E5F8: calloc (malloc.c:3679)
+       n2: 15679488 0x13B161: ??? (in /usr/bin/gawk)
+        n1: 15544320 0x14F63A: ??? (in /usr/bin/gawk)
+         n1: 15544320 0x1174A6: ??? (in /usr/bin/gawk)
+          n0: 15544320 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 1081344 in 2 places, all below massif's threshold (1.00%)
+   n0: 401408 in 3 places, all below massif's threshold (1.00%)
+ n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7151616 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7151616 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7151616 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7151616 0x400A600: _dl_map_object (dl-load.c:2327)
+       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
+        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
+           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
+             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
+              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+               n1: 7131136 0x2: ???
+                n1: 7131136 0x1FFEFFFF5E: ???
+                 n1: 7131136 0x1FFEFFFF63: ???
+                  n0: 7131136 0x1FFEFFFF66: ???
+       n0: 20480 in 1 place, below massif's threshold (1.00%)
+   n1: 6627328 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6627328 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6627328 0x400A600: _dl_map_object (dl-load.c:2327)
+      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
+       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
+          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
+            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
+             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+              n1: 6610944 0x2: ???
+               n1: 6610944 0x1FFEFFFF5E: ???
+                n1: 6610944 0x1FFEFFFF63: ???
+                 n0: 6610944 0x1FFEFFFF66: ???
+      n0: 16384 in 1 place, below massif's threshold (1.00%)
+   n0: 86016 in 3 places, all below massif's threshold (1.00%)
+ n1: 8331264 0x4DE282B: brk (brk.c:36)
+  n1: 8331264 0x4DE28F3: __sbrk (sbrk.c:74)
+   n1: 8331264 0x4DE28F3: sbrk (sbrk.c:36)
+    n1: 8331264 0x4D6A5C5: __glibc_morecore (morecore.c:29)
+     n1: 8331264 0x4D6B5F8: sysmalloc (malloc.c:2727)
+      n2: 8331264 0x4D6C8DC: _int_malloc (malloc.c:4407)
+       n1: 6303744 0x4D6D261: malloc (malloc.c:3321)
+        n2: 6303744 0x171D20: ??? (in /usr/bin/gawk)
+         n2: 6168576 0x172504: ??? (in /usr/bin/gawk)
+          n1: 6025216 0x14DCB3: ??? (in /usr/bin/gawk)
+           n1: 6025216 0x1174A6: ??? (in /usr/bin/gawk)
+            n0: 6025216 0x4CF1D8F: (below main) (libc_start_call_main.h:58)
+          n0: 143360 in 1 place, below massif's threshold (1.00%)
+         n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 2027520 in 2 places, all below massif's threshold (1.00%)
  n0: 1003520 in 2 places, all below massif's threshold (1.00%)

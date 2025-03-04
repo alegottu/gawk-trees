@@ -151,17 +151,11 @@ const bool tree_remove(const char* tree, const char** subscripts, const unsigned
 		foint tree;
 		HTreeLookDel(htree, _subscripts, &tree);
 		TreeFree(tree.v);
-		result = HTreeLookDel(htree, _subscripts, (foint*)1); // inefficient, but stops other code from breaking; NOTE: need BinTreeDelNode to delete without having to search again, other portions of code like this
+		result = HTreeLookDel(htree, _subscripts, (foint*)1); // inefficient, but stops other code from breaking; NOTE: need TreeDelNode to delete without having to search again, other portions of code like this
 		htree->depth = htree_depth;
 	}
 	else
 		result = HTreeLookDel(htree, _subscripts, (foint*)1);
-
-	// if (htree->n <= 0)
-	// {
-	// 	result = delete_tree(tree);
-	// }
-	// don't yet have htree->n but complies with the assertion recently added in BinTreeFree; TODO: ask about this
 
 	return result;
 }
