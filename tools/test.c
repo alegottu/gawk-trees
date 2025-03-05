@@ -20,11 +20,11 @@ int main(int argc, char *argv[])
 	query_tree("pred", subscripts, &result, 2);
 	puts(result.s);
 	subscripts[1] = "b";
-	result.i = tree_elem_exists("pred", subscripts);
+	result.i = tree_elem_exists("pred", subscripts, 2);
 	unsigned short test = result.i == 0;
 	printf("%i\n", test);
 	subscripts[1] = "y";
-	result.i = tree_elem_exists("pred", subscripts);
+	result.i = tree_elem_exists("pred", subscripts, 2);
 	test = result.i == 1;
 	printf("%i\n", test);
 	result.i = is_tree("pred", subscripts, 1); // TODO: needs case where element doesn't exist?
@@ -68,11 +68,11 @@ int main(int argc, char *argv[])
 	puts("testing removing non-final elements");
 	tree_remove("test", subscripts, 1);
 	subscripts[1] = "y";
-	result.i = tree_elem_exists("test", subscripts);
+	result.i = tree_elem_exists("test", subscripts, 2);
 	test = result.i == 0;
 	printf("%i\n", test);
 	subscripts[1] = "z";
-	result.i = tree_elem_exists("test", subscripts);
+	result.i = tree_elem_exists("test", subscripts, 2);
 	test = result.i == 0;
 	printf("%i\n", test);
 

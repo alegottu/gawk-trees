@@ -70,16 +70,14 @@ dirs = f"logs/{name}/"
 Path(dirs).mkdir(parents=True, exist_ok=True)
 
 with open('mem-benchmark.awk', 'w') as file:
-    print(os.environ['AWKLIBPATH'])
-    # process = subprocess.Popen('env | grep AWK', shell=True, stdout=subprocess.PIPE)
-    # print(process.communicate()[0].decode())
     loops = create_nested_fors(len(sys.argv)-1, "tree_insert", ["rand()"])
-    code = '@load "htrees"\nBEGIN {\n' + loops + "}\n"
+    code = 'BEGIN {\n' + loops + "}\n"
     loops = create_nested_whiles(len(sys.argv)-1)
     code += "BEGIN {\n" + loops + "}"
     file.write(code)
     file.flush()
-    process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}mem.massif gawk -f {file.name}', shell=True, check=False) # TODO: change back to check=True once BinTreeFree assertion is resolved
+    process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}mem.massif gawk -lhtrees -f {file.name}', shell=True, check=True)
+    process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}bintree.massif gawk -lbinhtrees -f {file.name}', shell=True, check=True)
 
 with open('mem-benchmark-noext.awk', 'w') as file:
     loops = create_nested_fors(len(sys.argv)-1, "", ["=rand()"], False)

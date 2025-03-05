@@ -203,4 +203,8 @@ static awk_ext_func_t func_table[] =
 	{ "tree_iters_remaining", do_tree_iters_remaining, 0, 1, awk_true, NULL },
 	{ "tree_iter_break", do_tree_iter_break, 0, 1, awk_true, NULL }
 };
+#if HTREE_USES_AVL
 dl_load_func(func_table, htrees, "");
+#else
+dl_load_func(func_table, binhtrees, "");
+#endif

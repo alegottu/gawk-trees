@@ -3,16 +3,13 @@ In order to compile htrees.so with just source and header files, do the followin
 2. Use "git submodule update --init"
 3. Use "make" or "make debug"
 
-If libwayne.a needs is recompiled with -fPIC flags enabled in order to contribute to a shared object, it's possible to compile htrees.so using the libwayne.a library like the following:
-```
-    gcc -fPIC -shared -DHAVE_CONFIG_H -c -O -g -Igawk -Ilibwayne/include -Iinclude src/htrees.c
-    gcc -Wl,--no-undefined -shared -o htrees.so htrees.o -Llibwayne -lwayne
-```
+If libwayne.a needs is recompiled with -fPIC flags enabled in order to contribute to a shared object, it's possible to compile htrees.so using the libwayne.a library file, but for now we just use only the 
+necessary source files directly. 
 
 How to use the extension:
 1. Follow the steps above to compile the file "htrees.so" in your current directory
-2. Make sure to set the environment vairable "AWKLIBPATH" to your current directory (or wherever you have your "htrees.so" file)
-3. At the top of your awk program, write @load "htrees"
+2. Make sure to set the environment variable "AWKLIBPATH" to the gawk-trees/bin directory (or wherever you have your "htrees.so" file)
+3. At the top of your awk program, write @load "htrees", or use -lhtrees as an option to the gawk command
 4. Refer to the list of extension functions below to use htrees in your awk code
 
 create_tree("name", depth)
