@@ -140,7 +140,7 @@ static awk_value_t* do_tree_elem_exists(const int nargs, awk_value_t* result, st
 	assert(result != NULL);
 
 	query_t query = get_query();
-	double ret = tree_elem_exists(query.name, query.subscripts);
+	double ret = tree_elem_exists(query.name, query.subscripts, query.num_subs);
 
 	free_query(query);
 	return make_number(ret, result);

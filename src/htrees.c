@@ -118,17 +118,19 @@ const bool query_tree(const char* tree, const char** subscripts, foint* result, 
 	return found;
 }
 
-// TODO: add depth parameter to test if non-final elem exists
-const bool tree_elem_exists(const char* tree, const char** subscripts)
+const bool tree_elem_exists(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	foint _htree;
 	TreeLookup(trees, (foint){.s=tree}, &_htree);
 	HTREE* htree = _htree.v;
-	const unsigned char depth = htree->depth;
+	const unsigned char htree_depth = htree->depth;
+	htree->depth = depth; // tricks HTreeLookDel to finish early	
 	foint _subscripts[depth];
 	fill_foints(subscripts, _subscripts, depth);
 
-	return HTreeLookup(htree, _subscripts, NULL);
+	bool result = HTreeLookup(htree, _subscripts, NULL);
+	htree->depth = htree_depth;
+	return result;
 }
 
 const bool tree_remove(const char* tree, const char** subscripts, const unsigned char depth)
@@ -211,7 +213,7 @@ static LINKED_LIST* get_iterator(const char* tree, const char* query, const char
 		return NULL; // NOTE: should possibly be forced exit
 
 	HTREE* htree = _htree.v;
-	unsigned char htree_depth = htree->depth;
+	const unsigned char htree_depth = htree->depth;
 	
 	if (depth == htree_depth)
 	{

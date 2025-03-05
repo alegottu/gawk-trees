@@ -33,7 +33,7 @@ void tree_insert(const char* tree, const char** subscripts, const foint value, c
 
 const bool query_tree(const char* tree, const char** subscripts, foint* result, const unsigned char depth);
 
-const bool tree_elem_exists(const char* tree, const char** subscripts);
+const bool tree_elem_exists(const char* tree, const char** subscripts, const unsigned char depth);
 
 const bool tree_remove(const char* tree, const char** subscripts, const unsigned char depth);
 
