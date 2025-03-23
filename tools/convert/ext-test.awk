@@ -1,0 +1,1 @@
+{++m;query_tree("edge", $1, $2)}END{u = tree_next("edge"); while (tree_iters_remaining("edge") > 0) { v = tree_next("edge", u); while (tree_iters_remaining("edge", u) > 0){if(u""==v""){++self;print(u,": ",v);continue; } }if((tree_elem_exists("edge", v)) && (tree_elem_exists("edge", v, u)))++both};printf "%d directed edges, %d self-loops, %d both directions\n", m, self, both/2}

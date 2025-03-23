@@ -1,0 +1,1404 @@
+desc: --pages-as-heap=yes --massif-out-file=logs/100000000/bintree.massif
+cmd: gawk -lbinhtrees -f mem-benchmark.awk
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=45056
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=1048454
+mem_heap_B=18059264
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n4: 18059264 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7151616 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7151616 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7151616 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7151616 0x400A600: _dl_map_object (dl-load.c:2327)
+       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
+        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
+           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
+             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
+              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+               n1: 7131136 0x3: ???
+                n1: 7131136 0x1FFF00098E: ???
+                 n1: 7131136 0x1FFF000993: ???
+                  n1: 7131136 0x1FFF00099F: ???
+                   n0: 7131136 0x1FFF0009A2: ???
+       n0: 20480 in 1 place, below massif's threshold (1.00%)
+   n1: 6627328 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6627328 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6627328 0x400A600: _dl_map_object (dl-load.c:2327)
+      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
+       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
+          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
+            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
+             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+              n1: 6610944 0x3: ???
+               n1: 6610944 0x1FFF00098E: ???
+                n1: 6610944 0x1FFF000993: ???
+                 n1: 6610944 0x1FFF00099F: ???
+                  n0: 6610944 0x1FFF0009A2: ???
+      n0: 16384 in 1 place, below massif's threshold (1.00%)
+   n0: 86016 in 3 places, all below massif's threshold (1.00%)
+ n1: 3059712 0x4DF4A27: __mmap64 (mmap64.c:58)
+  n2: 3059712 0x4DF4A27: mmap (mmap64.c:46)
+   n1: 3051520 0x4D0E56D: _nl_load_locale_from_archive (loadarchive.c:227)
+    n1: 3051520 0x4D0D0DF: _nl_find_locale (findlocale.c:152)
+     n1: 3051520 0x4D0CA90: setlocale (setlocale.c:414)
+      n1: 3051520 0x4D0CA90: setlocale (setlocale.c:217)
+       n1: 3051520 0x115027: ??? (in /usr/bin/gawk)
+        n0: 3051520 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+   n0: 8192 in 1 place, below massif's threshold (1.00%)
+ n0: 999424 0x0: ???
+ n0: 135168 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=2
+#-----------
+time=22521404058
+mem_heap_B=296189952
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=40060327494
+mem_heap_B=509349888
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=53078169906
+mem_heap_B=666415104
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=74639842924
+mem_heap_B=924991488
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=91305994553
+mem_heap_B=1123823616
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=109857945462
+mem_heap_B=1348067328
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=135242564340
+mem_heap_B=1652060160
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=146548628238
+mem_heap_B=1786552320
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=165372743221
+mem_heap_B=2009038848
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=187987899632
+mem_heap_B=2275454976
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=203040582268
+mem_heap_B=2456580096
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=221885662989
+mem_heap_B=2681769984
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=240742907982
+mem_heap_B=2905473024
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=266242202748
+mem_heap_B=3205681152
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n2: 3205681152 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 3182333952 0x4DF4A27: __mmap64 (mmap64.c:58)
+  n2: 3182333952 0x4DF4A27: mmap (mmap64.c:46)
+   n1: 3179253760 0x4D77E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 3179253760 0x4D79335: sysmalloc (malloc.c:2752)
+     n2: 3179253760 0x4D7A8DC: _int_malloc (malloc.c:4407)
+      n1: 1590218752 0x4D7B261: malloc (malloc.c:3321)
+       n1: 1590218752 0x4D7E58E: strdup (strdup.c:42)
+        n1: 1590218752 0x484E2DF: BinTreeInsert (bintree.c:70)
+         n1: 1590218752 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 1590218752 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 1590218752 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 1590218752 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 1590218752 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 1590218752 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 1590218752 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+      n1: 1589035008 0x4D7C5F8: calloc (malloc.c:3679)
+       n1: 1589035008 0x48518B4: Calloc (misc.c:97)
+        n1: 1589035008 0x484E2D6: BinTreeInsert (bintree.c:69)
+         n1: 1589035008 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 1589035008 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 1589035008 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 1589035008 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 1589035008 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 1589035008 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 1589035008 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+   n0: 3080192 in 3 places, all below massif's threshold (1.00%)
+ n0: 23347200 in 4 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=16
+#-----------
+time=283237922662
+mem_heap_B=3405324288
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=300221747237
+mem_heap_B=3608481792
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=322883341646
+mem_heap_B=3878682624
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n2: 3878682624 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 3855335424 0x4DF4A27: __mmap64 (mmap64.c:58)
+  n2: 3855335424 0x4DF4A27: mmap (mmap64.c:46)
+   n1: 3852255232 0x4D77E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 3852255232 0x4D79335: sysmalloc (malloc.c:2752)
+     n2: 3852255232 0x4D7A8DC: _int_malloc (malloc.c:4407)
+      n1: 1926651904 0x4D7B261: malloc (malloc.c:3321)
+       n1: 1926651904 0x4D7E58E: strdup (strdup.c:42)
+        n1: 1926651904 0x484E2DF: BinTreeInsert (bintree.c:70)
+         n1: 1926651904 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 1926651904 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 1926651904 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 1926651904 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 1926651904 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 1926651904 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 1926651904 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+      n1: 1925603328 0x4D7C5F8: calloc (malloc.c:3679)
+       n1: 1925603328 0x48518B4: Calloc (misc.c:97)
+        n1: 1925603328 0x484E2D6: BinTreeInsert (bintree.c:69)
+         n1: 1925603328 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 1925603328 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 1925603328 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 1925603328 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 1925603328 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 1925603328 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 1925603328 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+   n0: 3080192 in 3 places, all below massif's threshold (1.00%)
+ n0: 23347200 in 4 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=19
+#-----------
+time=348397114023
+mem_heap_B=4179161088
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=376748054588
+mem_heap_B=4510457856
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=395030853930
+mem_heap_B=4729024512
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=413307991247
+mem_heap_B=4945698816
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=426779226269
+mem_heap_B=5105061888
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=449621260507
+mem_heap_B=5372153856
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=472493915737
+mem_heap_B=5638705152
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=486068023936
+mem_heap_B=5800636416
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=506737136228
+mem_heap_B=6044884992
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=526009608869
+mem_heap_B=6271156224
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=539779410359
+mem_heap_B=6431735808
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=559138736957
+mem_heap_B=6656249856
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=572092350237
+mem_heap_B=6808043520
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=591534921879
+mem_heap_B=7038099456
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=610974222523
+mem_heap_B=7266263040
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=630418688272
+mem_heap_B=7493210112
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=659578583335
+mem_heap_B=7830454272
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=682258417238
+mem_heap_B=8097546240
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n2: 8097546240 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 8074199040 0x4DF4A27: __mmap64 (mmap64.c:58)
+  n2: 8074199040 0x4DF4A27: mmap (mmap64.c:46)
+   n1: 8071118848 0x4D77E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 8071118848 0x4D79335: sysmalloc (malloc.c:2752)
+     n2: 8071118848 0x4D7A8DC: _int_malloc (malloc.c:4407)
+      n1: 4036083712 0x4D7B261: malloc (malloc.c:3321)
+       n1: 4036083712 0x4D7E58E: strdup (strdup.c:42)
+        n1: 4036083712 0x484E2DF: BinTreeInsert (bintree.c:70)
+         n1: 4036083712 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 4036083712 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 4036083712 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 4036083712 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 4036083712 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 4036083712 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 4036083712 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+      n1: 4035035136 0x4D7C5F8: calloc (malloc.c:3679)
+       n1: 4035035136 0x48518B4: Calloc (misc.c:97)
+        n1: 4035035136 0x484E2D6: BinTreeInsert (bintree.c:69)
+         n1: 4035035136 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 4035035136 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 4035035136 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 4035035136 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 4035035136 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 4035035136 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 4035035136 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+   n0: 3080192 in 3 places, all below massif's threshold (1.00%)
+ n0: 23347200 in 4 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=37
+#-----------
+time=698440401957
+mem_heap_B=8287727616
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=724034519132
+mem_heap_B=8586043392
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=745083200118
+mem_heap_B=8829210624
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=757716306000
+mem_heap_B=8974110720
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n2: 8974110720 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 8950763520 0x4DF4A27: __mmap64 (mmap64.c:58)
+  n2: 8950763520 0x4DF4A27: mmap (mmap64.c:46)
+   n1: 8947683328 0x4D77E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 8947683328 0x4D79335: sysmalloc (malloc.c:2752)
+     n2: 8947683328 0x4D7A8DC: _int_malloc (malloc.c:4407)
+      n1: 4474433536 0x4D7B261: malloc (malloc.c:3321)
+       n1: 4474433536 0x4D7E58E: strdup (strdup.c:42)
+        n1: 4474433536 0x484E2DF: BinTreeInsert (bintree.c:70)
+         n1: 4474433536 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 4474433536 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 4474433536 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 4474433536 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 4474433536 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 4474433536 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 4474433536 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+      n1: 4473249792 0x4D7C5F8: calloc (malloc.c:3679)
+       n1: 4473249792 0x48518B4: Calloc (misc.c:97)
+        n1: 4473249792 0x484E2D6: BinTreeInsert (bintree.c:69)
+         n1: 4473249792 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 4473249792 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 4473249792 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 4473249792 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 4473249792 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 4473249792 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 4473249792 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+   n0: 3080192 in 3 places, all below massif's threshold (1.00%)
+ n0: 23347200 in 4 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=41
+#-----------
+time=774558844117
+mem_heap_B=9172807680
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=799833213344
+mem_heap_B=9468420096
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n2: 9468420096 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 9445072896 0x4DF4A27: __mmap64 (mmap64.c:58)
+  n2: 9445072896 0x4DF4A27: mmap (mmap64.c:46)
+   n1: 9441992704 0x4D77E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 9441992704 0x4D79335: sysmalloc (malloc.c:2752)
+     n2: 9441992704 0x4D7A8DC: _int_malloc (malloc.c:4407)
+      n1: 4721520640 0x4D7B261: malloc (malloc.c:3321)
+       n1: 4721520640 0x4D7E58E: strdup (strdup.c:42)
+        n1: 4721520640 0x484E2DF: BinTreeInsert (bintree.c:70)
+         n1: 4721520640 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 4721520640 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 4721520640 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 4721520640 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 4721520640 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 4721520640 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 4721520640 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+      n1: 4720472064 0x4D7C5F8: calloc (malloc.c:3679)
+       n1: 4720472064 0x48518B4: Calloc (misc.c:97)
+        n1: 4720472064 0x484E2D6: BinTreeInsert (bintree.c:69)
+         n1: 4720472064 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 4720472064 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 4720472064 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 4720472064 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 4720472064 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 4720472064 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 4720472064 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+   n0: 3080192 in 3 places, all below massif's threshold (1.00%)
+ n0: 23347200 in 4 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=43
+#-----------
+time=816684177437
+mem_heap_B=9663737856
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=829328788501
+mem_heap_B=9809719296
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=858030714709
+mem_heap_B=12148199424
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=874859613482
+mem_heap_B=13205889024
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=895892665440
+mem_heap_B=14524723200
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=912717127584
+mem_heap_B=15581061120
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=925338846991
+mem_heap_B=16372469760
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=928055484870
+mem_heap_B=16542916608
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n2: 16542916608 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 16519569408 0x4DF4A27: __mmap64 (mmap64.c:58)
+  n3: 16519569408 0x4DF4A27: mmap (mmap64.c:46)
+   n1: 15099854848 0x4D77E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 15099854848 0x4D79335: sysmalloc (malloc.c:2752)
+     n2: 15099854848 0x4D7A8DC: _int_malloc (malloc.c:4407)
+      n2: 7550451712 0x4D7B261: malloc (malloc.c:3321)
+       n1: 4956172288 0x4D7E58E: strdup (strdup.c:42)
+        n1: 4956172288 0x484E2DF: BinTreeInsert (bintree.c:70)
+         n1: 4956172288 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 4956172288 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 4956172288 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 4956172288 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 4956172288 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 4956172288 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 4956172288 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+       n1: 2594279424 0x484F84F: copy_str (htrees.c:23)
+        n1: 2594279424 0x484E2E8: BinTreeInsert (bintree.c:71)
+         n2: 2594279424 0x484E3E6: BinTreeInsertMiddleElementOfArray (bintree.c:248)
+          n2: 1612824576 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+           n2: 973209600 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n2: 489443328 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 246546432 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 246546432 in 2 places, all below massif's threshold (1.00%)
+             n1: 242896896 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 242896896 in 2 places, all below massif's threshold (1.00%)
+            n2: 483766272 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 242761728 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 242761728 in 2 places, all below massif's threshold (1.00%)
+             n1: 241004544 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 241004544 in 2 places, all below massif's threshold (1.00%)
+           n2: 639614976 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n2: 391176192 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 250466304 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 250466304 in 2 places, all below massif's threshold (1.00%)
+             n0: 140709888 in 1 place, below massif's threshold (1.00%)
+            n1: 248438784 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n0: 248438784 in 2 places, all below massif's threshold (1.00%)
+          n2: 981454848 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+           n2: 492281856 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n1: 248033280 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n0: 248033280 in 2 places, all below massif's threshold (1.00%)
+            n1: 244248576 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n0: 244248576 in 2 places, all below massif's threshold (1.00%)
+           n2: 489172992 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n1: 245059584 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n0: 245059584 in 2 places, all below massif's threshold (1.00%)
+            n1: 244113408 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n0: 244113408 in 2 places, all below massif's threshold (1.00%)
+      n1: 7549403136 0x4D7C5F8: calloc (malloc.c:3679)
+       n1: 7549403136 0x48518B4: Calloc (misc.c:97)
+        n2: 7549403136 0x484E2D6: BinTreeInsert (bintree.c:69)
+         n1: 4954988544 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 4954988544 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 4954988544 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 4954988544 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 4954988544 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 4954988544 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 4954988544 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+         n2: 2594414592 0x484E3E6: BinTreeInsertMiddleElementOfArray (bintree.c:248)
+          n2: 1621069824 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+           n2: 988753920 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n2: 498499584 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 250601472 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 250601472 in 2 places, all below massif's threshold (1.00%)
+             n1: 247898112 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 247898112 in 2 places, all below massif's threshold (1.00%)
+            n2: 490254336 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 245600256 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 245600256 in 2 places, all below massif's threshold (1.00%)
+             n1: 244654080 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 244654080 in 2 places, all below massif's threshold (1.00%)
+           n2: 632315904 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n2: 385363968 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 246276096 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 246276096 in 2 places, all below massif's threshold (1.00%)
+             n0: 139087872 in 1 place, below massif's threshold (1.00%)
+            n1: 246951936 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n0: 246951936 in 2 places, all below massif's threshold (1.00%)
+          n2: 973344768 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+           n2: 487550976 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n1: 244789248 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n0: 244789248 in 2 places, all below massif's threshold (1.00%)
+            n1: 242761728 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n0: 242761728 in 2 places, all below massif's threshold (1.00%)
+           n2: 485793792 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n1: 248438784 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n0: 248438784 in 2 places, all below massif's threshold (1.00%)
+            n1: 237355008 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n0: 237355008 in 2 places, all below massif's threshold (1.00%)
+   n1: 1416634368 0x4D784B7: sysmalloc_mmap.constprop.0 (malloc.c:2441)
+    n1: 1416634368 0x4D7928B: sysmalloc (malloc.c:2594)
+     n1: 1416634368 0x4D7A8DC: _int_malloc (malloc.c:4407)
+      n1: 1416634368 0x4D7B261: malloc (malloc.c:3321)
+       n2: 1416634368 0x48518F1: Realloc (misc.c:107)
+        n1: 708317184 0x484E192: BinTreeRebalance (bintree.c:269)
+         n1: 708317184 0x484E387: BinTreeInsert (bintree.c:81)
+          n1: 708317184 0x484F260: HTreeInsertHelper (htree.c:31)
+           n1: 708317184 0x484F66B: HTreeInsert (htree.c:60)
+            n1: 708317184 0x484FCFB: tree_insert (htrees.c:73)
+             n1: 708317184 0x484EC57: do_tree_insert (gawk_ext.c:110)
+              n1: 708317184 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 708317184 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 708317184 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+        n1: 708317184 0x484E1B0: BinTreeRebalance (bintree.c:270)
+         n1: 708317184 0x484E387: BinTreeInsert (bintree.c:81)
+          n1: 708317184 0x484F260: HTreeInsertHelper (htree.c:31)
+           n1: 708317184 0x484F66B: HTreeInsert (htree.c:60)
+            n1: 708317184 0x484FCFB: tree_insert (htrees.c:73)
+             n1: 708317184 0x484EC57: do_tree_insert (gawk_ext.c:110)
+              n1: 708317184 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 708317184 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 708317184 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+   n0: 3080192 in 3 places, all below massif's threshold (1.00%)
+ n0: 23347200 in 4 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=51
+#-----------
+time=930773764005
+mem_heap_B=16713768960
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=933491458651
+mem_heap_B=16884621312
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=936207778004
+mem_heap_B=17054662656
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=938925685901
+mem_heap_B=17225379840
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=941642080208
+mem_heap_B=17396097024
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=944358802052
+mem_heap_B=17565597696
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=947075749166
+mem_heap_B=17736450048
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=949793902053
+mem_heap_B=17907302400
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=952510470340
+mem_heap_B=18077749248
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=60
+#-----------
+time=955227334844
+mem_heap_B=18248196096
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n2: 18248196096 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 18224848896 0x4DF4A27: __mmap64 (mmap64.c:58)
+  n3: 18224848896 0x4DF4A27: mmap (mmap64.c:46)
+   n1: 16805134336 0x4D77E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 16805134336 0x4D79335: sysmalloc (malloc.c:2752)
+     n2: 16805134336 0x4D7A8DC: _int_malloc (malloc.c:4407)
+      n2: 8403091456 0x4D7B261: malloc (malloc.c:3321)
+       n1: 4956172288 0x4D7E58E: strdup (strdup.c:42)
+        n1: 4956172288 0x484E2DF: BinTreeInsert (bintree.c:70)
+         n1: 4956172288 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 4956172288 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 4956172288 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 4956172288 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 4956172288 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 4956172288 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 4956172288 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+       n1: 3446919168 0x484F84F: copy_str (htrees.c:23)
+        n1: 3446919168 0x484E2E8: BinTreeInsert (bintree.c:71)
+         n2: 3446919168 0x484E3E6: BinTreeInsertMiddleElementOfArray (bintree.c:248)
+          n2: 2141872128 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+           n2: 1291665408 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n2: 647184384 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 328052736 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 328052736 in 2 places, all below massif's threshold (1.00%)
+             n1: 319131648 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 319131648 in 2 places, all below massif's threshold (1.00%)
+            n2: 644481024 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 323321856 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 323321856 in 2 places, all below massif's threshold (1.00%)
+             n1: 321159168 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 321159168 in 2 places, all below massif's threshold (1.00%)
+           n2: 850206720 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n2: 516071424 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 329134080 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 329134080 in 2 places, all below massif's threshold (1.00%)
+             n1: 186937344 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 186937344 in 2 places, all below massif's threshold (1.00%)
+            n1: 334135296 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n0: 334135296 in 2 places, all below massif's threshold (1.00%)
+          n2: 1305047040 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+           n2: 657186816 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n1: 328863744 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n0: 328863744 in 2 places, all below massif's threshold (1.00%)
+            n1: 328323072 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n0: 328323072 in 2 places, all below massif's threshold (1.00%)
+           n2: 647860224 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n1: 326025216 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n0: 326025216 in 2 places, all below massif's threshold (1.00%)
+            n1: 321835008 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n0: 321835008 in 2 places, all below massif's threshold (1.00%)
+      n1: 8402042880 0x4D7C5F8: calloc (malloc.c:3679)
+       n1: 8402042880 0x48518B4: Calloc (misc.c:97)
+        n2: 8402042880 0x484E2D6: BinTreeInsert (bintree.c:69)
+         n1: 4954988544 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 4954988544 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 4954988544 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 4954988544 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 4954988544 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 4954988544 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 4954988544 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+         n2: 3447054336 0x484E3E6: BinTreeInsertMiddleElementOfArray (bintree.c:248)
+          n2: 2146603008 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+           n2: 1310048256 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n2: 662052864 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 334675968 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 334675968 in 2 places, all below massif's threshold (1.00%)
+             n1: 327376896 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 327376896 in 2 places, all below massif's threshold (1.00%)
+            n2: 647995392 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 324268032 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 324268032 in 2 places, all below massif's threshold (1.00%)
+             n1: 323727360 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 323727360 in 2 places, all below massif's threshold (1.00%)
+           n2: 836554752 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n2: 510124032 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 330891264 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 330891264 in 2 places, all below massif's threshold (1.00%)
+             n0: 179232768 in 1 place, below massif's threshold (1.00%)
+            n1: 326430720 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n0: 326430720 in 2 places, all below massif's threshold (1.00%)
+          n2: 1300451328 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+           n2: 650428416 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n1: 325890048 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n0: 325890048 in 2 places, all below massif's threshold (1.00%)
+            n1: 324538368 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n0: 324538368 in 2 places, all below massif's threshold (1.00%)
+           n2: 650022912 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n1: 331972608 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n0: 331972608 in 2 places, all below massif's threshold (1.00%)
+            n1: 318050304 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n0: 318050304 in 2 places, all below massif's threshold (1.00%)
+   n1: 1416634368 0x4D784B7: sysmalloc_mmap.constprop.0 (malloc.c:2441)
+    n1: 1416634368 0x4D7928B: sysmalloc (malloc.c:2594)
+     n1: 1416634368 0x4D7A8DC: _int_malloc (malloc.c:4407)
+      n1: 1416634368 0x4D7B261: malloc (malloc.c:3321)
+       n2: 1416634368 0x48518F1: Realloc (misc.c:107)
+        n1: 708317184 0x484E192: BinTreeRebalance (bintree.c:269)
+         n1: 708317184 0x484E387: BinTreeInsert (bintree.c:81)
+          n1: 708317184 0x484F260: HTreeInsertHelper (htree.c:31)
+           n1: 708317184 0x484F66B: HTreeInsert (htree.c:60)
+            n1: 708317184 0x484FCFB: tree_insert (htrees.c:73)
+             n1: 708317184 0x484EC57: do_tree_insert (gawk_ext.c:110)
+              n1: 708317184 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 708317184 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 708317184 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+        n1: 708317184 0x484E1B0: BinTreeRebalance (bintree.c:270)
+         n1: 708317184 0x484E387: BinTreeInsert (bintree.c:81)
+          n1: 708317184 0x484F260: HTreeInsertHelper (htree.c:31)
+           n1: 708317184 0x484F66B: HTreeInsert (htree.c:60)
+            n1: 708317184 0x484FCFB: tree_insert (htrees.c:73)
+             n1: 708317184 0x484EC57: do_tree_insert (gawk_ext.c:110)
+              n1: 708317184 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 708317184 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 708317184 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+   n0: 3080192 in 3 places, all below massif's threshold (1.00%)
+ n0: 23347200 in 4 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=61
+#-----------
+time=957944992738
+mem_heap_B=18418642944
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=960662135648
+mem_heap_B=18589089792
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=63
+#-----------
+time=963378455916
+mem_heap_B=18759536640
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=64
+#-----------
+time=966096617076
+mem_heap_B=18930388992
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=65
+#-----------
+time=968813072349
+mem_heap_B=19101106176
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=66
+#-----------
+time=971529993516
+mem_heap_B=19271688192
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=67
+#-----------
+time=974248018911
+mem_heap_B=19442405376
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=68
+#-----------
+time=976965470285
+mem_heap_B=19612987392
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=69
+#-----------
+time=979681837121
+mem_heap_B=19783569408
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=70
+#-----------
+time=982398604450
+mem_heap_B=19953881088
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n2: 19953881088 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 19930533888 0x4DF4A27: __mmap64 (mmap64.c:58)
+  n3: 19930533888 0x4DF4A27: mmap (mmap64.c:46)
+   n1: 18510819328 0x4D77E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 18510819328 0x4D79335: sysmalloc (malloc.c:2752)
+     n2: 18510819328 0x4D7A8DC: _int_malloc (malloc.c:4407)
+      n2: 9256001536 0x4D7B261: malloc (malloc.c:3321)
+       n1: 4956172288 0x4D7E58E: strdup (strdup.c:42)
+        n1: 4956172288 0x484E2DF: BinTreeInsert (bintree.c:70)
+         n1: 4956172288 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 4956172288 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 4956172288 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 4956172288 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 4956172288 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 4956172288 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 4956172288 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+       n1: 4299829248 0x484F84F: copy_str (htrees.c:23)
+        n1: 4299829248 0x484E2E8: BinTreeInsert (bintree.c:71)
+         n2: 4299829248 0x484E3E6: BinTreeInsertMiddleElementOfArray (bintree.c:248)
+          n2: 2675109888 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+           n2: 1611743232 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n2: 805871616 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n2: 404963328 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n1: 204374016 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 204374016 in 2 places, all below massif's threshold (1.00%)
+              n1: 200589312 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 200589312 in 2 places, all below massif's threshold (1.00%)
+             n2: 400908288 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n1: 204103680 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 204103680 in 2 places, all below massif's threshold (1.00%)
+              n0: 196804608 in 1 place, below massif's threshold (1.00%)
+            n2: 805871616 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n2: 405774336 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n1: 203022336 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 203022336 in 2 places, all below massif's threshold (1.00%)
+              n1: 202752000 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 202752000 in 2 places, all below massif's threshold (1.00%)
+             n2: 400097280 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n1: 203022336 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 203022336 in 2 places, all below massif's threshold (1.00%)
+              n0: 197074944 in 1 place, below massif's threshold (1.00%)
+           n2: 1063366656 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n2: 647860224 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n2: 411181056 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n1: 206671872 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 206671872 in 2 places, all below massif's threshold (1.00%)
+              n1: 204509184 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 204509184 in 2 places, all below massif's threshold (1.00%)
+             n1: 236679168 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 236679168 in 2 places, all below massif's threshold (1.00%)
+            n2: 415506432 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 208699392 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 208699392 in 2 places, all below massif's threshold (1.00%)
+             n1: 206807040 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 206807040 in 2 places, all below massif's threshold (1.00%)
+          n2: 1624719360 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+           n2: 814522368 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n2: 408342528 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 205049856 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 205049856 in 2 places, all below massif's threshold (1.00%)
+             n1: 203292672 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 203292672 in 2 places, all below massif's threshold (1.00%)
+            n2: 406179840 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 203698176 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 203698176 in 2 places, all below massif's threshold (1.00%)
+             n1: 202481664 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 202481664 in 2 places, all below massif's threshold (1.00%)
+           n2: 810196992 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n2: 405774336 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 205725696 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 205725696 in 2 places, all below massif's threshold (1.00%)
+             n1: 200048640 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 200048640 in 2 places, all below massif's threshold (1.00%)
+            n2: 404422656 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 203157504 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 203157504 in 2 places, all below massif's threshold (1.00%)
+             n1: 201265152 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 201265152 in 2 places, all below massif's threshold (1.00%)
+      n1: 9254817792 0x4D7C5F8: calloc (malloc.c:3679)
+       n1: 9254817792 0x48518B4: Calloc (misc.c:97)
+        n2: 9254817792 0x484E2D6: BinTreeInsert (bintree.c:69)
+         n1: 4954988544 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 4954988544 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 4954988544 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 4954988544 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 4954988544 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 4954988544 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 4954988544 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+         n2: 4299829248 0x484E3E6: BinTreeInsertMiddleElementOfArray (bintree.c:248)
+          n2: 2679975936 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+           n2: 1628368896 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n2: 822091776 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n2: 416317440 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n1: 218836992 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 218836992 in 2 places, all below massif's threshold (1.00%)
+              n0: 197480448 in 1 place, below massif's threshold (1.00%)
+             n2: 405774336 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n1: 203968512 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 203968512 in 2 places, all below massif's threshold (1.00%)
+              n1: 201805824 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 201805824 in 2 places, all below massif's threshold (1.00%)
+            n2: 806277120 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n2: 408748032 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n1: 205320192 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 205320192 in 2 places, all below massif's threshold (1.00%)
+              n1: 203427840 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 203427840 in 2 places, all below massif's threshold (1.00%)
+             n2: 397529088 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n1: 200724480 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 200724480 in 2 places, all below massif's threshold (1.00%)
+              n0: 196804608 in 1 place, below massif's threshold (1.00%)
+           n2: 1051607040 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n2: 640020480 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n2: 413073408 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n1: 210051072 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 210051072 in 2 places, all below massif's threshold (1.00%)
+              n1: 203022336 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 203022336 in 2 places, all below massif's threshold (1.00%)
+             n1: 226947072 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 226947072 in 2 places, all below massif's threshold (1.00%)
+            n2: 411586560 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 208699392 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 208699392 in 2 places, all below massif's threshold (1.00%)
+             n1: 202887168 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 202887168 in 2 places, all below massif's threshold (1.00%)
+          n2: 1619853312 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+           n2: 811143168 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n2: 407261184 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 206131200 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 206131200 in 2 places, all below massif's threshold (1.00%)
+             n1: 201129984 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 201129984 in 2 places, all below massif's threshold (1.00%)
+            n2: 403881984 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 208969728 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 208969728 in 2 places, all below massif's threshold (1.00%)
+             n0: 194912256 in 1 place, below massif's threshold (1.00%)
+           n2: 808710144 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n2: 409423872 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 207618048 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 207618048 in 2 places, all below massif's threshold (1.00%)
+             n1: 201805824 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 201805824 in 2 places, all below massif's threshold (1.00%)
+            n2: 399286272 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 202346496 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 202346496 in 2 places, all below massif's threshold (1.00%)
+             n0: 196939776 in 1 place, below massif's threshold (1.00%)
+   n1: 1416634368 0x4D784B7: sysmalloc_mmap.constprop.0 (malloc.c:2441)
+    n1: 1416634368 0x4D7928B: sysmalloc (malloc.c:2594)
+     n1: 1416634368 0x4D7A8DC: _int_malloc (malloc.c:4407)
+      n1: 1416634368 0x4D7B261: malloc (malloc.c:3321)
+       n2: 1416634368 0x48518F1: Realloc (misc.c:107)
+        n1: 708317184 0x484E192: BinTreeRebalance (bintree.c:269)
+         n1: 708317184 0x484E387: BinTreeInsert (bintree.c:81)
+          n1: 708317184 0x484F260: HTreeInsertHelper (htree.c:31)
+           n1: 708317184 0x484F66B: HTreeInsert (htree.c:60)
+            n1: 708317184 0x484FCFB: tree_insert (htrees.c:73)
+             n1: 708317184 0x484EC57: do_tree_insert (gawk_ext.c:110)
+              n1: 708317184 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 708317184 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 708317184 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+        n1: 708317184 0x484E1B0: BinTreeRebalance (bintree.c:270)
+         n1: 708317184 0x484E387: BinTreeInsert (bintree.c:81)
+          n1: 708317184 0x484F260: HTreeInsertHelper (htree.c:31)
+           n1: 708317184 0x484F66B: HTreeInsert (htree.c:60)
+            n1: 708317184 0x484FCFB: tree_insert (htrees.c:73)
+             n1: 708317184 0x484EC57: do_tree_insert (gawk_ext.c:110)
+              n1: 708317184 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 708317184 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 708317184 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+   n0: 3080192 in 3 places, all below massif's threshold (1.00%)
+ n0: 23347200 in 4 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=71
+#-----------
+time=985116729504
+mem_heap_B=20124868608
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=72
+#-----------
+time=987833332732
+mem_heap_B=20295450624
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=73
+#-----------
+time=990549931849
+mem_heap_B=20466302976
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=74
+#-----------
+time=993266338759
+mem_heap_B=20637020160
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=75
+#-----------
+time=995983356690
+mem_heap_B=20807467008
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=76
+#-----------
+time=998700310549
+mem_heap_B=20977913856
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=77
+#-----------
+time=1001418520421
+mem_heap_B=21148901376
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=78
+#-----------
+time=1800472202890
+mem_heap_B=21273661440
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=peak
+n2: 21273661440 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 21250314240 0x4DF4A27: __mmap64 (mmap64.c:58)
+  n3: 21250314240 0x4DF4A27: mmap (mmap64.c:46)
+   n1: 19830599680 0x4D77E61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 19830599680 0x4D79335: sysmalloc (malloc.c:2752)
+     n2: 19830599680 0x4D7A8DC: _int_malloc (malloc.c:4407)
+      n2: 9915891712 0x4D7B261: malloc (malloc.c:3321)
+       n1: 4959719424 0x484F84F: copy_str (htrees.c:23)
+        n1: 4959719424 0x484E2E8: BinTreeInsert (bintree.c:71)
+         n2: 4959719424 0x484E3E6: BinTreeInsertMiddleElementOfArray (bintree.c:248)
+          n2: 3086831616 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+           n2: 1861804032 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n2: 931037184 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n2: 469032960 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n1: 237760512 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 237760512 in 2 places, all below massif's threshold (1.00%)
+              n1: 231272448 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 231272448 in 2 places, all below massif's threshold (1.00%)
+             n2: 462004224 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n1: 235732992 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 235732992 in 2 places, all below massif's threshold (1.00%)
+              n1: 226271232 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 226271232 in 2 places, all below massif's threshold (1.00%)
+            n2: 930766848 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n2: 469708800 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n1: 236679168 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 236679168 in 2 places, all below massif's threshold (1.00%)
+              n1: 233029632 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 233029632 in 2 places, all below massif's threshold (1.00%)
+             n2: 461058048 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n1: 236408832 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 236408832 in 2 places, all below massif's threshold (1.00%)
+              n1: 224649216 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 224649216 in 2 places, all below massif's threshold (1.00%)
+           n2: 1225027584 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n2: 744370176 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n2: 469708800 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n1: 236138496 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 236138496 in 2 places, all below massif's threshold (1.00%)
+              n1: 233570304 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 233570304 in 2 places, all below massif's threshold (1.00%)
+             n1: 274661376 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 274661376 in 2 places, all below massif's threshold (1.00%)
+            n2: 480657408 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 241410048 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 241410048 in 2 places, all below massif's threshold (1.00%)
+             n1: 239247360 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 239247360 in 2 places, all below massif's threshold (1.00%)
+          n2: 1872887808 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+           n2: 938336256 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n2: 474439680 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 239517696 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 239517696 in 2 places, all below massif's threshold (1.00%)
+             n1: 234921984 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 234921984 in 2 places, all below massif's threshold (1.00%)
+            n2: 463896576 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 232083456 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 232083456 in 2 places, all below massif's threshold (1.00%)
+             n1: 231813120 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 231813120 in 2 places, all below massif's threshold (1.00%)
+           n2: 934551552 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n2: 468221952 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 234246144 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 234246144 in 2 places, all below massif's threshold (1.00%)
+             n1: 233975808 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 233975808 in 2 places, all below massif's threshold (1.00%)
+            n2: 466329600 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 237490176 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 237490176 in 2 places, all below massif's threshold (1.00%)
+             n1: 228839424 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 228839424 in 2 places, all below massif's threshold (1.00%)
+       n1: 4956172288 0x4D7E58E: strdup (strdup.c:42)
+        n1: 4956172288 0x484E2DF: BinTreeInsert (bintree.c:70)
+         n1: 4956172288 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 4956172288 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 4956172288 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 4956172288 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 4956172288 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 4956172288 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 4956172288 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+      n1: 9914707968 0x4D7C5F8: calloc (malloc.c:3679)
+       n1: 9914707968 0x48518B4: Calloc (misc.c:97)
+        n2: 9914707968 0x484E2D6: BinTreeInsert (bintree.c:69)
+         n2: 4959719424 0x484E3E6: BinTreeInsertMiddleElementOfArray (bintree.c:248)
+          n2: 3088453632 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+           n2: 1878564864 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n2: 944824320 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n2: 476602368 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n1: 250195968 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 250195968 in 2 places, all below massif's threshold (1.00%)
+              n1: 226406400 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 226406400 in 2 places, all below massif's threshold (1.00%)
+             n2: 468221952 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n1: 235057152 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 235057152 in 2 places, all below massif's threshold (1.00%)
+              n1: 233164800 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 233164800 in 2 places, all below massif's threshold (1.00%)
+            n2: 933740544 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n2: 472276992 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n1: 237084672 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 237084672 in 2 places, all below massif's threshold (1.00%)
+              n1: 235192320 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 235192320 in 2 places, all below massif's threshold (1.00%)
+             n2: 461463552 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n1: 231002112 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 231002112 in 2 places, all below massif's threshold (1.00%)
+              n1: 230461440 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 230461440 in 2 places, all below massif's threshold (1.00%)
+           n2: 1209888768 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n2: 737746944 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n2: 472276992 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n1: 240328704 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+               n0: 240328704 in 2 places, all below massif's threshold (1.00%)
+              n1: 231948288 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+               n0: 231948288 in 2 places, all below massif's threshold (1.00%)
+             n1: 265469952 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 265469952 in 2 places, all below massif's threshold (1.00%)
+            n2: 472141824 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 240058368 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 240058368 in 2 places, all below massif's threshold (1.00%)
+             n1: 232083456 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 232083456 in 2 places, all below massif's threshold (1.00%)
+          n2: 1871265792 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+           n2: 937660416 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+            n2: 473763840 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 239652864 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 239652864 in 2 places, all below massif's threshold (1.00%)
+             n1: 234110976 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 234110976 in 2 places, all below massif's threshold (1.00%)
+            n2: 463896576 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 234246144 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 234246144 in 2 places, all below massif's threshold (1.00%)
+             n1: 229650432 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 229650432 in 2 places, all below massif's threshold (1.00%)
+           n2: 933605376 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+            n2: 469438464 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+             n1: 237625344 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 237625344 in 2 places, all below massif's threshold (1.00%)
+             n1: 231813120 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 231813120 in 2 places, all below massif's threshold (1.00%)
+            n2: 464166912 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+             n1: 240869376 0x484E402: BinTreeInsertMiddleElementOfArray (bintree.c:250)
+              n0: 240869376 in 2 places, all below massif's threshold (1.00%)
+             n1: 223297536 0x484E3F4: BinTreeInsertMiddleElementOfArray (bintree.c:249)
+              n0: 223297536 in 2 places, all below massif's threshold (1.00%)
+         n1: 4954988544 0x484F260: HTreeInsertHelper (htree.c:31)
+          n1: 4954988544 0x484F66B: HTreeInsert (htree.c:60)
+           n1: 4954988544 0x484FCFB: tree_insert (htrees.c:73)
+            n1: 4954988544 0x484EC57: do_tree_insert (gawk_ext.c:110)
+             n1: 4954988544 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 4954988544 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 4954988544 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+   n1: 1416634368 0x4D784B7: sysmalloc_mmap.constprop.0 (malloc.c:2441)
+    n1: 1416634368 0x4D7928B: sysmalloc (malloc.c:2594)
+     n1: 1416634368 0x4D7A8DC: _int_malloc (malloc.c:4407)
+      n1: 1416634368 0x4D7B261: malloc (malloc.c:3321)
+       n2: 1416634368 0x48518F1: Realloc (misc.c:107)
+        n1: 708317184 0x484E192: BinTreeRebalance (bintree.c:269)
+         n1: 708317184 0x484E387: BinTreeInsert (bintree.c:81)
+          n1: 708317184 0x484F260: HTreeInsertHelper (htree.c:31)
+           n1: 708317184 0x484F66B: HTreeInsert (htree.c:60)
+            n1: 708317184 0x484FCFB: tree_insert (htrees.c:73)
+             n1: 708317184 0x484EC57: do_tree_insert (gawk_ext.c:110)
+              n1: 708317184 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 708317184 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 708317184 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+        n1: 708317184 0x484E1B0: BinTreeRebalance (bintree.c:270)
+         n1: 708317184 0x484E387: BinTreeInsert (bintree.c:81)
+          n1: 708317184 0x484F260: HTreeInsertHelper (htree.c:31)
+           n1: 708317184 0x484F66B: HTreeInsert (htree.c:60)
+            n1: 708317184 0x484FCFB: tree_insert (htrees.c:73)
+             n1: 708317184 0x484EC57: do_tree_insert (gawk_ext.c:110)
+              n1: 708317184 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 708317184 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 708317184 0x4CFFD8F: (below main) (libc_start_call_main.h:58)
+   n0: 3080192 in 3 places, all below massif's threshold (1.00%)
+ n0: 23347200 in 4 places, all below massif's threshold (1.00%)

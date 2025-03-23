@@ -2,8 +2,9 @@ Using make_const_string instead of make_malloced_string
 makes a copy of an already malloced string each time,
 but using make_malloced_string on the same char* 
 will result in a double free, because it essentially tells
-gawk to handle the freeing of the same char* twice by
-assigning that char* to a variable within a gawk program.
+gawk to handle the freeing of the same char* a second time by
+assigning that char* to a variable within a gawk program,
+which then means we have no control over freeing the value.
 The solution to this is to use value cookies, which store
 a cached value such as a string, for multiple variables to
 use, and which gawk knows to free seperately and only once.
@@ -14,7 +15,3 @@ yet another associative data structure. In the case where a
 gawk program rarely uses the same value for the given 
 variables within the program, this may actually waste more
 memory than simply using make_const_string.
-
-Use format:
-	command time -o logs/1eN/out --verbose ./test.sh "$@"
-for basic memory tests
