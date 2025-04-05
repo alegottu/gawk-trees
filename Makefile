@@ -1,5 +1,5 @@
 LW_PATH = libwayne
-GAWK_PATH = gawk
+GAWK_PATH = $(LW_PATH)/gawk
 BASE_FLAGS = -Wno-discarded-qualifiers -Wno-incompatible-pointer-types -fPIC -shared -DHAVE_CONFIG_H -c
 INCLUDES = -Iinclude -I$(GAWK_PATH) -I$(GAWK_PATH)/pc -I$(LW_PATH)/include
 SOURCE = src/*.c $(LW_PATH)/src/htree.c $(LW_PATH)/src/misc.c $(LW_PATH)/src/linked-list.c $(LW_PATH)/src/mem-debug.c

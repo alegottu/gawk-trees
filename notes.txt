@@ -4,8 +4,15 @@ but using make_malloced_string on the same char*
 will result in a double free, because it essentially tells
 gawk to handle the freeing of the same char* a second time by
 assigning that char* to a variable within a gawk program,
-which then means we have no control over freeing the value.
-The solution to this is to use value cookies, which store
+which then means we have no control over freeing the value;
+this is bad in the case where we insert a value into the tree
+but never retrieve it on the awk-level via a query,
+never signaling to gawk that it's responsible for freeing it. 
+A possible solution could be to check whether or not a
+value is taken care of by gawk before freeing it on exit,
+but this would require more memory to track this of course.
+
+Another solution is to use value cookies, which store
 a cached value such as a string, for multiple variables to
 use, and which gawk knows to free seperately and only once.
 However, these would also cost more memory to store, partially
@@ -15,3 +22,28 @@ yet another associative data structure. In the case where a
 gawk program rarely uses the same value for the given 
 variables within the program, this may actually waste more
 memory than simply using make_const_string.
+
+Now that there's a fork of libwayne specifically for gawk-trees,
+the plan going forward is:
+1. Modify htree and avltree to not use foints and instead use
+awk_value_t*
+2. Upon insert, malloc the string result using gawk_malloc()
+and insert the awk_value_t* resulting from make_malloced_string();
+there's potentially room here to switch between numeric types
+and strings, since awk_value_t allows for that
+3. Upon query, return the awk_value_t* directly; create a comparison
+function to compare between awk_string_t (value.str_value);
+keep in mind what should happen upon a duplicate attempting to be
+inserted (right now it's replaced, make sure the existing is
+properly deleted)
+
+The only way to directly be able to update a value obtained from a 
+query to the tree is if we were to also update gawk's symbol table
+in addition to the actual htree(s); because of this, it's difficult
+to have a straightforward solution for translating shortcuts like +=
+into the extension, although this branch will experimentally try to
+solve that by using awk_value_t in the internal structures instead
+of foints, that way we can return a pointer to the actual data
+stored internally instead of constructing an awk_value_t from that
+data and filling a pointer with that. Ulimately though, different
+functions added to the interface may be needed.

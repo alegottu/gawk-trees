@@ -1,7 +1,4 @@
-[submodule "gawk"]
-	path = gawk
-	url = https://git.savannah.gnu.org/r/gawk.git
-	branch = gawk-3.1-stable
 [submodule "libwayne"]
 	path = libwayne
 	url = https://github.com/alegottu/libwayne.git
+	branch = awk_value_t
