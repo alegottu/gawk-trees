@@ -13,15 +13,14 @@
 #if HTREE_USES_AVL
 #include "avltree.h"
 #define NODETYPE AVLTREENODE
-#define TreeDelete(T,k) AvlTreeLookDel((T),(k),(foint*)1)
-#define AvlTreeDelete(T,k) AvlTreeLookDel((T),(k),(foint*)1)
+#define TreeDelete(T,k) AvlTreeLookDel((T),(k),(awk_value_t*)1)
 #else
 #include "bintree.h"
 #define NODETYPE BINTREENODE
 #define TreeDelete(t,k) BinTreeLookDel((t), (k), (foint*)1)
 #endif
 
-void free_htree(const foint tree);
+void free_htree(const awk_value_t tree);
 
 bool init_trees();
 
@@ -29,9 +28,10 @@ HTREE* create_tree(const char* name, const int depth);
 
 const bool delete_tree(const char* name);
 
-void tree_insert(const char* tree, const char** subscripts, const foint value, const unsigned char depth);
+void tree_insert(const char* tree, const char** subscripts, const awk_value_t value, const unsigned char depth);
 
-const bool query_tree(const char* tree, const char** subscripts, foint* result, const unsigned char depth);
+// NOTE: result is a pointer to a pointer, not a 2D array
+const bool query_tree(const char* tree, const char** subscripts, awk_value_t** result, const unsigned char depth);
 
 const bool tree_elem_exists(const char* tree, const char** subscripts, const unsigned char depth);
 

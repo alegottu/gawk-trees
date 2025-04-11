@@ -8,18 +8,18 @@
 extern TREETYPE* trees;
 extern TREETYPE* current_iterators;
 
-static foint copy_str(foint info)
+static awk_value_t copy_str(awk_value_t info)
 {
-	foint ret;
-	ret.s = gawk_malloc((strlen(info.s) + 1) * sizeof(char));
-	strcpy(ret.s, info.s);
+	awk_value_t ret;
+	ret.str_value.str = gawk_malloc((ret.str_value.len + 1) * sizeof(char));
+	strcpy(ret.str_value.str, info.str_value.str);
 	return ret;
 }
 
 static awk_bool_t do_at_init()
 {
-	trees = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree); 
-	current_iterators = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)LinkedListFree); 
+	trees = TreeAlloc((pTreeCmpFcn)strcmp, (pTreeCopyFcn)strdup, (pTreeFreeFcn)free, NULL, (pTreeFreeFcn)free_htree); 
+	current_iterators = TreeAlloc((pTreeCmpFcn)strcmp, (pTreeCopyFcn)strdup, (pTreeFreeFcn)free, NULL, (pTreeFreeFcn)LinkedListFree); 
 
 	awk_atexit((void*)do_at_exit, NULL); // possible to use 2nd arg instead of global trees
 
@@ -107,7 +107,7 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 	const char** subscripts = query.subscripts;
 	const unsigned char num_subs = query.num_subs;
 	
-	tree_insert(query.name, subscripts, (foint){.s=subscripts[num_subs - 1]}, num_subs - 1);
+	tree_insert(query.name, subscripts, (awk_value_t){.str_value.str=subscripts[num_subs - 1]}, num_subs - 1);
 	free_query(query);
 	return make_number(1, result); // assume success if we get to this point
 }
@@ -117,11 +117,12 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 	assert(result != NULL);
 
 	query_t query = get_query();
-	foint data;
+	awk_value_t data;
 	query_tree(query.name, query.subscripts, &data, query.num_subs);
 
 	free_query(query);
-	return make_const_string(data.s, strlen(data.s), result);
+	result = &data;
+	return result;
 }
 
 static awk_value_t* do_tree_remove(const int nargs, awk_value_t* result, struct awk_ext_func* _)
