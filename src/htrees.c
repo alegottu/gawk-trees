@@ -8,14 +8,14 @@ Memory for all strings passed into gawk from the extension must come from callin
 
 
 // HTrees, found by their name in a gawk program, are contained here
-TREETYPE* trees = NULL; 
+FAVLTREE* trees = NULL; 
 
 // keys = tree or sub-tree name, value = node queue (LL*)
-TREETYPE* current_iterators = NULL; 
+FAVLTREE* current_iterators = NULL; 
 
-void free_htree(awk_value_t tree)
+void free_htree(foint tree)
 {
-	HTreeFree((HTREE*)tree.num_ptr);
+	HTreeFree((HTREE*)tree.v);
 }
 
 // NOTE: This version of coyp_str and init_trees only used for test.c
@@ -29,8 +29,8 @@ static awk_value_t copy_str(awk_value_t info)
 
 bool init_trees()
 {
-	trees = TreeAlloc((pTreeCmpFcn)strcmp, (pTreeCopyFcn)strdup, (pTreeFreeFcn)free, NULL, (pTreeFreeFcn)free_htree); 
-	current_iterators = TreeAlloc((pTreeCmpFcn)strcmp, (pTreeCopyFcn)strdup, (pTreeFreeFcn)free, NULL, (pTreeFreeFcn)LinkedListFree); 
+	trees = FAvlTreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree); 
+	current_iterators = FAvlTreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)LinkedListFree); 
 
 	on_exit((void*)do_at_exit, NULL); // possible to use 2nd arg instead of global trees
 
@@ -44,7 +44,7 @@ HTREE* create_tree(const char* name, const int depth)
 	// possibly need free foint fcn
 	HTREE* array = HTreeAlloc(depth, (pTreeCmpFcn)strcmp, (pTreeCopyFcn)strdup, (pTreeFreeFcn)free, (pTreeCopyFcn)copy_str, (pTreeFreeFcn)free);
 	// TODO: can start putting double instead of strings if wanted
-	TreeInsert(trees, (awk_value_t){.str_value.str=name}, (awk_value_t){.num_ptr=array});
+	FAvlTreeInsert(trees, (foint){.s=name}, (foint){.v=array});
 
 	return array;
 }
@@ -52,7 +52,7 @@ HTREE* create_tree(const char* name, const int depth)
 // TODO: valgrind reporting memleak here?
 const bool delete_tree(const char* name)
 {
-	return TreeDelete(trees, (awk_value_t){.str_value=name});
+	return FTreeDelete(trees, (foint){.s=name});
 }
 
 static void fill_values(const char** strs, awk_value_t* result, const unsigned char count)
@@ -65,13 +65,12 @@ static void fill_values(const char** strs, awk_value_t* result, const unsigned c
 
 void tree_insert(const char* tree, const char** subscripts, const awk_value_t value, const unsigned char depth)
 {
-	// TODO: this can just be a generic pointer (in signature of TreeLookup and similar) if we don't need dynamic type
-	awk_value_t _htree;
+	foint _htree;
 	HTREE* htree;
 	
-	if (TreeLookup(trees, (awk_value_t){.str_value.str=tree}, &_htree)) 
+	if (FAvlTreeLookup(trees, (foint){.s=tree}, &_htree)) 
 	{
-		htree = _htree.num_ptr;
+		htree = _htree.v;
 		awk_value_t keys[depth];
 		fill_values(subscripts, keys, depth);
 		HTreeInsert(htree, keys, value);
@@ -89,12 +88,12 @@ const bool query_tree(const char* tree, const char** subscripts, awk_value_t** r
 {
 	awk_value_t keys[depth];
 	fill_values(subscripts, keys, depth);
-	awk_value_t _htree;
+	foint _htree;
 	bool found = false;
 
-	if (TreeLookup(trees, (awk_value_t){.str_value.str=tree}, &_htree))
+	if (FAvlTreeLookup(trees, (foint){.s=tree}, &_htree))
 	{
-		HTREE* htree = _htree.num_ptr;
+		HTREE* htree = _htree.v;
 
 		if (depth != htree->depth)
 		{
@@ -127,9 +126,9 @@ const bool query_tree(const char* tree, const char** subscripts, awk_value_t** r
 
 const bool tree_elem_exists(const char* tree, const char** subscripts, const unsigned char depth)
 {
-	awk_value_t _htree;
-	TreeLookup(trees, (awk_value_t){.str_value.str=tree}, &_htree);
-	HTREE* htree = _htree.num_ptr;
+	foint _htree;
+	FAvlTreeLookup(trees, (foint){.s=tree}, &_htree);
+	HTREE* htree = _htree.v;
 	const unsigned char htree_depth = htree->depth;
 	htree->depth = depth; // tricks HTreeLookDel to finish early	
 	awk_value_t _subscripts[depth];
@@ -142,14 +141,14 @@ const bool tree_elem_exists(const char* tree, const char** subscripts, const uns
 
 const bool tree_remove(const char* tree, const char** subscripts, const unsigned char depth)
 {
-	awk_value_t _htree;
+	foint _htree;
 	bool result;
-	bool found = TreeLookup(trees, (awk_value_t){.str_value.str=tree}, &_htree);
+	bool found = FAvlTreeLookup(trees, (foint){.s=tree}, &_htree);
 
 	if (!found)
 		return false;
 
-	HTREE* htree = _htree.num_ptr;
+	HTREE* htree = _htree.v;
 	const unsigned char htree_depth = htree->depth;
 	awk_value_t _subscripts[depth];
 	fill_values(subscripts, _subscripts, depth);
@@ -173,12 +172,12 @@ const unsigned short is_tree(const char* tree, const char** subscripts, const un
 {
 	awk_value_t _subscripts[depth];
 	fill_values(subscripts, _subscripts, depth);
-	awk_value_t _htree;
+	foint _htree;
 
-	if (!TreeLookup(trees, (awk_value_t){.str_value.str=tree}, &_htree))
+	if (!FAvlTreeLookup(trees, (foint){.s=tree}, &_htree))
 		return 0;
 
-	HTREE* htree = _htree.num_ptr;
+	HTREE* htree = _htree.v;
 
 	// could possibly use htree->depth - depth instead
 	if (depth < htree->depth)
@@ -213,13 +212,13 @@ static const char* get_full_query(const char* tree, const char** subscripts, con
 // Creates an iterator if one is not found for the given query, and the HTREE of that name has valid elements to create one
 static LINKED_LIST* get_iterator(const char* tree, const char* query, const char** subscripts, const unsigned char depth)
 {
-	awk_value_t iterator, _htree;
+	foint iterator, _htree;
 	LINKED_LIST* result;
 
-	if (!TreeLookup(trees, (awk_value_t){.str_value.str=tree}, &_htree))
+	if (!FAvlTreeLookup(trees, (foint){.s=tree}, &_htree))
 		return NULL; // NOTE: should possibly be forced exit
 
-	HTREE* htree = _htree.num_ptr;
+	HTREE* htree = _htree.v;
 	const unsigned char htree_depth = htree->depth;
 	
 	if (depth == htree_depth)
@@ -228,9 +227,9 @@ static LINKED_LIST* get_iterator(const char* tree, const char* query, const char
 		exit(1);
 	}
 
-	awk_value_t _query = {.str_value.str=query};
+	foint _query = {.s=query};
 			
-	if (!TreeLookup(current_iterators, _query, &iterator))
+	if (!FAvlTreeLookup(current_iterators, _query, &iterator))
 	{
 		if (htree->tree->root == NULL)
 		{
@@ -254,18 +253,16 @@ static LINKED_LIST* get_iterator(const char* tree, const char* query, const char
 				htree->depth = htree_depth;
 			}
 
-			// TODO: make more conscious decisions about where awk_value_t is actually needed, minimal struct elsewhere or just use it in LL too
-			foint to_add; to_add.v = root_node.num_ptr;
-			LinkedListAppend(result, to_add);
-			iterator.num_ptr = result;
-			TreeInsert(current_iterators, _query, iterator);
+			LinkedListAppend(result, (foint){.v=root_node.num_ptr});
+			iterator.v = result;
+			FAvlTreeInsert(current_iterators, _query, iterator);
 
 			return result;
 		}
 	}
 	else
 	{
-		return iterator.num_ptr;
+		return iterator.v;
 	}
 }
 
@@ -362,9 +359,7 @@ const unsigned int tree_iters_remaining(const char* tree, const char** subscript
 
 	if (remaining == 0)
 	{
-		// TODO: same as with to_add
-		awk_value_t to_delete; to_delete.str_value.str = _query.s;
-		TreeDelete(current_iterators, to_delete);
+		FAvlTreeDelete(current_iterators, _query);
 	}
 
 	finish(query);
@@ -373,18 +368,18 @@ const unsigned int tree_iters_remaining(const char* tree, const char** subscript
 
 const bool tree_iter_break(const char* tree, const char** subscripts, const unsigned char depth)
 {
-	awk_value_t query;
+	foint query;
 
 	if (depth == 0)
-		query.str_value.str = tree;
+		query.s = tree;
 	else
-		query.str_value.str = get_full_query(tree, subscripts, depth);
+		query.s = get_full_query(tree, subscripts, depth);
 
-	return TreeDelete(current_iterators, query);
+	return FAvlTreeDelete(current_iterators, query);
 }
 
 void do_at_exit(void* data, int exit_status)
 {
-	TreeFree(trees);
-	TreeFree(current_iterators);
+	FAvlTreeFree(trees);
+	FAvlTreeFree(current_iterators);
 }

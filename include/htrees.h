@@ -12,15 +12,17 @@
 
 #if HTREE_USES_AVL
 #include "avltree.h"
+#include "foint-avltree.h"
 #define NODETYPE AVLTREENODE
 #define TreeDelete(T,k) AvlTreeLookDel((T),(k),(awk_value_t*)1)
+#define FTreeDelete(T, k) FAvlTreeLookDel((T),(k),(foint*)1)
 #else
 #include "bintree.h"
 #define NODETYPE BINTREENODE
 #define TreeDelete(t,k) BinTreeLookDel((t), (k), (foint*)1)
 #endif
 
-void free_htree(const awk_value_t tree);
+void free_htree(const foint tree);
 
 bool init_trees();
 
