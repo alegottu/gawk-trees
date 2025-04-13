@@ -118,10 +118,9 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 
 	query_t query = get_query();
 	awk_value_t data;
-	query_tree(query.name, query.subscripts, &data, query.num_subs);
+	result = query_tree(query.name, query.subscripts, query.num_subs);
 
 	free_query(query);
-	result = &data;
 	return result;
 }
 

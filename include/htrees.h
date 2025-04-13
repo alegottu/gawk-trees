@@ -32,8 +32,7 @@ const bool delete_tree(const char* name);
 
 void tree_insert(const char* tree, const char** subscripts, const awk_value_t value, const unsigned char depth);
 
-// NOTE: result is a pointer to a pointer, not a 2D array
-const bool query_tree(const char* tree, const char** subscripts, awk_value_t** result, const unsigned char depth);
+const awk_value_t* query_tree(const char* tree, const char** subscripts, const unsigned char depth);
 
 const bool tree_elem_exists(const char* tree, const char** subscripts, const unsigned char depth);
 

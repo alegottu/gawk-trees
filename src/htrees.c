@@ -18,7 +18,11 @@ void free_htree(foint tree)
 	HTreeFree((HTREE*)tree.v);
 }
 
-// NOTE: This version of coyp_str and init_trees only used for test.c
+static int cmp_str(awk_value_t lhs, awk_value_t rhs)
+{
+	return strcmp(lhs.str_value.str, rhs.str_value.str);
+}
+
 static awk_value_t copy_str(awk_value_t info)
 {
 	awk_value_t ret;
@@ -42,7 +46,7 @@ bool init_trees()
 HTREE* create_tree(const char* name, const int depth) 
 {
 	// possibly need free foint fcn
-	HTREE* array = HTreeAlloc(depth, (pTreeCmpFcn)strcmp, (pTreeCopyFcn)strdup, (pTreeFreeFcn)free, (pTreeCopyFcn)copy_str, (pTreeFreeFcn)free);
+	HTREE* array = HTreeAlloc(depth, (pTreeCmpFcn)cmp_str, (pTreeCopyFcn)strdup, (pTreeFreeFcn)free, (pTreeCopyFcn)copy_str, (pTreeFreeFcn)free);
 	// TODO: can start putting double instead of strings if wanted
 	FAvlTreeInsert(trees, (foint){.s=name}, (foint){.v=array});
 
@@ -84,12 +88,12 @@ void tree_insert(const char* tree, const char** subscripts, const awk_value_t va
 	}
 }
 
-const bool query_tree(const char* tree, const char** subscripts, awk_value_t** result, const unsigned char depth)
+const awk_value_t* query_tree(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	awk_value_t keys[depth];
 	fill_values(subscripts, keys, depth);
 	foint _htree;
-	bool found = false;
+	awk_value_t* result = NULL;
 
 	if (FAvlTreeLookup(trees, (foint){.s=tree}, &_htree))
 	{
@@ -102,26 +106,21 @@ const bool query_tree(const char* tree, const char** subscripts, awk_value_t** r
 			// May have to changes instances of fputs -> exit to a special return value checked by funcs in gawk_ext.c to then use fatal()
 		}
 
-		// TODO: big changes where HTreeLookup gives a pointer to the value, so does HTreeInsert
-		// found = HTreeLookup(htree, keys, result);
-		found = HTreeLookup(htree, keys, *result);
+		result = HTreeLookup(htree, keys, NULL);
 		
-		if (!found)
+		if (result == NULL)
 		{
-			// result = HTreeInsert(htree, keys, (awk_value_t){.str_value.str=""});
-			(*result)->str_value.str = "";
-			HTreeInsert(htree, keys, **result); 
+			result = HTreeInsert(htree, keys, (awk_value_t){.str_value.str=""});
+			// TODO: might have to use make_malloc_string in HTreeInsert
 		}
 	}
 	else
 	{
-		found = false;
 		HTREE* htree = create_tree(tree, depth);
-		(*result)->str_value.str = "";
-		HTreeInsert(htree, keys, **result); 
+		result = HTreeInsert(htree, keys, (awk_value_t){.str_value.str=""});
 	}
 
-	return found;
+	return result;
 }
 
 const bool tree_elem_exists(const char* tree, const char** subscripts, const unsigned char depth)
