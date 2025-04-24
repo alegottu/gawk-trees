@@ -23,27 +23,17 @@ gawk program rarely uses the same value for the given
 variables within the program, this may actually waste more
 memory than simply using make_const_string.
 
-Now that there's a fork of libwayne specifically for gawk-trees,
-the plan going forward is:
-1. Modify htree and avltree to not use foints and instead use
-awk_value_t*
-2. Upon insert, malloc the string result using gawk_malloc()
-and insert the awk_value_t* resulting from make_malloced_string();
-there's potentially room here to switch between numeric types
-and strings, since awk_value_t allows for that
-3. Upon query, return the awk_value_t* directly; create a comparison
-function to compare between awk_string_t (value.str_value);
-keep in mind what should happen upon a duplicate attempting to be
-inserted (right now it's replaced, make sure the existing is
-properly deleted)
-
 The only way to directly be able to update a value obtained from a 
 query to the tree is if we were to also update gawk's symbol table
 in addition to the actual htree(s); because of this, it's difficult
 to have a straightforward solution for translating shortcuts like +=
-into the extension, although this branch will experimentally try to
+into the extension, this branch has experimentally tried to
 solve that by using awk_value_t in the internal structures instead
-of foints, that way we can return a pointer to the actual data
+of foints, returning a pointer to the data that gawk also uses,
 stored internally instead of constructing an awk_value_t from that
-data and filling a pointer with that. Ulimately though, different
-functions added to the interface may be needed.
+entry, Ulimately though, it seems that whatever you pass to gawk from
+an extension function, it automatically garbage collects, so we run
+into the same double free problem even with this approach. Going
+forward, we'll try having a tree type just for numbers, to avoid any
+memory management problems at all, and hopefully use much less memory
+than trying to store lots of strings when only numeric types are necessary.
