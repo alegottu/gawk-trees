@@ -18,17 +18,9 @@ void free_htree(foint tree)
 	HTreeFree((HTREE*)tree.v);
 }
 
-static int cmp_str(awk_value_t lhs, awk_value_t rhs)
+int cmp_str(awk_value_t lhs, awk_value_t rhs)
 {
 	return strcmp(lhs.str_value.str, rhs.str_value.str);
-}
-
-static awk_value_t copy_str(awk_value_t info)
-{
-	awk_value_t ret;
-	ret.str_value.str = malloc((info.str_value.len + 1) * sizeof(char));
-	strcpy(ret.str_value.str, info.str_value.str);
-	return ret;
 }
 
 bool init_trees()
@@ -46,14 +38,13 @@ bool init_trees()
 HTREE* create_tree(const char* name, const int depth) 
 {
 	// possibly need free foint fcn
-	HTREE* array = HTreeAlloc(depth, (pTreeCmpFcn)cmp_str, (pTreeCopyFcn)strdup, (pTreeFreeFcn)free, (pTreeCopyFcn)copy_str, (pTreeFreeFcn)free);
+	HTREE* array = HTreeAlloc(depth, (pTreeCmpFcn)cmp_str, (pTreeCopyFcn)cpy_str, (pTreeFreeFcn)free_str, (pTreeCopyFcn)cpy_str, (pTreeFreeFcn)free_str);
 	// TODO: can start putting double instead of strings if wanted
 	FAvlTreeInsert(trees, (foint){.s=name}, (foint){.v=array});
 
 	return array;
 }
 
-// TODO: valgrind reporting memleak here?
 const bool delete_tree(const char* name)
 {
 	return FTreeDelete(trees, (foint){.s=name});
@@ -111,7 +102,6 @@ const awk_value_t* query_tree(const char* tree, const char** subscripts, const u
 		if (result == NULL)
 		{
 			result = HTreeInsert(htree, keys, (awk_value_t){.str_value.str=""});
-			// TODO: might have to use make_malloc_string in HTreeInsert
 		}
 	}
 	else

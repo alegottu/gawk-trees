@@ -2,6 +2,19 @@
 
 // TODO: not up to date with awk/test.awk
 
+awk_value_t cpy_str(awk_value_t s)
+{
+	awk_value_t ret;
+	ret.str_value.str = malloc(strlen((s.str_value.str)+1)* sizeof(char));
+	strcpy(ret.str_value.str, s.str_value.str);
+	return ret;
+}
+
+void free_str(awk_value_t s)
+{
+	free(s.str_value.str);
+}
+
 int main(int argc, char *argv[])
 {
 	init_trees();

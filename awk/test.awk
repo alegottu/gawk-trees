@@ -12,7 +12,7 @@ BEGIN {
 	print tree_elem_exists("pred","x","y") == 1
 	print is_tree("pred", "x") == 1
 	print is_tree("pred", "a", "b") == 0
-	tree_remove("pred","x","y") # NOTE: as of now, because of this deletion, one of the BinTrees becomes empty, and the physical_n > 0 assertion in BinTreeFree fails; hard to keep track of this in the context of HTrees, since the HTree itself is not empty
+	tree_remove("pred","x","y") 
 	tree_remove("pred","x","y") # should do nothing
 	print tree_elem_exists("pred","x","y") == 0
 	delete_tree("pred") # TODO: tree_exists function?

@@ -1,25 +1,32 @@
 #include "htrees.h"
-#include "gawkapi.h"
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
+#include <gawkapi.h>
 #include "gawk_ext.h"
 
-extern TREETYPE* trees;
-extern TREETYPE* current_iterators;
+extern FAVLTREE* trees;
+extern FAVLTREE* current_iterators;
 
-static awk_value_t copy_str(awk_value_t info)
+// TODO: can change interface of functions to foint, but convert to awk_value_t
+awk_value_t cpy_str(awk_value_t s)
 {
 	awk_value_t ret;
-	ret.str_value.str = gawk_malloc((ret.str_value.len + 1) * sizeof(char));
-	strcpy(ret.str_value.str, info.str_value.str);
+	int len = strlen(s.str_value.str);
+	emalloc(ret.str_value.str, char*, sizeof(s.str_value.str), "cpy_str");
+	strcpy(ret.str_value.str, s.str_value.str);
+	ret.str_value.len = len;
+	ret.val_type = AWK_STRING;
+
 	return ret;
+}
+
+void free_str(awk_value_t s)
+{
+	gawk_free(s.str_value.str);
 }
 
 static awk_bool_t do_at_init()
 {
-	trees = TreeAlloc((pTreeCmpFcn)strcmp, (pTreeCopyFcn)strdup, (pTreeFreeFcn)free, NULL, (pTreeFreeFcn)free_htree); 
-	current_iterators = TreeAlloc((pTreeCmpFcn)strcmp, (pTreeCopyFcn)strdup, (pTreeFreeFcn)free, NULL, (pTreeFreeFcn)LinkedListFree); 
+	trees = FAvlTreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree); 
+	current_iterators = FAvlTreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)LinkedListFree); 
 
 	awk_atexit((void*)do_at_exit, NULL); // possible to use 2nd arg instead of global trees
 
@@ -117,8 +124,11 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 	assert(result != NULL);
 
 	query_t query = get_query();
-	awk_value_t data;
-	result = query_tree(query.name, query.subscripts, query.num_subs);
+	awk_value_t* ret;
+	ret = query_tree(query.name, query.subscripts, query.num_subs);
+	*result = cpy_str(*ret); 
+	// gawk api seems to take this and manage the memory on its own, so we have to make a copy of it anyways;
+	// avoidable if we use doubles (nothing to double free), possibly have separate float_tree and double_tree types
 
 	free_query(query);
 	return result;

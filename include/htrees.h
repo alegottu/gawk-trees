@@ -3,9 +3,13 @@
 
 #include <string.h>
 #include <stdio.h>
-
+#include <math.h>
+#include <stddef.h>
 #include <stdbool.h>
 #include <sys/stat.h>
+
+// all the above required by this include
+#include <gawkapi.h>
 
 #include "htree.h"
 #include "linked-list.h"
@@ -22,9 +26,11 @@
 #define TreeDelete(t,k) BinTreeLookDel((t), (k), (foint*)1)
 #endif
 
-void free_htree(const foint tree);
-
-bool init_trees();
+void free_htree(foint tree);
+int cmp_str(awk_value_t lhs, awk_value_t rhs);
+awk_value_t cpy_str(awk_value_t s);
+void free_str(awk_value_t s);
+bool init_trees(); // only used for test.c
 
 HTREE* create_tree(const char* name, const int depth);
 
