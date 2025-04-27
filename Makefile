@@ -1,3 +1,5 @@
+# TODO: use libwayne.a like awk_value_t branch
+
 LW_PATH = libwayne
 GAWK_PATH = gawk
 BASE_FLAGS = -Wno-discarded-qualifiers -Wno-incompatible-pointer-types -fPIC -shared -DHAVE_CONFIG_H -c

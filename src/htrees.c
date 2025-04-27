@@ -1,4 +1,5 @@
 #include "htrees.h"
+#include <stdlib.h>
 
 /* NOTE from gawk API documentation:
  * All pointers filled in by gawk point to memory managed by gawk and should be treated by the extension as read-only.
@@ -49,7 +50,7 @@ HTREE* create_tree(const char* name, const int depth)
 // TODO: valgrind reporting memleak here
 const bool delete_tree(const char* name)
 {
-	return TreeDelete(trees, (foint){.s=name});
+	return TreeDelete(trees, (foint){.s=name}) != NULL;
 }
 
 static void fill_foints(const char** strs, foint* result, const unsigned char count)
@@ -65,7 +66,7 @@ void tree_insert(const char* tree, const char** subscripts, const foint value, c
 	foint _htree;
 	HTREE* htree;
 	
-	if (TreeLookup(trees, (foint){.s=tree}, &_htree)) 
+	if (STreeLookup(trees, (foint){.s=tree}, &_htree)) 
 	{
 		htree = _htree.v;
 		foint keys[depth];
@@ -86,9 +87,9 @@ const bool query_tree(const char* tree, const char** subscripts, foint* result, 
 	foint keys[depth];
 	fill_foints(subscripts, keys, depth);
 	foint _htree;
-	bool found = false;
+	bool found;
 
-	if (TreeLookup(trees, (foint){.s=tree}, &_htree))
+	if (STreeLookup(trees, (foint){.s=tree}, &_htree))
 	{
 		HTREE* htree = _htree.v;
 
@@ -99,36 +100,110 @@ const bool query_tree(const char* tree, const char** subscripts, foint* result, 
 			// May have to changes instances of fputs -> exit to a special return value checked by funcs in gawk_ext.c to then use fatal()
 		}
 
-		found = HTreeLookup(htree, keys, result);
+		found = SHTreeLookup(htree, keys, result);
 		
 		if (!found)
 		{
-			result->s = "";
-			HTreeInsert(htree, keys, *result);
+			result = HTreeInsert(htree, keys, (foint){.s=""});
 		}
 	}
 	else
 	{
 		found = false;
 		HTREE* htree = create_tree(tree, depth);
-		result->s = "";
-		HTreeInsert(htree, keys, *result); 
+		result = HTreeInsert(htree, keys, (foint){.s=""});
 	}
 
 	return found;
 }
 
+unsigned int digits(double num)
+{
+	double current = num;
+	unsigned int result = 1;
+
+	while (current >= 10)
+	{
+		result++;
+		current /= 10;
+	}
+
+	return result;
+}
+
+void increment(const char* tree, const char** args, const unsigned char argc, const unsigned char mult)
+{
+	foint _htree;
+	double amount = 1;
+	foint* result;
+
+	if (STreeLookup(trees, (foint){.s=tree}, &_htree))
+	{
+		HTREE* htree = _htree.v;
+		unsigned char depth;
+
+		if (argc == htree->depth)
+			depth = argc;
+		else
+		{
+			// TODO: safeguard against failed conversion here
+			amount = atof(args[argc-1]);
+			depth = argc-1;
+		}
+
+		foint keys[depth];
+		fill_foints(args, keys, depth);
+
+		if (depth != htree->depth)
+		{
+			fputs("query_tree: Incorrect number of subcripts given for tree depth; treating array as a scalar value\n", stderr);
+			exit(1);
+		}
+
+		result = HTreeLookup(htree, keys);
+		
+		if (result == NULL)
+		{
+			result = HTreeInsert(htree, keys, (foint){.s="0"});
+		}
+	}
+	else
+	{
+		const unsigned char depth = argc-1;
+		amount = atof(args[argc-1]);
+		foint keys[depth];
+		fill_foints(args, keys, depth);
+		HTREE* htree = create_tree(tree, depth);
+		result = HTreeInsert(htree, keys, (foint){.s="0"});
+	}
+
+	double num = atof(result->s);
+	num += amount * mult;
+	result->s = realloc(result->s, digits(num) * sizeof(char) + 1);
+	sprintf(result->s, "%f", num);
+}
+
+void tree_increment(const char* tree, const char** args, const unsigned char argc)
+{
+	increment(tree, args, argc, 1);
+}
+
+void tree_decrement(const char* tree, const char** args, const unsigned char argc)
+{
+	increment(tree, args, argc, -1);
+}
+
 const bool tree_elem_exists(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	foint _htree;
-	TreeLookup(trees, (foint){.s=tree}, &_htree);
+	STreeLookup(trees, (foint){.s=tree}, &_htree);
 	HTREE* htree = _htree.v;
 	const unsigned char htree_depth = htree->depth;
 	htree->depth = depth; // tricks HTreeLookDel to finish early	
 	foint _subscripts[depth];
 	fill_foints(subscripts, _subscripts, depth);
 
-	bool result = HTreeLookup(htree, _subscripts, NULL);
+	bool result = SHTreeLookup(htree, _subscripts, NULL);
 	htree->depth = htree_depth;
 	return result;
 }
@@ -137,7 +212,7 @@ const bool tree_remove(const char* tree, const char** subscripts, const unsigned
 {
 	foint _htree;
 	bool result;
-	bool found = TreeLookup(trees, (foint){.s=tree}, &_htree);
+	bool found = STreeLookup(trees, (foint){.s=tree}, &_htree);
 
 	if (!found)
 		return false;
@@ -151,13 +226,13 @@ const bool tree_remove(const char* tree, const char** subscripts, const unsigned
 	{
 		htree->depth = depth; // tricks HTreeLookDel to finish early	
 		foint tree;
-		HTreeLookDel(htree, _subscripts, &tree);
+		SHTreeLookup(htree, _subscripts, &tree);
 		TreeFree(tree.v);
-		result = HTreeLookDel(htree, _subscripts, (foint*)1); // inefficient, but stops other code from breaking; NOTE: need TreeDelNode to delete without having to search again, other portions of code like this
+		result = HTreeDelete(htree, _subscripts) != NULL; // inefficient, but stops other code from breaking; NOTE: need TreeDelNode to delete without having to search again, other portions of code like this
 		htree->depth = htree_depth;
 	}
 	else
-		result = HTreeLookDel(htree, _subscripts, (foint*)1);
+		result = HTreeDelete(htree, _subscripts) != NULL;
 
 	return result;
 }
@@ -168,7 +243,7 @@ const unsigned short is_tree(const char* tree, const char** subscripts, const un
 	fill_foints(subscripts, _subscripts, depth);
 	foint _htree;
 
-	if (!TreeLookup(trees, (foint){.s=tree}, &_htree))
+	if (!STreeLookup(trees, (foint){.s=tree}, &_htree))
 		return 0;
 
 	HTREE* htree = _htree.v;
@@ -209,7 +284,7 @@ static LINKED_LIST* get_iterator(const char* tree, const char* query, const char
 	foint iterator, _htree;
 	LINKED_LIST* result;
 
-	if (!TreeLookup(trees, (foint){.s=tree}, &_htree))
+	if (!STreeLookup(trees, (foint){.s=tree}, &_htree))
 		return NULL; // NOTE: should possibly be forced exit
 
 	HTREE* htree = _htree.v;
@@ -223,7 +298,7 @@ static LINKED_LIST* get_iterator(const char* tree, const char* query, const char
 
 	foint _query = {.s=query};
 			
-	if (!TreeLookup(current_iterators, _query, &iterator))
+	if (!STreeLookup(current_iterators, _query, &iterator))
 	{
 		if (htree->tree->root == NULL)
 		{
@@ -241,7 +316,7 @@ static LINKED_LIST* get_iterator(const char* tree, const char* query, const char
 				htree->depth = depth; // tricks HTreeLookDel to finish early
 				foint _subscripts[depth]; foint result;
 				fill_foints(subscripts, _subscripts, depth);
-				HTreeLookDel(htree, _subscripts, &result);
+				SHTreeLookup(htree, _subscripts, &result);
 				root_node.v = ((TREETYPE*)result.v)->root;
 				htree->depth = htree_depth;
 			}

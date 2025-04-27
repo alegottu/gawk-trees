@@ -13,8 +13,8 @@
 #if HTREE_USES_AVL
 #include "avltree.h"
 #define NODETYPE AVLTREENODE
-#define TreeDelete(T,k) AvlTreeLookDel((T),(k),(foint*)1)
-#define AvlTreeDelete(T,k) AvlTreeLookDel((T),(k),(foint*)1)
+#define TreeDelete(T,k) AvlTreeDelete((T),(k))
+//#define AvlTreeDelete(T,k) AvlTreeLookDel((T),(k),true)
 #else
 #include "bintree.h"
 #define NODETYPE BINTREENODE
@@ -32,6 +32,10 @@ const bool delete_tree(const char* name);
 void tree_insert(const char* tree, const char** subscripts, const foint value, const unsigned char depth);
 
 const bool query_tree(const char* tree, const char** subscripts, foint* result, const unsigned char depth);
+
+void tree_increment(const char* tree, const char** args, const unsigned char argc);
+
+void tree_decrement(const char* tree, const char** args, const unsigned char argc);
 
 const bool tree_elem_exists(const char* tree, const char** subscripts, const unsigned char depth);
 

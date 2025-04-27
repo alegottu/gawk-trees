@@ -124,6 +124,18 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 	return make_const_string(data.s, strlen(data.s), result);
 }
 
+static awk_value_t* do_tree_increment(const int nargs, awk_value_t* result, struct awk_ext_func* _)
+{
+	assert(result != NULL);
+
+	query_t query = get_query();
+	tree_increment(query.name, query.subscripts, query.num_subs);
+
+	free_query(query);
+	return result;
+	// TODO: possibly return bool (make_num) for success
+}
+
 static awk_value_t* do_tree_remove(const int nargs, awk_value_t* result, struct awk_ext_func* _)
 {
 	assert(result != NULL);

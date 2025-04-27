@@ -34,6 +34,10 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 
 static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 
+static awk_value_t* do_tree_increment(const int nargs, awk_value_t* result, struct awk_ext_func* _);
+
+static awk_value_t* do_tree_decrement(const int nargs, awk_value_t* result, struct awk_ext_func* _);
+
 static awk_value_t* do_tree_remove(const int nargs, awk_value_t* result, struct awk_ext_func* _);
 
 static awk_value_t* do_tree_elem_exists(const int nargs, awk_value_t* result, struct awk_ext_func* _);
