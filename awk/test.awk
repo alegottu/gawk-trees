@@ -12,10 +12,10 @@ BEGIN {
 	print tree_elem_exists("pred","x","y") == 1
 	print is_tree("pred", "x") == 1
 	print is_tree("pred", "a", "b") == 0
-	tree_remove("pred","x","y") # NOTE: as of now, because of this deletion, one of the BinTrees becomes empty, and the physical_n > 0 assertion in BinTreeFree fails; hard to keep track of this in the context of HTrees, since the HTree itself is not empty
+	tree_remove("pred","x","y")
 	tree_remove("pred","x","y") # should do nothing
 	print tree_elem_exists("pred","x","y") == 0
-	delete_tree("pred") # TODO: tree_exists function?
+	delete_tree("pred")
 
 	print "testing 2D trees"
 	create_tree("test",2)
@@ -43,6 +43,16 @@ BEGIN {
 	tree_remove("test","x")
 	print tree_elem_exists("test","x","y") == 0
 	print tree_elem_exists("test","x","z") == 0
+
+	print "testing increment/decrement"
+	tree_increment("create", 1, 2, 3, 1) # first on a tree that doesn't exist
+	print query_tree("create", 1, 2, 3) == 1
+	tree_increment("another", 1)
+	print query_tree("another", 1) == 2
+	tree_increment("example", "sub") # try on non-number element
+	print query_tree("example", "sub") == 1 
+	tree_decrement("test", "y", "z")
+	print query_tree("test", "y", "z") == -1
 }
 
 {

@@ -8,14 +8,6 @@
 extern TREETYPE* trees;
 extern TREETYPE* current_iterators;
 
-static foint copy_str(foint info)
-{
-	foint ret;
-	ret.s = gawk_malloc((strlen(info.s) + 1) * sizeof(char));
-	strcpy(ret.s, info.s);
-	return ret;
-}
-
 static awk_bool_t do_at_init()
 {
 	trees = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree); 
@@ -129,11 +121,21 @@ static awk_value_t* do_tree_increment(const int nargs, awk_value_t* result, stru
 	assert(result != NULL);
 
 	query_t query = get_query();
-	tree_increment(query.name, query.subscripts, query.num_subs);
+	double ret = tree_increment(query.name, query.subscripts, query.num_subs);
 
 	free_query(query);
-	return result;
-	// TODO: possibly return bool (make_num) for success
+	return make_number(ret, result);
+}
+
+static awk_value_t* do_tree_decrement(const int nargs, awk_value_t* result, struct awk_ext_func* _)
+{
+	assert(result != NULL);
+
+	query_t query = get_query();
+	double ret = tree_decrement(query.name, query.subscripts, query.num_subs);
+
+	free_query(query);
+	return make_number(ret, result);
 }
 
 static awk_value_t* do_tree_remove(const int nargs, awk_value_t* result, struct awk_ext_func* _)
@@ -208,6 +210,8 @@ static awk_ext_func_t func_table[] =
 	{ "delete_tree", do_delete_tree, 1, 1, awk_false, NULL },
 	{ "tree_insert", do_tree_insert, 0, 2, awk_true, NULL },
 	{ "query_tree", do_query_tree, 0, 2, awk_true, NULL },
+	{ "tree_increment", do_tree_increment, 0, 2, awk_true, NULL },
+	{ "tree_decrement", do_tree_decrement, 0, 2, awk_true, NULL },
 	{ "tree_remove", do_tree_remove, 0, 2, awk_true, NULL },
 	{ "tree_elem_exists", do_tree_elem_exists, 0, 2, awk_true, NULL },
 	{ "is_tree", do_is_tree, 0, 2, awk_true, NULL },

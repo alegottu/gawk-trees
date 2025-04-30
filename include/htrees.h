@@ -33,9 +33,9 @@ void tree_insert(const char* tree, const char** subscripts, const foint value, c
 
 const bool query_tree(const char* tree, const char** subscripts, foint* result, const unsigned char depth);
 
-void tree_increment(const char* tree, const char** args, const unsigned char argc);
+const double tree_increment(const char* tree, const char** args, const unsigned char argc);
 
-void tree_decrement(const char* tree, const char** args, const unsigned char argc);
+const double tree_decrement(const char* tree, const char** args, const unsigned char argc);
 
 const bool tree_elem_exists(const char* tree, const char** subscripts, const unsigned char depth);
 

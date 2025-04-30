@@ -18,14 +18,6 @@ void free_htree(foint tree)
 	HTreeFree((HTREE*)tree.v);
 }
 
-static foint copy_str(foint info)
-{
-	foint ret;
-	ret.s = malloc((strlen(info.s) + 1) * sizeof(char));
-	strcpy(ret.s, info.s);
-	return ret;
-}
-
 bool init_trees()
 {
 	trees = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree); 
@@ -41,7 +33,7 @@ bool init_trees()
 HTREE* create_tree(const char* name, const int depth) 
 {
 	// possibly need free foint fcn
-	HTREE* array = HTreeAlloc(depth, (pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, (pFointCopyFcn)copy_str, (pFointFreeFcn)free);
+	HTREE* array = HTreeAlloc(depth, (pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, (pFointCopyFcn)strdup, (pFointFreeFcn)free);
 	TreeInsert(trees, (foint){.s=name}, (foint){.v=array});
 
 	return array;
@@ -104,37 +96,46 @@ const bool query_tree(const char* tree, const char** subscripts, foint* result, 
 		
 		if (!found)
 		{
-			result = HTreeInsert(htree, keys, (foint){.s=""});
+			*result = *HTreeInsert(htree, keys, (foint){.s=""});
 		}
 	}
 	else
 	{
 		found = false;
 		HTREE* htree = create_tree(tree, depth);
-		result = HTreeInsert(htree, keys, (foint){.s=""});
+		*result = *HTreeInsert(htree, keys, (foint){.s=""});
 	}
 
 	return found;
 }
 
-unsigned int digits(double num)
+static void remove_trailing_zeroes(char* num)
 {
-	double current = num;
-	unsigned int result = 1;
-
-	while (current >= 10)
+	unsigned char first_last_zero_idx = 0;
+	const char* from_point = strchr(num, '.');
+	
+	for (unsigned char i = strlen(from_point)-1; i > 0; --i)
 	{
-		result++;
-		current /= 10;
+		if (from_point[i] == '0') first_last_zero_idx = i;
+		else break;
 	}
 
-	return result;
+	unsigned char end_pos;
+	if (first_last_zero_idx == 1)
+		end_pos = from_point - num;
+	else
+	 	end_pos = from_point + first_last_zero_idx - num;
+	num[end_pos] = '\0';
+		
+	num = realloc(num, (strlen(num) + 1) * sizeof(char));
 }
 
-void increment(const char* tree, const char** args, const unsigned char argc, const unsigned char mult)
+// NOTE: mult is always -1 or 1
+const double increment(const char* tree, const char** args, const unsigned char argc, const char mult)
 {
 	foint _htree;
 	double amount = 1;
+	unsigned char amount_digits = 1;
 	foint* result;
 
 	if (STreeLookup(trees, (foint){.s=tree}, &_htree))
@@ -146,8 +147,8 @@ void increment(const char* tree, const char** args, const unsigned char argc, co
 			depth = argc;
 		else
 		{
-			// TODO: safeguard against failed conversion here
 			amount = atof(args[argc-1]);
+			amount_digits = strlen(args[argc-1]);
 			depth = argc-1;
 		}
 
@@ -156,7 +157,7 @@ void increment(const char* tree, const char** args, const unsigned char argc, co
 
 		if (depth != htree->depth)
 		{
-			fputs("query_tree: Incorrect number of subcripts given for tree depth; treating array as a scalar value\n", stderr);
+			fputs("tree_increment: Incorrect number of subcripts given for tree depth; treating array as a scalar value\n", stderr);
 			exit(1);
 		}
 
@@ -169,8 +170,17 @@ void increment(const char* tree, const char** args, const unsigned char argc, co
 	}
 	else
 	{
-		const unsigned char depth = argc-1;
 		amount = atof(args[argc-1]);
+		amount_digits = strlen(args[argc-1]);
+		unsigned char depth = argc-1;
+
+		if (amount == 0)
+		{
+			amount = 1;
+			amount_digits = 1;
+			depth = argc;
+		}
+
 		foint keys[depth];
 		fill_foints(args, keys, depth);
 		HTREE* htree = create_tree(tree, depth);
@@ -178,19 +188,24 @@ void increment(const char* tree, const char** args, const unsigned char argc, co
 	}
 
 	double num = atof(result->s);
+	unsigned int len = (num == 0 ? 1 : strlen(result->s)) + amount_digits + 8;
+	// + 8 = 1 for \0 and '.', 6 for default precision of %f
 	num += amount * mult;
-	result->s = realloc(result->s, digits(num) * sizeof(char) + 1);
+	result->s = realloc(result->s, (len + 8) * sizeof(char)); 
 	sprintf(result->s, "%f", num);
+	remove_trailing_zeroes(result->s);
+
+	return num;
 }
 
-void tree_increment(const char* tree, const char** args, const unsigned char argc)
+const double tree_increment(const char* tree, const char** args, const unsigned char argc)
 {
-	increment(tree, args, argc, 1);
+	return increment(tree, args, argc, 1);
 }
 
-void tree_decrement(const char* tree, const char** args, const unsigned char argc)
+const double tree_decrement(const char* tree, const char** args, const unsigned char argc)
 {
-	increment(tree, args, argc, -1);
+	return increment(tree, args, argc, -1);
 }
 
 const bool tree_elem_exists(const char* tree, const char** subscripts, const unsigned char depth)
