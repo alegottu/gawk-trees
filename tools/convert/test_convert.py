@@ -54,6 +54,17 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_assignment(test)
         self.assertEqual(result, target)
 
+    def test_increment(self):
+        test = ["tree[40][$1]", "25.2"]
+        target = 'tree_increment("tree", 40, $1, 25.2)'
+        result = convert.process_increment(test)
+        self.assertEqual(result, target)
+
+        test = ["hx[$1][$2][$3]", "hy[$4]"]
+        target = 'tree_increment("hx", $1, $2, $3, query_tree("hy", $4))'
+        result = convert.process_increment(test)
+        self.assertEqual(result, target)
+
     def test_delete_element(self):
         test = 'to_delete[78]["here a string"]'
         target = 'tree_remove("to_delete", 78, "here a string")'

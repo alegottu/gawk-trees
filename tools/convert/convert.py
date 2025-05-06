@@ -24,8 +24,8 @@ def process_for_in(tokens: list) -> tuple[ str, str ]:
     if '[' in container:
         all_params = process_brackets(container)
 
-    result = f"{var_name} = tree_next({all_params}); "
-    result += f"while (tree_iters_remaining({all_params}) > 0)"
+    result = f"while (tree_iters_remaining({all_params}) > 0)" + '{'
+    result += f"{var_name} = tree_next({all_params}); "
     breaker = f"tree_iter_break({all_params})"
 
     return (result, breaker)
@@ -50,14 +50,27 @@ def process_in(statement: str) -> str:
 
     return statement
 
-# TODO: account for shortcuts like +=
 def process_assignment(tokens: list) -> str:
     if '[' in tokens[0]:
-        all_params = process_brackets(tokens[0], True)
-        return f"tree_insert({all_params}{tokens[1]})"
+        value = f"query_tree({process_brackets(tokens[1])})" \
+            if '[' in tokens[1] else tokens[1]
+        subscripts = process_brackets(tokens[0], True)
+        return f"tree_insert({subscripts}{value})"
     else:
         all_params = process_brackets(tokens[1])
         return f"{tokens[0]} = query_tree({all_params})"
+
+def process_increment(tokens: list, decrement: bool = False) -> str:
+    if '[' in tokens[0]:
+        value = f"query_tree({process_brackets(tokens[1])})" \
+            if '[' in tokens[1] else tokens[1]
+        subscripts = process_brackets(tokens[0], True)
+        func = "tree_increment" if not decrement else "tree_decrement"
+        return f"{func}({subscripts}{value})"
+    else:
+        all_params = process_brackets(tokens[1])
+        symbol = '+' if not decrement else '-'
+        return f"{tokens[0]} {symbol}= query_tree({all_params})"
 
 def process_delete_element(token: str) -> str:
     all_params = process_brackets(token)
@@ -95,7 +108,7 @@ def process_statement(statement: str, depth: int = 0) -> str:
             breakers.append(breaker)
 
             if end != len(statement)-1: # accounts for if body of for loop is attached
-                return result + " { " + process_statement(statement[end+1:], depth+1) + " } "
+                return result + process_statement(statement[end+1:], depth+1) + " } "
             elif depth > 0:
                 return result + ';'
                 # NOTE: ';' Denotes a special meaning here as it is a delimiter for
@@ -111,14 +124,27 @@ def process_statement(statement: str, depth: int = 0) -> str:
     elif " in " in statement:
         return process_in(statement)
     elif '[' in statement:
-        if '=' in statement: 
+        if '=' in statement:
             tokens = statement.split('=', maxsplit=1)
             tokens[0] = tokens[0].rstrip(' ')
             tokens[1] = tokens[1].lstrip(' ')
-            return process_assignment(tokens)
+
+            if tokens[0][-1] == '+':
+                tokens[0] = tokens[0].rstrip(" +")
+                return process_increment(tokens)
+            elif tokens[0][-1] == '-':
+                tokens[0] = tokens[0].rstrip(" -")
+                return process_increment(tokens, True)
+            else:
+                return process_assignment(tokens)
         elif "++" in statement:
-            # TODO: next
-            pass
+            tokens = [statement.strip('+')]
+            tokens.append("1")
+            return process_increment(tokens)
+        elif "--" in statement:
+            tokens = [statement.strip('-')]
+            tokens.append("1")
+            return process_increment(tokens, True)
         elif "delete " in statement:
             token = statement[7:]
             return process_delete_element(token)
@@ -148,18 +174,19 @@ def first_sig_char(s: str) -> int:
 if __name__ == "__main__":
     with open(argv[1]) as file:
         print(file.read())
-        print("---------")
-        print()
+        print("---------\n")
         file.seek(0)
+        verbose = len(argv) > 2
         result = ""
 
-        for line in file:
+        for i, line in enumerate(file):
             statements = re.split("[;{}]", line)
+            statements = [statement for statement in statements if statement != ""]
             current_pos = 0
             missing_brace = False
 
-            for statement in statements:
-                current_pos += max(len(statement), 1) # 1 default to track two delimiters right next to each other
+            for j, statement in enumerate(statements):
+                current_pos = line.find(statement)+len(statement)
 
                 if "while(" in statement or "while (" in statement:
                     breakers.append(None)
@@ -168,18 +195,22 @@ if __name__ == "__main__":
                         breakers.pop()
 
                     if missing_brace:
-                        line = line[:current_pos] + " } " + line[current_pos:]
+                        line = line[:current_pos] + " } } " + line[current_pos:]
                         missing_brace = False
 
                 translated = process_statement(statement.strip())
+                # TODO: only accounts for one inner loop (depth of 1)
                 if len(translated) >= 4 and translated[-4] == ';': # See note in process_statement
                     translated = translated[:-4]
                     missing_brace = True
 
+                before = line
                 line = line.replace(statement, translated, 1)
+                if verbose and before != line: print(f"Token {j} of line {i} ({statement}):\n", before, " -> ", line)
             else:
                 result += line # line is translated by this point
 
+        if verbose: print("\n---------\n")
         print(result)
         with open(f"ext-{argv[1]}", 'w') as converted:
             converted.write(result)
