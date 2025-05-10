@@ -92,7 +92,7 @@ const bool query_tree(const char* tree, const char** subscripts, foint* result, 
 			// May have to changes instances of fputs -> exit to a special return value checked by funcs in gawk_ext.c to then use fatal()
 		}
 
-		found = SHTreeLookup(htree, keys, result);
+		found = SHTreeLookup(htree, keys, depth, result);
 		
 		if (!found)
 		{
@@ -213,14 +213,10 @@ const bool tree_elem_exists(const char* tree, const char** subscripts, const uns
 	foint _htree;
 	STreeLookup(trees, (foint){.s=tree}, &_htree);
 	HTREE* htree = _htree.v;
-	const unsigned char htree_depth = htree->depth;
-	htree->depth = depth; // tricks HTreeLookDel to finish early	
 	foint _subscripts[depth];
 	fill_foints(subscripts, _subscripts, depth);
 
-	bool result = SHTreeLookup(htree, _subscripts, NULL);
-	htree->depth = htree_depth;
-	return result;
+	return SHTreeLookup(htree, _subscripts, depth, NULL);
 }
 
 const bool tree_remove(const char* tree, const char** subscripts, const unsigned char depth)
@@ -233,23 +229,10 @@ const bool tree_remove(const char* tree, const char** subscripts, const unsigned
 		return false;
 
 	HTREE* htree = _htree.v;
-	const unsigned char htree_depth = htree->depth;
 	foint _subscripts[depth];
 	fill_foints(subscripts, _subscripts, depth);
-
-	if (depth < htree_depth)
-	{
-		htree->depth = depth; // tricks HTreeLookDel to finish early	
-		foint tree;
-		SHTreeLookup(htree, _subscripts, &tree);
-		TreeFree(tree.v);
-		result = HTreeDelete(htree, _subscripts) != NULL; // inefficient, but stops other code from breaking; NOTE: need TreeDelNode to delete without having to search again, other portions of code like this
-		htree->depth = htree_depth;
-	}
-	else
-		result = HTreeDelete(htree, _subscripts) != NULL;
-
-	return result;
+	
+	return HTreeLookDel(htree, _subscripts, depth, true) != NULL;
 }
 
 const unsigned short is_tree(const char* tree, const char** subscripts, const unsigned char depth)
@@ -328,12 +311,10 @@ static LINKED_LIST* get_iterator(const char* tree, const char* query, const char
 				root_node.v = htree->tree->root;
 			else
 			{
-				htree->depth = depth; // tricks HTreeLookDel to finish early
 				foint _subscripts[depth]; foint result;
 				fill_foints(subscripts, _subscripts, depth);
-				SHTreeLookup(htree, _subscripts, &result);
+				SHTreeLookup(htree, _subscripts, depth, &result);
 				root_node.v = ((TREETYPE*)result.v)->root;
-				htree->depth = htree_depth;
 			}
 
 			LinkedListAppend(result, root_node);

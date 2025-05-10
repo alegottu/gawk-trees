@@ -15,7 +15,7 @@ extension functions behave exactly as standard awk arrays would unless otherwise
 
 | Standark AWK code | Using the "htrees" extension  | Extra Notes |
 |-------------------|-------------------------------|-------------|
-| N/A | create_tree("name", depth) | creates an empty htree with `depth` dimensions, held by the extension under "name" |
+| N/A | create_tree("name", depth) | creates an empty htree with `depth` dimensions, held by the extension under "name"; at the moment, the htrees under the extension can't store elements at variable depths, and they also cannot expand or shrink their depth dynamically |
 | delete name | delete_tree("name") | specifically used for deleting the entire tree, see tree_remove for deleting elements |
 | name["subscript"] = value | tree_insert("name", "subscript", value) | |
 | arr[1][2] = value | tree_insert("arr", 1, 2, value) | |
