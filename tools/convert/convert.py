@@ -100,7 +100,7 @@ def process_is_array(token: str) -> str:
     return f"is_array({container})"
 
 def process_statement(statement: str, depth: int = 0) -> str: 
-    if "for(" in statement or "for (" in statement:
+    if "for" in statement and '(' in statement:
         if " in " in statement:
             end = statement.find(')')
             tokens = statement[statement.find('(')+1:end].split(" in ", maxsplit=1)
@@ -181,15 +181,25 @@ if __name__ == "__main__":
 
         for i, line in enumerate(file):
             statements = re.split("[;{}]", line)
-            statements = [statement for statement in statements if statement != ""]
+            statements = [s for s in statements if len(s) > 0 and not s.isspace()]
             current_pos = 0
             missing_brace = False
+            check_for = False # handles special case where a standard for loop uses no braces
 
             for j, statement in enumerate(statements):
                 current_pos = line.find(statement)+len(statement)
 
-                if "while(" in statement or "while (" in statement:
+                if check_for and ')' in statement:
+                    if line[current_pos-1] != ')' or line[current_pos-2] != ')':
+                        correct_split = statement.split(')', 1)
+                        statement = correct_split[0]
+                        statements.insert(j+1, correct_split[1])
+                    check_for = False
+
+                if "while" in statement and '(' in statement:
                     breakers.append(None)
+                elif "for" in statement and '(' in statement:
+                    check_for = True
                 elif current_pos < len(line) and line[current_pos] == '}':
                     if len(breakers) > 0:
                         breakers.pop()
