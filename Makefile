@@ -9,6 +9,10 @@ OBJ_FLAGS = -Wl,--no-undefined -shared
 SO_DEFAULT = *.o -o bin/htrees.so -lm
 DEBUG_FLAGS = -g -Og
 RELEASE_FLAGS = -Os
+SETUP=setup
+
+setup:
+	mkdir -p bin
 
 # release
 all:
