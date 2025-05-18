@@ -20,10 +20,10 @@ void free_htree(foint tree)
 
 bool init_trees()
 {
-	trees = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree); 
+	trees = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree);
 	current_iterators = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)LinkedListFree); 
 
-	on_exit((void*)do_at_exit, NULL); // possible to use 2nd arg instead of global trees
+	on_exit((void*)do_at_exit, NULL); // TODO: possible to use 2nd arg instead of global trees?
 
 	return trees != NULL;
 }
@@ -32,14 +32,12 @@ bool init_trees()
 // e.g. TreeInsert creates a copy of the string/key, so the char* in foint may as well be const char*
 HTREE* create_tree(const char* name, const int depth) 
 {
-	// possibly need free foint fcn
 	HTREE* array = HTreeAlloc(depth, (pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, (pFointCopyFcn)strdup, (pFointFreeFcn)free);
 	TreeInsert(trees, (foint){.s=name}, (foint){.v=array});
 
 	return array;
 }
 
-// TODO: valgrind reporting memleak here
 const bool delete_tree(const char* name)
 {
 	return TreeDelete(trees, (foint){.s=name}) != NULL;

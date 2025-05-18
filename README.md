@@ -5,6 +5,8 @@ In order to compile htrees.so with just source and header files, do the followin
 
 If libwayne.a is recompiled with -fPIC flags enabled in order to contribute to a shared object, it's possible to compile htrees.so using the libwayne.a library file. If you'd prefer this, use the awk_value_t branch, then make.
 
+For information on comparisons in memory usage and runtimes between the using the extension and regular awk code, see the tools/benchmark directory; I'll format this soon so that it's much more nicely organized, but you can dive in yourself if you want an idea now. 
+
 How to use the extension:
 1. Follow the steps above to compile the file "htrees.so" in your current directory
 2. Make sure to set the environment variable "AWKLIBPATH" to the gawk-trees/bin directory (or wherever you have your "htrees.so" file)
