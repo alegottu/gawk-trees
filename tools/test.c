@@ -27,13 +27,21 @@ int main(int argc, char *argv[])
 	result.i = tree_elem_exists("pred", subscripts, 2);
 	test = result.i == 1;
 	printf("%i\n", test);
-	result.i = is_tree("pred", subscripts, 1); // TODO: needs case where element doesn't exist?
+	result.i = is_tree("pred", subscripts, 1);
 	test = result.i == 1;
 	printf("%i\n", test);
+	subscripts[0] = "a"; subscripts[1] = "b";
 	result.i = is_tree("pred", subscripts, 2);
 	test = result.i == 0;
 	printf("%i\n", test);
+	subscripts[0] = "x"; subscripts[1] = "y";
+	tree_remove("pred", subscripts, 2);
+	tree_remove("pred", subscripts, 2);
+	result.i = tree_elem_exists("pred", subscripts, 2);
+	test = result.i == 0;
+	printf("%i\n", test);
 	delete_tree("pred");
+
 
 	puts("testing 2D trees");
 	create_tree("test", 2);
@@ -49,21 +57,25 @@ int main(int argc, char *argv[])
 	query_tree("test", subscripts, &result, 2);
 	puts(result.s);
 
+
 	puts("testing inserting into a tree / value that does not yet exist");
-	char* subs[] = {"sub", ""};
+	char* subs[2] = {"sub", ""};
 	tree_insert("example", subs, (foint)"hello", 1);
 	query_tree("example", subs, &result, 1);
 	puts(result.s);
+
 
 	puts("testing querying into a tree that doesn't yet exist with number keys");
 	subs[0] = "1"; subs[1] = "\0";
 	query_tree("another", subs, &result, 1);
 	puts(result.s);
 
+
 	puts("testing inserting for the same key");
 	tree_insert("another", subs, (foint)"1", 1);
 	query_tree("another", subs, &result, 1);
 	puts(result.s);
+
 
 	puts("testing removing non-final elements");
 	tree_remove("test", subscripts, 1);
@@ -76,7 +88,30 @@ int main(int argc, char *argv[])
 	test = result.i == 0;
 	printf("%i\n", test);
 
-	puts("testing inserting many elements");
+
+	puts("testing increment/decrement");
+	char* iargs[4] = {"1","2","3","1"};
+	tree_increment("create", iargs, 4);
+	query_tree("create", iargs, &result, 3);
+	test = strcmp(result.s, "1") == 0;
+	printf("%i\n", test);
+	tree_increment("another", iargs, 1);
+	query_tree("another", iargs, &result, 1);
+	test = strcmp(result.s, "2") == 0;
+	printf("%i\n", test);
+	subs[0] = "sub";
+	tree_increment("example", subs, 1);
+	query_tree("example", subs, &result, 1);
+	test = strcmp(result.s, "1") == 0;
+	printf("%i\n", test);
+	subscripts[0] = "y";
+	tree_decrement("test", subscripts, 2);
+	query_tree("test", subscripts, &result, 2);
+	test = strcmp(result.s, "-1") == 0;
+	printf("%i\n", test);
+
+
+	puts("testing inserting many values");
 	create_tree("new", 2);
 	unsigned int dimensions[2] = { atoi(argv[1]), atoi(argv[2]) };
 
