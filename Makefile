@@ -9,23 +9,21 @@ OBJ_FLAGS = -Wl,--no-undefined -shared
 SO_DEFAULT = *.o -o bin/htrees.so -lm
 DEBUG_FLAGS = -g -Og
 RELEASE_FLAGS = -Os
-SETUP=setup
+BUILD=bin
 
-setup:
-	mkdir -p bin
-
-# release
-all:
+all: setup
 	gcc $(RELEASE_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE) $(LW_PATH)/src/avltree.c
 	gcc $(RELEASE_FLAGS) $(OBJ_FLAGS) $(SO_DEFAULT)
 	rm *.o
 
-debug:
+release: all
+
+debug: setup
 	gcc $(DEBUG_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE) $(LW_PATH)/src/avltree.c
 	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) $(SO_DEFAULT)
 	rm *.o
 
-test:
+test: setup
 	gcc $(DEBUG_FLAGS) -Wno-discarded-qualifiers -Wno-incompatible-pointer-types $(INCLUDES) $(SOURCE) $(LW_PATH)/src/avltree.c tools/print_info.c tools/test.c -o bin/test -lm
 
 # TODO: out of order until bintree query / insert also return foint*
@@ -34,3 +32,5 @@ test:
 # 	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) *.o -o bin/binhtrees.so -lm
 # 	rm *.o
 
+setup:
+	mkdir -p $(BUILD)

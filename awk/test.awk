@@ -12,6 +12,7 @@ BEGIN {
 	print tree_elem_exists("pred","x","y") == 1
 	print is_tree("pred", "x") == 1
 	print is_tree("pred", "a", "b") == 0
+	print is_tree("pred", "dne") == 0
 	tree_remove("pred","x","y")
 	tree_remove("pred","x","y") # should do nothing
 	print tree_elem_exists("pred","x","y") == 0

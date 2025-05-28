@@ -244,14 +244,10 @@ const unsigned short is_tree(const char* tree, const char** subscripts, const un
 
 	HTREE* htree = _htree.v;
 
-	// could possibly use htree->depth - depth instead
-	if (depth < htree->depth)
-		return 1;
-	else if (depth == htree->depth)
+	if (!SHTreeLookup(htree, _subscripts, depth, NULL))
 		return 0;
 
-	fputs("Excess subscripts given for this tree's depth\n", stderr);
-	exit(1);
+	return depth < htree->depth;
 }
 
 // NOTE: Make sure to free the result of this function
