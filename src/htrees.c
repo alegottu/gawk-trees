@@ -107,7 +107,7 @@ const bool query_tree(const char* tree, const char** subscripts, foint* result, 
 	return found;
 }
 
-static void remove_trailing_zeroes(char* num)
+static char* remove_trailing_zeroes(char* num)
 {
 	unsigned char first_last_zero_idx = 0;
 	const char* from_point = strchr(num, '.');
@@ -125,7 +125,7 @@ static void remove_trailing_zeroes(char* num)
 	 	end_pos = from_point + first_last_zero_idx - num;
 	num[end_pos] = '\0';
 		
-	num = realloc(num, (strlen(num) + 1) * sizeof(char));
+	return realloc(num, (strlen(num) + 1) * sizeof(char));
 }
 
 // NOTE: mult is always -1 or 1
@@ -187,11 +187,11 @@ const double increment(const char* tree, const char** args, const unsigned char 
 
 	double num = atof(result->s);
 	unsigned int len = (num == 0 ? 1 : strlen(result->s)) + amount_digits + 8;
-	// + 8 = 1 for \0 and '.', 6 for default precision of %f
+	// + 8 = 1 for '.' and \0, 6 for default precision of %f
 	num += amount * mult;
-	result->s = realloc(result->s, (len + 8) * sizeof(char)); 
+	result->s = realloc(result->s, len * sizeof(char)); 
 	sprintf(result->s, "%f", num);
-	remove_trailing_zeroes(result->s);
+	result->s = remove_trailing_zeroes(result->s);
 
 	return num;
 }
