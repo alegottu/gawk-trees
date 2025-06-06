@@ -1,7 +1,5 @@
 #include "htrees.h"
 
-// TODO: not up to date with awk/test.awk
-
 int main(int argc, char *argv[])
 {
 	init_trees();
@@ -32,6 +30,10 @@ int main(int argc, char *argv[])
 	printf("%i\n", test);
 	subscripts[0] = "a"; subscripts[1] = "b";
 	result.i = is_tree("pred", subscripts, 2);
+	test = result.i == 0;
+	printf("%i\n", test);
+	subscripts[0] = "d"; // element dne
+	result.i = is_tree("pred", subscripts, 1);
 	test = result.i == 0;
 	printf("%i\n", test);
 	subscripts[0] = "x"; subscripts[1] = "y";
