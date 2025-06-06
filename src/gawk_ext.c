@@ -97,9 +97,9 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 
 	query_t query = get_query();
 	const char** subscripts = query.subscripts;
-	const unsigned char num_subs = query.num_subs;
+	const unsigned char num_subs = query.num_subs - 1;
 	
-	tree_insert(query.name, subscripts, (foint){.s=subscripts[num_subs - 1]}, num_subs - 1);
+	tree_insert(query.name, subscripts, (foint){.s=subscripts[num_subs]}, num_subs);
 	free_query(query);
 	return make_number(1, result); // assume success if we get to this point
 }
@@ -109,11 +109,22 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 	assert(result != NULL);
 
 	query_t query = get_query();
-	foint data;
-	query_tree(query.name, query.subscripts, &data, query.num_subs);
+	foint data = query_tree(query.name, query.subscripts, query.num_subs);
 
 	free_query(query);
 	return make_const_string(data.s, strlen(data.s), result);
+}
+
+static awk_value_t* do_tree_modify(const int nargs, awk_value_t* result, struct awk_ext_func* _)
+{
+	assert(result != NULL);
+
+	query_t query = get_query();
+	const unsigned char num_subs = query.num_subs - 1;
+	double ret = tree_modify(query.name, query.subscripts, num_subs, query.subscripts[num_subs]);
+
+	free_query(query);
+	return make_number(ret, result);
 }
 
 static awk_value_t* do_tree_increment(const int nargs, awk_value_t* result, struct awk_ext_func* _)
@@ -210,6 +221,7 @@ static awk_ext_func_t func_table[] =
 	{ "delete_tree", do_delete_tree, 1, 1, awk_false, NULL },
 	{ "tree_insert", do_tree_insert, 0, 2, awk_true, NULL },
 	{ "query_tree", do_query_tree, 0, 2, awk_true, NULL },
+	{ "tree_modify", do_tree_modify, 0, 3, awk_true, NULL },
 	{ "tree_increment", do_tree_increment, 0, 2, awk_true, NULL },
 	{ "tree_decrement", do_tree_decrement, 0, 2, awk_true, NULL },
 	{ "tree_remove", do_tree_remove, 0, 2, awk_true, NULL },

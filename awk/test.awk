@@ -46,14 +46,20 @@ BEGIN {
 	print tree_elem_exists("test","x","z") == 0
 
 	print "testing increment/decrement"
-	tree_increment("create", 1, 2, 3, 1) # first on a tree that doesn't exist
-	print query_tree("create", 1, 2, 3) == 1
-	tree_increment("another", 1)
-	print query_tree("another", 1) == 2
-	tree_increment("example", "sub") # try on non-number element
-	print query_tree("example", "sub") == 1 
-	tree_decrement("test", "y", "z")
-	print query_tree("test", "y", "z") == -1
+	tree_increment("create",1,2,3,1) # first on a tree that doesn't exist
+	print query_tree("create",1,2,3) == 1
+	tree_increment("another",1)
+	print query_tree("another",1) == 2
+	tree_increment("example","sub") # try on non-number element
+	print query_tree("example","sub") == 1 
+	tree_decrement("test","y","z")
+	print query_tree("test","y","z") == -1
+
+	print "testing modify"
+	tree_modify("another",1,"+2") # try with no "x"
+	print query_tree("another",1) == 4
+	tree_modify("another",1,"*x") # try with element as a part of expression
+	print query_tree("another",1) == 16
 }
 
 {

@@ -26,7 +26,8 @@ extension functions behave exactly as standard awk arrays would unless otherwise
 | name["subscript"]++ | tree_increment("name", "subcript") | |
 | arr[1][2]-- | tree_decrement("arr", 1, 2) | |
 | test[4]["a"]+=7.93 | tree_increment("test", 4, "a", 7.93) | by default, the value by which the element at the query increments is 1, but you can specify it as the last argument, including as a negative value, effectively changing the operation, and as a real number, as shown above; be aware that in the case that there is no tree that exists under the name given as the first argument, the last argument will always be treated as the amount to increment as long as it is a valid number, since for a non-existent tree it would be impossible to distinguish between a final optional argument and an unknown number of subscripts |
-| name["subscript"]*=2 | tree_insert("name", "subscript", tree_query("name", "subscript")*2) | for now, for any other operations with an assignment shortcut, you can follow this pattern, although in the future there may be a different interface for each operation |
+| name["subscript"]*=2 | tree_modify("name", "subscript", "*2") | |
+| arr[1]+=2*arr[1] | tree_modify("name", "subscript", "+2*x") | To replicate the behavior of all other assignment shortcuts, use this function; note that "x" in the expression represents the current value of the element, which, just like awk, defaults to 0 if there is no valid value currently |
 | delete name["subscript"] | tree_remove("name", "subscript") | |
 | delete arr[1][2] | tree_remove("arr", 1, 2) | |
 | "subscript" in name | tree_elem_exists("name", "subscript") | |

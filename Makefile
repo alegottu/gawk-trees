@@ -2,9 +2,10 @@
 
 LW_PATH = libwayne
 GAWK_PATH = gawk
-BASE_FLAGS = -Wno-discarded-qualifiers -Wno-incompatible-pointer-types -fPIC -shared -DHAVE_CONFIG_H -c
-INCLUDES = -Iinclude -I$(GAWK_PATH) -I$(GAWK_PATH)/pc -I$(LW_PATH)/include
-SOURCE = src/*.c $(LW_PATH)/src/htree.c $(LW_PATH)/src/misc.c $(LW_PATH)/src/linked-list.c $(LW_PATH)/src/mem-debug.c
+TE_PATH = tinyexpr
+BASE_FLAGS = -Wno-discarded-qualifiers -Wno-incompatible-pointer-types -fPIC -shared -DHAVE_CONFIG_H -c -DTE_NAT_LOG -DTE_POW_FROM_RIGHT
+INCLUDES = -Iinclude -I$(GAWK_PATH) -I$(GAWK_PATH)/pc -I$(LW_PATH)/include -I$(TE_PATH)
+SOURCE = src/*.c $(LW_PATH)/src/htree.c $(LW_PATH)/src/misc.c $(LW_PATH)/src/linked-list.c $(LW_PATH)/src/mem-debug.c $(TE_PATH)/tinyexpr.c
 OBJ_FLAGS = -Wl,--no-undefined -shared
 SO_DEFAULT = *.o -o bin/htrees.so -lm
 DEBUG_FLAGS = -g -Og
@@ -33,4 +34,7 @@ test: setup
 # 	rm *.o
 
 setup:
-	mkdir -p $(BUILD)
+	if [ ! -d $(BUILD) ]; then \
+		mkdir $(BUILD); \
+		git submodule update --init --remote --recursive; \
+	fi

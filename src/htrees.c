@@ -1,4 +1,8 @@
 #include "htrees.h"
+
+#include <string.h>
+#include <tinyexpr.h>
+
 #include <stdlib.h>
 
 /* NOTE from gawk API documentation:
@@ -72,12 +76,12 @@ void tree_insert(const char* tree, const char** subscripts, const foint value, c
 	}
 }
 
-const bool query_tree(const char* tree, const char** subscripts, foint* result, const unsigned char depth)
+static foint* get_element(const char* tree, const char** subscripts, const unsigned char depth)
 {
+	foint _htree;
 	foint keys[depth];
 	fill_foints(subscripts, keys, depth);
-	foint _htree;
-	bool found;
+	foint* result;
 
 	if (STreeLookup(trees, (foint){.s=tree}, &_htree))
 	{
@@ -85,26 +89,30 @@ const bool query_tree(const char* tree, const char** subscripts, foint* result, 
 
 		if (depth != htree->depth)
 		{
-			fputs("query_tree: Incorrect number of subcripts given for tree depth; treating array as a scalar value\n", stderr);
+			fputs("query_tree: Incorrect number of subscripts given for tree depth; treating array as a scalar value\n", stderr);
 			exit(1);
 			// May have to changes instances of fputs -> exit to a special return value checked by funcs in gawk_ext.c to then use fatal()
 		}
 
-		found = SHTreeLookup(htree, keys, depth, result);
+		result = HTreeLookup(htree, keys);
 		
-		if (!found)
+		if (result == NULL)
 		{
-			*result = *HTreeInsert(htree, keys, (foint){.s=""});
+			result = HTreeInsert(htree, keys, (foint){.s=""});
 		}
 	}
 	else
 	{
-		found = false;
 		HTREE* htree = create_tree(tree, depth);
-		*result = *HTreeInsert(htree, keys, (foint){.s=""});
+		result = HTreeInsert(htree, keys, (foint){.s=""});
 	}
 
-	return found;
+	return result;
+}
+
+const foint query_tree(const char* tree, const char** subscripts, const unsigned char depth)
+{
+	return *get_element(tree, subscripts, depth);
 }
 
 static char* remove_trailing_zeroes(char* num)
@@ -126,6 +134,41 @@ static char* remove_trailing_zeroes(char* num)
 	num[end_pos] = '\0';
 		
 	return realloc(num, (strlen(num) + 1) * sizeof(char));
+}
+
+const double tree_modify(const char* tree, const char** subscripts, const unsigned char depth, const char* expr)
+{
+	foint* result = get_element(tree, subscripts, depth); 
+	double x = atof(result->s);
+
+	// TODO: compare speed / mem if we do branch into just te_interp
+	// if (strchr(expr, 'x') == NULL)
+	
+	te_variable vars[] = { {"x", &x} };
+	int err;
+	char* _expr = malloc((strlen(result->s) + strlen(expr) + 1) * sizeof(char));
+	strcpy(_expr, result->s);
+	strcat(_expr, expr);
+	te_expr* te = te_compile(_expr, vars, 1, &err);
+
+	if (te != NULL)
+	{
+		x = te_eval(te);
+		te_free(te);
+		free(_expr);
+
+		// TODO: over max size for now (64), see if we can figure out exact size from mantissa digits * max_10_exp in float.h
+		result->s = realloc(result->s, 64 * sizeof(char)); 
+		sprintf(result->s, "%f", x);
+		result->s = remove_trailing_zeroes(result->s);
+
+		return x;
+	}
+	else
+	{
+		fputs("tree_modify: Invalid expression given; parse error\n", stderr);
+		exit(1);
+	}
 }
 
 // NOTE: mult is always -1 or 1
@@ -155,7 +198,7 @@ const double increment(const char* tree, const char** args, const unsigned char 
 
 		if (depth != htree->depth)
 		{
-			fputs("tree_increment: Incorrect number of subcripts given for tree depth; treating array as a scalar value\n", stderr);
+			fputs("tree_increment: Incorrect number of subscripts given for tree depth; treating array as a scalar value\n", stderr);
 			exit(1);
 		}
 

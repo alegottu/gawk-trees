@@ -31,7 +31,9 @@ const bool delete_tree(const char* name);
 
 void tree_insert(const char* tree, const char** subscripts, const foint value, const unsigned char depth);
 
-const bool query_tree(const char* tree, const char** subscripts, foint* result, const unsigned char depth);
+const foint query_tree(const char* tree, const char** subscripts, const unsigned char depth);
+
+const double tree_modify(const char* tree, const char** subscripts, const unsigned char depth, const char* expr);
 
 const double tree_increment(const char* tree, const char** args, const unsigned char argc);
 
