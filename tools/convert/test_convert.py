@@ -16,13 +16,13 @@ class TestTranslations(unittest.TestCase):
 
     def test_for_in(self):
         test = ["x", "list"]
-        targets = ('x = tree_next("list"); while (tree_iters_remaining("list") > 0)', 
+        targets = ('while (tree_iters_remaining("list") > 0){x = tree_next("list"); ', 
                    'tree_iter_break("list")')
         results = convert.process_for_in(test)
         self.assertEqual(results, targets)
 
         test = ["x", 'list[y][2]["abc"]']
-        targets = ('x = tree_next("list", y, 2, "abc"); while (tree_iters_remaining("list", y, 2, "abc") > 0)', 
+        targets = ('while (tree_iters_remaining("list", y, 2, "abc") > 0){x = tree_next("list", y, 2, "abc"); ', 
                    'tree_iter_break("list", y, 2, "abc")')
         results = convert.process_for_in(test)
         self.assertEqual(results, targets)
@@ -63,6 +63,17 @@ class TestTranslations(unittest.TestCase):
         test = ["hx[$1][$2][$3]", "hy[$4]"]
         target = 'tree_increment("hx", $1, $2, $3, query_tree("hy", $4))'
         result = convert.process_increment(test)
+        self.assertEqual(result, target)
+
+    def test_modify(self):
+        test = ["cual[$1][$2][$3]", "$4*$5"]
+        target = 'tree_modify("cual", $1, $2, $3, "*"$4"*"$5)'
+        result = convert.process_modify(test, '*')
+        self.assertEqual(result, target)
+
+        test = ["gato[0][$3]", "gato[0][$3]+3/7"]
+        target = 'tree_modify("gato", 0, $3, "*x+3/7")'
+        result = convert.process_modify(test, '*')
         self.assertEqual(result, target)
 
     def test_delete_element(self):

@@ -72,6 +72,33 @@ def process_increment(tokens: list, decrement: bool = False) -> str:
         symbol = '+' if not decrement else '-'
         return f"{tokens[0]} {symbol}= query_tree({all_params})"
 
+def process_modify(tokens: list, op: str) -> str:
+    if '[' in tokens[0]:
+        exp = tokens[1]
+
+        if '[' in exp:
+            if exp.find(tokens[0]) != -1:
+                exp = exp.replace(tokens[0], 'x')
+            else:
+                exp = process_expression(exp)
+
+        matches = re.findall(r"\$\d+", exp)
+        match_at_end = len(matches) != 0 and \
+            exp.find(matches[-1]) == len(exp) - len(matches[-1])
+
+        for match in matches:
+            exp = exp.replace(match, f'"{match}"')
+
+        exp = f'"{op}{exp}"'
+        if match_at_end:
+            exp = exp[:-2]
+
+        subscripts = process_brackets(tokens[0], True)
+        return f"tree_modify({subscripts}{exp})"
+    else:
+        all_params = process_brackets(tokens[1])
+        return f"{tokens[0]} {op}= query_tree({all_params})"
+
 def process_delete_element(token: str) -> str:
     all_params = process_brackets(token)
     return f"tree_remove({all_params})"
@@ -135,6 +162,10 @@ def process_statement(statement: str, depth: int = 0) -> str:
             elif tokens[0][-1] == '-':
                 tokens[0] = tokens[0].rstrip(" -")
                 return process_increment(tokens, True)
+            elif re.match("[%/*^]", tokens[0][-1]) != None:
+                op = tokens[0][-1]
+                tokens[0] = tokens[0][:-1].rstrip(' ')
+                return process_modify(tokens, op)
             else:
                 return process_assignment(tokens)
         elif "++" in statement:

@@ -1,7 +1,6 @@
 In order to compile htrees.so with just source and header files, do the following:
 1. Clone this repository
-2. Use "git submodule update --init"
-3. Use "make" or "make debug"
+2. Use "make" or "make debug"
 
 If libwayne.a is recompiled with -fPIC flags enabled in order to contribute to a shared object, it's possible to compile htrees.so using the libwayne.a library file. If you'd prefer this, use the awk_value_t branch, then make.
 
@@ -17,15 +16,15 @@ extension functions behave exactly as standard awk arrays would unless otherwise
 
 | Standark AWK code | Using the "htrees" extension  | Extra Notes |
 |-------------------|-------------------------------|-------------|
-| N/A | create_tree("name", depth) | creates an empty htree with `depth` dimensions, held by the extension under "name"; at the moment, the htrees under the extension can't store elements at variable depths, and they also cannot expand or shrink their depth dynamically |
+| N/A | create_tree("name", depth) | creates an empty htree with `depth` dimensions, held by the extension under "name"; htrees under the extension can't store elements at variable depths, and they also cannot expand or shrink their depth dynamically, as either of these would cost significant extra memory to upkeep |
 | delete name | delete_tree("name") | specifically used for deleting the entire tree, see tree_remove for deleting elements |
 | name["subscript"] = value | tree_insert("name", "subscript", value) | |
 | arr[1][2] = value | tree_insert("arr", 1, 2, value) | |
 | name["subscript"] | query_tree("name", "subscript") | |
 | arr[1][2] | query_tree("arr", 1, 2) | |
-| name["subscript"]++ | tree_increment("name", "subcript") | |
+| name["subscript"]++ | tree_increment("name", "subscript") | |
 | arr[1][2]-- | tree_decrement("arr", 1, 2) | |
-| test[4]["a"]+=7.93 | tree_increment("test", 4, "a", 7.93) | by default, the value by which the element at the query increments is 1, but you can specify it as the last argument, including as a negative value, effectively changing the operation, and as a real number, as shown above; be aware that in the case that there is no tree that exists under the name given as the first argument, the last argument will always be treated as the amount to increment as long as it is a valid number, since for a non-existent tree it would be impossible to distinguish between a final optional argument and an unknown number of subscripts |
+| test[4]["a"]+=7.93 | tree_increment("test", 4, "a", 7.93) | by default, the value by which the element at the query increments is 1, but you can specify it as the last argument, as shown above; be aware that in the case that there is no tree that exists under the name given as the first argument, the last argument will always be treated as the amount to increment as long as it is a valid number, since for a non-existent tree it would be impossible to distinguish between a final optional argument and an unknown number of subscripts |
 | name["subscript"]*=2 | tree_modify("name", "subscript", "*2") | |
 | arr[1]+=2*arr[1] | tree_modify("name", "subscript", "+2*x") | To replicate the behavior of all other assignment shortcuts, use this function; note that "x" in the expression represents the current value of the element, which, just like awk, defaults to 0 if there is no valid value currently |
 | delete name["subscript"] | tree_remove("name", "subscript") | |
