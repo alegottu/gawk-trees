@@ -11,7 +11,8 @@ BEGIN {
 				{
 					for (e=0; e<100; e++)
 					{
-						tree_insert("test", a, b, c, d, e, query_tree("test", a, b, c, d, e) + 1)
+						x=query_tree("test", a, b, c, d, e)
+						tree_insert("test", a, b, c, d, e, x + 2*x)
 					}
 				}
 			}

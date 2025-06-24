@@ -1,19 +1,20 @@
 @load "htrees"
 
 BEGIN {
-    for (a=0; a<10000000000; a++)
-    {
-		tree_increment("test", a)
-    }
+	for (a=0; a<100; a++)
+	{
+		for (b=0; b<100; b++)
+		{
+			for (c=0; c<100; c++)
+			{
+				for (d=0; d<100; d++)
+				{
+					for (e=0; e<100; e++)
+					{
+						tree_increment("test", a, b, c, d, e)
+					}
+				}
+			}
+		}
+	}
 }
-# BEGIN {
-#     while(tree_iters_remaining("test") > 0)
-#     {
-#         a=tree_next("test")
-#         while (tree_iters_remaining("test", a) > 0)
-#         {
-#             b=tree_next("test", a)
-#             print query_tree("test", a, b)
-#         }
-#     }
-# }
