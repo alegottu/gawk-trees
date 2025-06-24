@@ -1,18 +1,12 @@
 BEGIN {
-    for (a=0; a<1000; a++)
+    for (a=0; a<100000000; a++)
     {
-        for (b=0; b<1000; b++)
-        {
-             test[a][b]=rand()
-        }
+         test[a]=rand()
     }
 }
 BEGIN {
-    for (a=0; a<1000; a++)
+    for (a=0; a<100000000; a++)
     {
-        for (b=0; b<1000; b++)
-        {
-            print test[a][b]
-        }
+        print test[a]
     }
 }

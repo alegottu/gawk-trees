@@ -4,7 +4,7 @@ import os
 import subprocess
 from pathlib import Path
 
-# usage mem-benchmark.py dimension1 [dimension2 ...]
+# usage mem-benchmark.py dimension1 [dimension2] [...]
 # make sure to have set the AWKLIBPATH env var correctly
 
 if "benchmark" not in os.getcwd():
@@ -68,22 +68,23 @@ def create_nested_whiles(n):
 name = reduce(lambda a, b: a + "-" + b, sys.argv[1:])
 dirs = f"logs/{name}/"
 Path(dirs).mkdir(parents=True, exist_ok=True)
+num_dims = len(sys.argv) - 1
 
 with open('mem-benchmark.awk', 'w') as file:
-    loops = create_nested_fors(len(sys.argv)-1, "tree_insert", ["rand()"])
+    loops = create_nested_fors(num_dims, "tree_insert", ["rand()"])
     code = 'BEGIN {\n' + loops + "}\n"
-    loops = create_nested_whiles(len(sys.argv)-1)
+    loops = create_nested_whiles(num_dims)
     code += "BEGIN {\n" + loops + "}"
     file.write(code)
     file.flush()
-    process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}mem.massif gawk -lhtrees -f {file.name}', shell=True, check=True)
-    process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}bintree.massif gawk -lbinhtrees -f {file.name}', shell=True, check=True)
+    process = subprocess.run(f'command time -o {dirs}ext.time -v gawk -lhtrees -f {file.name}', shell=True, check=True)
+    #process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}bintree.massif gawk -lbinhtrees -f {file.name}', shell=True, check=True)
 
 with open('mem-benchmark-noext.awk', 'w') as file:
-    loops = create_nested_fors(len(sys.argv)-1, "", ["=rand()"], False)
+    loops = create_nested_fors(num_dims, "", ["=rand()"], False)
     code = "BEGIN {\n" + loops + "}\n"
-    loops = create_nested_fors(len(sys.argv)-1, "print", use_ext=False)
+    loops = create_nested_fors(num_dims, "print", use_ext=False)
     code += "BEGIN {\n" + loops + "}"
     file.write(code)
     file.flush()
-    process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}noext.massif gawk -f {file.name}', shell=True, check=False)
+    process = subprocess.run(f'command time -o {dirs}normal.time -v gawk -f {file.name}', shell=True, check=True)
