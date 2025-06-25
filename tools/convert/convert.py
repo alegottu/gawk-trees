@@ -202,56 +202,59 @@ def first_sig_char(s: str) -> int:
             return idx
     return 0
 
+def process_statements(line: str, verbose: bool, line_num = 1) -> str:
+    statements = re.split("[;{}]", line)
+    statements = [s for s in statements if len(s) > 0 and not s.isspace()]
+    current_pos = 0
+    missing_brace = False
+    check_for = False # handles special case where a standard for loop uses no braces
+
+    for i, statement in enumerate(statements):
+        current_pos = line.find(statement)+len(statement)
+
+        if check_for and ')' in statement:
+            if line[current_pos-1] != ')' or line[current_pos-2] != ')':
+                correct_split = statement.split(')', 1)
+                statement = correct_split[0]
+                statements.insert(i+1, correct_split[1])
+            check_for = False
+
+        if "while" in statement and '(' in statement:
+            breakers.append(None)
+        elif "for" in statement and '(' in statement:
+            check_for = True
+        elif current_pos < len(line) and line[current_pos] == '}':
+            if len(breakers) > 0:
+                breakers.pop()
+
+            if missing_brace:
+                line = line[:current_pos] + " } } " + line[current_pos:]
+                missing_brace = False
+
+        translated = process_statement(statement.strip())
+        # TODO: only accounts for one inner loop (depth of 1)
+        if len(translated) >= 4 and translated[-4] == ';': # See note in process_statement
+            translated = translated[:-4]
+            missing_brace = True
+
+        before = line
+        line = line.replace(statement, translated, 1)
+        if verbose and before != line: print(f"Token {i+1} of line {line_num} ({statement}):\n", before, " -> ", line)
+    else:
+        return line # line is translated by this point
+
 if __name__ == "__main__":
-    with open(argv[1]) as file:
-        print(file.read())
-        print("---------\n")
-        file.seek(0)
-        verbose = len(argv) > 2
-        result = ""
+    verbose = len(argv) > 2
+    result = ""
+    
+    if len(argv) == 1:
+        print("usage: python convert.py [file.awk] [script only if no file] [-verbose]")
+        exit(0)
+    elif '{' in argv[1]:
+        result = process_statements(argv[1], verbose)
+    else:
+        with open(argv[1]) as file:
+            for i, line in enumerate(file):
+                result += process_statements(line, verbose, i+1)
 
-        for i, line in enumerate(file):
-            statements = re.split("[;{}]", line)
-            statements = [s for s in statements if len(s) > 0 and not s.isspace()]
-            current_pos = 0
-            missing_brace = False
-            check_for = False # handles special case where a standard for loop uses no braces
-
-            for j, statement in enumerate(statements):
-                current_pos = line.find(statement)+len(statement)
-
-                if check_for and ')' in statement:
-                    if line[current_pos-1] != ')' or line[current_pos-2] != ')':
-                        correct_split = statement.split(')', 1)
-                        statement = correct_split[0]
-                        statements.insert(j+1, correct_split[1])
-                    check_for = False
-
-                if "while" in statement and '(' in statement:
-                    breakers.append(None)
-                elif "for" in statement and '(' in statement:
-                    check_for = True
-                elif current_pos < len(line) and line[current_pos] == '}':
-                    if len(breakers) > 0:
-                        breakers.pop()
-
-                    if missing_brace:
-                        line = line[:current_pos] + " } } " + line[current_pos:]
-                        missing_brace = False
-
-                translated = process_statement(statement.strip())
-                # TODO: only accounts for one inner loop (depth of 1)
-                if len(translated) >= 4 and translated[-4] == ';': # See note in process_statement
-                    translated = translated[:-4]
-                    missing_brace = True
-
-                before = line
-                line = line.replace(statement, translated, 1)
-                if verbose and before != line: print(f"Token {j} of line {i} ({statement}):\n", before, " -> ", line)
-            else:
-                result += line # line is translated by this point
-
-        if verbose: print("\n---------\n")
-        print(result)
-        with open(f"ext-{argv[1]}", 'w') as converted:
-            converted.write(result)
+    print(result)
