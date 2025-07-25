@@ -9,13 +9,13 @@ int main(int argc, char *argv[])
 	char* subscripts[2] = {"a","b"};
 	tree_insert("pred", subscripts, (foint)"1", 2); // for testing, key / value must always be as string, gawk API normally does this for us
 	foint result;
-	query_tree("pred", subscripts, &result, 2);
+	result = query_tree("pred", subscripts, 2);
 	puts(result.s);
-	query_tree("pred", subscripts, &result, 2);
+	result = query_tree("pred", subscripts, 2);
 	puts(result.s);
 	subscripts[0] = "x"; subscripts[1] = "y";
 	tree_insert("pred", subscripts, (foint)"hello", 2);
-	query_tree("pred", subscripts, &result, 2);
+	result = query_tree("pred", subscripts, 2);
 	puts(result.s);
 	subscripts[1] = "b";
 	result.i = tree_elem_exists("pred", subscripts, 2);
@@ -48,34 +48,34 @@ int main(int argc, char *argv[])
 	puts("testing 2D trees");
 	create_tree("test", 2);
 	tree_insert("test", subscripts, (foint)"864", 2);
-	query_tree("test", subscripts, &result, 2);
+	result = query_tree("test", subscripts, 2);
 	puts(result.s);
 	subscripts[1] = "z";
 	tree_insert("test", subscripts, (foint)"229", 2);
 	subscripts[0] = "y";
-	query_tree("test", subscripts, &result, 2);
+	result = query_tree("test", subscripts, 2);
 	puts(result.s);
 	subscripts[0] = "x";
-	query_tree("test", subscripts, &result, 2);
+	result = query_tree("test", subscripts, 2);
 	puts(result.s);
 
 
 	puts("testing inserting into a tree / value that does not yet exist");
 	char* subs[2] = {"sub", ""};
 	tree_insert("example", subs, (foint)"hello", 1);
-	query_tree("example", subs, &result, 1);
+	result = query_tree("example", subs, 1);
 	puts(result.s);
 
 
 	puts("testing querying into a tree that doesn't yet exist with number keys");
 	subs[0] = "1"; subs[1] = "\0";
-	query_tree("another", subs, &result, 1);
+	result = query_tree("another", subs, 1);
 	puts(result.s);
 
 
 	puts("testing inserting for the same key");
 	tree_insert("another", subs, (foint)"1", 1);
-	query_tree("another", subs, &result, 1);
+	result = query_tree("another", subs, 1);
 	puts(result.s);
 
 
@@ -94,21 +94,21 @@ int main(int argc, char *argv[])
 	puts("testing increment/decrement");
 	char* iargs[4] = {"1","2","3","1"};
 	tree_increment("create", iargs, 4);
-	query_tree("create", iargs, &result, 3);
+	result = query_tree("create", iargs, 3);
 	test = strcmp(result.s, "1") == 0;
 	printf("%i\n", test);
 	tree_increment("another", iargs, 1);
-	query_tree("another", iargs, &result, 1);
+	result = query_tree("another", iargs, 1);
 	test = strcmp(result.s, "2") == 0;
 	printf("%i\n", test);
 	subs[0] = "sub";
 	tree_increment("example", subs, 1);
-	query_tree("example", subs, &result, 1);
+	result = query_tree("example", subs, 1);
 	test = strcmp(result.s, "1") == 0;
 	printf("%i\n", test);
 	subscripts[0] = "y";
 	tree_decrement("test", subscripts, 2);
-	query_tree("test", subscripts, &result, 2);
+	result = query_tree("test", subscripts, 2);
 	test = strcmp(result.s, "-1") == 0;
 	printf("%i\n", test);
 

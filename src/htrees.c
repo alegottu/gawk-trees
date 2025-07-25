@@ -44,7 +44,7 @@ HTREE* create_tree(const char* name, const int depth)
 
 const bool delete_tree(const char* name)
 {
-	return TreeDelete(trees, (foint){.s=name}) != NULL;
+	return TreeDelete(trees, (foint){.s=name});
 }
 
 static void fill_foints(const char** strs, foint* result, const unsigned char count)
