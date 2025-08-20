@@ -65,10 +65,16 @@ def create_nested_whiles(n):
 
     return loops
 
+
+bin = "htrees"
+if 'v' in sys.argv[1]:
+    bin = "vhtrees"
+    sys.argv.pop(1);
+
+num_dims = len(sys.argv) - 1
 name = reduce(lambda a, b: a + "-" + b, sys.argv[1:])
 dirs = f"logs/{name}/"
 Path(dirs).mkdir(parents=True, exist_ok=True)
-num_dims = len(sys.argv) - 1
 
 with open('mem-benchmark.awk', 'w') as file:
     loops = create_nested_fors(num_dims, "tree_insert", ["rand()"])
@@ -77,7 +83,7 @@ with open('mem-benchmark.awk', 'w') as file:
     code += "BEGIN {\n" + loops + "}"
     file.write(code)
     file.flush()
-    process = subprocess.run(f'command time -o {dirs}ext.time -v gawk -lhtrees -f {file.name}', shell=True, check=True)
+    process = subprocess.run(f'command time -o {dirs}ext.time -v gawk -l{bin} -f {file.name}', shell=True, check=True)
     #process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}bintree.massif gawk -lbinhtrees -f {file.name}', shell=True, check=True)
 
 with open('mem-benchmark-noext.awk', 'w') as file:
