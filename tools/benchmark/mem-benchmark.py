@@ -67,9 +67,14 @@ def create_nested_whiles(n):
 
 
 bin = "htrees"
+massif = False
+
 if 'v' in sys.argv[1]:
     bin = "vhtrees"
-    sys.argv.pop(1);
+    sys.argv.pop(1)
+elif 'm' in sys.argv[1]:
+    massif = True
+    sys.argv.pop(1)
 
 num_dims = len(sys.argv) - 1
 name = reduce(lambda a, b: a + "-" + b, sys.argv[1:])
@@ -83,8 +88,11 @@ with open('mem-benchmark.awk', 'w') as file:
     code += "BEGIN {\n" + loops + "}"
     file.write(code)
     file.flush()
-    process = subprocess.run(f'command time -o {dirs}ext.time -v gawk -l{bin} -f {file.name}', shell=True, check=True)
-    #process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}bintree.massif gawk -lbinhtrees -f {file.name}', shell=True, check=True)
+
+    if massif:
+        process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}ext.massif gawk -lhtrees -f {file.name}', shell=True, check=True)
+    else:
+        process = subprocess.run(f'command time -o {dirs}ext.time -v gawk -l{bin} -f {file.name}', shell=True, check=True)
 
 with open('mem-benchmark-noext.awk', 'w') as file:
     loops = create_nested_fors(num_dims, "", ["=rand()"], False)
@@ -93,4 +101,8 @@ with open('mem-benchmark-noext.awk', 'w') as file:
     code += "BEGIN {\n" + loops + "}"
     file.write(code)
     file.flush()
-    process = subprocess.run(f'command time -o {dirs}normal.time -v gawk -f {file.name}', shell=True, check=True)
+
+    if massif:
+        process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}normal.massif gawk -f {file.name}', shell=True, check=True)
+    else:
+        process = subprocess.run(f'command time -o {dirs}normal.time -v gawk -f {file.name}', shell=True, check=True)
