@@ -13,12 +13,9 @@
 #if HTREE_USES_AVL
 #include "avltree.h"
 #define NODETYPE AVLTREENODE
-#define TreeDelete(T,k) AvlTreeDelete((T),(k))
-//#define AvlTreeDelete(T,k) AvlTreeLookDel((T),(k),true)
 #else
 #include "bintree.h"
 #define NODETYPE BINTREENODE
-#define TreeDelete(t,k) BinTreeLookDel((t), (k), (foint*)1)
 #endif
 
 void free_htree(const foint tree);

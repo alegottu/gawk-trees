@@ -1,4 +1,4 @@
-# TODO: use libwayne.a like awk_value_t branch
+# TODO: use libwayne.a like awk_value_t branch, create sep target for using -fPIC flags in libwayne fork
 
 LW_PATH = libwayne
 GAWK_PATH = gawk
@@ -32,11 +32,10 @@ verbose: setup
 test: setup
 	gcc $(DEBUG_FLAGS) -Wno-discarded-qualifiers -Wno-incompatible-pointer-types $(INCLUDES) $(SOURCE) $(LW_PATH)/src/avltree.c tools/print_info.c tools/test.c -o bin/test -lm
 
-# TODO: out of order until bintree query / insert also return foint*
-# bintree:
-# 	gcc -DHTREE_USES_AVL=0 $(DEBUG_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE) $(LW_PATH)/src/bintree.c
-# 	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) *.o -o bin/binhtrees.so -lm
-# 	rm *.o
+bintree:
+	gcc -DHTREE_USES_AVL=0 $(DEBUG_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE) $(LW_PATH)/src/bintree.c
+	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) *.o -o bin/binhtrees.so -lm
+	rm *.o
 
 setup:
 	if [ ! -d $(BUILD) ]; then \
