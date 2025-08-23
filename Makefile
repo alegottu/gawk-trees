@@ -1,40 +1,40 @@
-# TODO: use libwayne.a like awk_value_t branch, create sep target for using -fPIC flags in libwayne fork
-
 LW_PATH = libwayne
 GAWK_PATH = gawk
 TE_PATH = tinyexpr
 BASE_FLAGS = -Wno-discarded-qualifiers -Wno-incompatible-pointer-types -fPIC -shared -DHAVE_CONFIG_H -c -DTE_NAT_LOG -DTE_POW_FROM_RIGHT
 INCLUDES = -Iinclude -I$(GAWK_PATH) -I$(GAWK_PATH)/pc -I$(LW_PATH)/include -I$(TE_PATH)
-SOURCE = src/*.c $(LW_PATH)/src/misc.c $(LW_PATH)/src/htree.c $(LW_PATH)/src/linked-list.c $(LW_PATH)/src/stack.c $(LW_PATH)/src/mem-debug.c $(TE_PATH)/tinyexpr.c
+SOURCE = src/*.c $(TE_PATH)/tinyexpr.c
 OBJ_FLAGS = -Wl,--no-undefined -shared
 SO_DEFAULT = *.o -o bin/htrees.so -lm
+LIBS = -lm -L$(LW_PATH) -l:libwayne.a
+LIBS_DEBUG = -lm -L$(LW_PATH) -l:libwayne-g.a
 DEBUG_FLAGS = -g3 -Og
 RELEASE_FLAGS = -Os
 BUILD=bin
 
 all: setup
-	gcc $(RELEASE_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE) $(LW_PATH)/src/avltree.c
-	gcc $(RELEASE_FLAGS) $(OBJ_FLAGS) $(SO_DEFAULT)
+	gcc $(RELEASE_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE)
+	gcc $(RELEASE_FLAGS) $(OBJ_FLAGS) $(SO_DEFAULT) $(LIBS)
 	rm *.o
 
 release: all
 
 debug: setup
-	gcc $(DEBUG_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE) $(LW_PATH)/src/avltree.c
-	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) $(SO_DEFAULT)
+	gcc $(DEBUG_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE)
+	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) $(SO_DEFAULT) $(LIBS_DEBUG)
 	rm *.o
 
 verbose: setup
-	gcc -DVERBOSE $(DEBUG_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE) $(LW_PATH)/src/avltree.c
-	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) *.o -o bin/vhtrees.so -lm
+	gcc -DVERBOSE $(DEBUG_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE)
+	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) *.o -o bin/vhtrees.so $(LIBS_DEBUG)
 	rm *.o
 
 test: setup
-	gcc $(DEBUG_FLAGS) -Wno-discarded-qualifiers -Wno-incompatible-pointer-types $(INCLUDES) $(SOURCE) $(LW_PATH)/src/avltree.c tools/print_info.c tools/test.c -o bin/test -lm
+	gcc $(DEBUG_FLAGS) -Wno-discarded-qualifiers -Wno-incompatible-pointer-types $(INCLUDES) $(SOURCE) tools/print_info.c tools/test.c -o bin/test $(LIBS_DEBUG)
 
 bintree:
-	gcc -DHTREE_USES_AVL=0 $(DEBUG_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE) $(LW_PATH)/src/bintree.c
-	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) *.o -o bin/binhtrees.so -lm
+	gcc -DHTREE_USES_AVL=0 $(DEBUG_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE)
+	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) *.o -o bin/binhtrees.so $(LIBS_DEBUG)
 	rm *.o
 
 setup:
