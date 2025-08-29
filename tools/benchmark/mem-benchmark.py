@@ -68,18 +68,27 @@ def create_nested_whiles(n):
 
 args = " -lhtrees"
 massif = False
-out = ("ext.time", "normal.time")
+out = ("ext", "normal")
 
-if 'v' in sys.argv[1]: # [v]erbose
-    args = " -lvhtrees"
-    sys.argv.pop(1)
-elif 'm' in sys.argv[1]: # use [m]assif
-    massif = True
-    sys.argv.pop(1)
-elif 'b' in sys.argv[1]: # test against [b]intree version
-    args = " -lbinhtrees"
-    out = ("bin.time", "avl.time")
-    sys.argv.pop(1)
+if len(sys.argv) == 1:
+    print("""usage: mem-benchmark.py [-v|--verbose] [-m|--massif] [-b|--bintree] dimensions
+    dimensions refer to the number of elements for each depth of the tree structure, e.g. 100 100 = htree[100][100]
+    --verbose: also print info about the number of steps needed to traverse AVL trees during key operations
+    --massif: use valgrind --tool=massif to profile instead of time -v
+    --bintree: test the AVL tree version of htrees against the regular binary tree version""")
+    exit()
+else:
+    for arg in sys.argv[1:]:
+        if 'v' in sys.argv[1]:
+            args = " -lvhtrees"
+            sys.argv.pop(1)
+        elif 'm' in sys.argv[1]:
+            massif = True
+            sys.argv.pop(1)
+        elif 'b' in sys.argv[1]:
+            args = " -lbinhtrees"
+            out = ("bin", "avl")
+            sys.argv.pop(1)
 
 num_dims = len(sys.argv) - 1
 name = reduce(lambda a, b: a + "-" + b, sys.argv[1:])
@@ -93,11 +102,12 @@ with open('mem-benchmark.awk', 'w') as file:
     code += "BEGIN {\n" + loops + "}"
     file.write(code)
     file.flush()
+    command = f"gawk{args} -f {file.name}"
 
     if massif:
-        process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}ext.massif gawk -lhtrees -f {file.name}', shell=True, check=True)
+        process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}{out[0]}.massif {command}', shell=True, check=True)
     else:
-        process = subprocess.run(f'command time -o {dirs}{out[0]} -v gawk{args} -f {file.name}', shell=True, check=True)
+        process = subprocess.run(f'command time -o {dirs}{out[0]}.time -v {command}', shell=True, check=True)
 
 if "bin" in args:
     script = "mem-benchmark.awk"
@@ -106,15 +116,18 @@ else:
     script = "mem-benchmark-noext.awk"
     args = ""
 
-with open(script, 'w') as file:
-    loops = create_nested_fors(num_dims, "", ["=rand()"], False)
-    code = "BEGIN {\n" + loops + "}\n"
-    loops = create_nested_fors(num_dims, "print", use_ext=False)
-    code += "BEGIN {\n" + loops + "}"
-    file.write(code)
-    file.flush()
+    with open(script, 'w') as file:
+        loops = create_nested_fors(num_dims, "", ["=rand()"], False)
+        code = "BEGIN {\n" + loops + "}\n"
+        loops = create_nested_fors(num_dims, "print", use_ext=False)
+        code += "BEGIN {\n" + loops + "}"
+        file.write(code)
+        file.flush()
+
+with open(script, 'r') as file:
+    command = f"gawk{args} -f {file.name}"
 
     if massif:
-        process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}normal.massif gawk -f {file.name}', shell=True, check=True)
+        process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}{out[1]}.massif {command}', shell=True, check=True)
     else:
-        process = subprocess.run(f'command time -o {dirs}{out[1]} -v gawk{args} -f {file.name}', shell=True, check=True)
+        process = subprocess.run(f'command time -o {dirs}{out[1]}.time -v {command}', shell=True, check=True)

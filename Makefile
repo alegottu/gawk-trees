@@ -26,7 +26,10 @@ debug: setup
 
 verbose: setup
 	gcc -DVERBOSE $(DEBUG_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE)
-	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) *.o -o bin/vhtrees.so $(LIBS_DEBUG)
+	$(MAKE) -C libwayne clean
+	$(MAKE) -C libwayne libwayne 'OPT=-fPIC -DVERBOSE' 'GDB=-ggdb' 'DEBUG=-DDEBUG=1' 'LIBOUT=libwayne-v.a'
+	$(MAKE) -C libwayne raw_clean
+	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) *.o -o bin/vhtrees.so -lm -L$(LW_PATH) -l:libwayne-v.a
 	rm *.o
 
 test: setup
@@ -34,6 +37,7 @@ test: setup
 
 bintree:
 	gcc -DHTREE_USES_AVL=0 $(DEBUG_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE)
+	$(MAKE) -C libwayne clean
 	$(MAKE) -C libwayne libwayne 'OPT=-fPIC -DHTREE_USES_AVL=0' 'GDB=-ggdb' 'DEBUG=-DDEBUG=1' 'LIBOUT=libwayne-bh.a'
 	$(MAKE) -C libwayne raw_clean
 	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) *.o -o bin/binhtrees.so -lm -L$(LW_PATH) -l:libwayne-bh.a
