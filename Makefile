@@ -34,7 +34,9 @@ test: setup
 
 bintree:
 	gcc -DHTREE_USES_AVL=0 $(DEBUG_FLAGS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE)
-	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) *.o -o bin/binhtrees.so $(LIBS_DEBUG)
+	$(MAKE) -C libwayne libwayne 'OPT=-fPIC -DHTREE_USES_AVL=0' 'GDB=-ggdb' 'DEBUG=-DDEBUG=1' 'LIBOUT=libwayne-bh.a'
+	$(MAKE) -C libwayne raw_clean
+	gcc $(DEBUG_FLAGS) $(OBJ_FLAGS) *.o -o bin/binhtrees.so -lm -L$(LW_PATH) -l:libwayne-bh.a
 	rm *.o
 
 setup:
