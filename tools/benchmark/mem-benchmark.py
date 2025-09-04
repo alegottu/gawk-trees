@@ -66,7 +66,7 @@ def create_nested_whiles(n):
     return loops
 
 
-args = " -lhtrees"
+args = " -lghtrees"
 massif = False
 out = ("ext", "normal")
 
@@ -111,7 +111,7 @@ with open('mem-benchmark.awk', 'w') as file:
 
 if "bin" in args:
     script = "mem-benchmark.awk"
-    args = " -lhtrees"
+    args = " -lghtrees"
 else:
     script = "mem-benchmark-noext.awk"
     args = ""
