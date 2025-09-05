@@ -46,10 +46,11 @@ htrees:
 	rm *.o
 	$(MAKE) -C libwayne raw_clean
 
-# NOTE: If you build this without building one of the other targets first, you need to build libwayne seperately;
-# made to be entirely seperate from gawk source to test memory leaks
+# Made to be entirely seperate from gawk source to test memory leaks
 test: setup
-	gcc $(DEBUG_FLAGS) -Wno-discarded-qualifiers -Wno-incompatible-pointer-types $(INCLUDES) $(SOURCE) tools/print_info.c tools/test.c -o bin/test $(LIBS_DEBUG)
+	$(MAKE) -C libwayne shared-debug
+	gcc $(DEBUG_FLAGS) -Wno-discarded-qualifiers -Wno-incompatible-pointer-types $(INCLUDES) -Itest $(SOURCE) test/print_info.c test/test.c -o test/test -lm -L$(LW_PATH) -l:libwayne-g.a
+	$(MAKE) -C libwayne raw_clean
 
 setup:
 	if [ ! -d $(BUILD) ]; then \

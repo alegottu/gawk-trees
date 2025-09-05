@@ -66,7 +66,7 @@ def create_nested_whiles(n):
     return loops
 
 
-args = " -lghtrees"
+args = " -lhtrees"
 massif = False
 out = ("ext", "normal")
 
@@ -95,7 +95,7 @@ name = reduce(lambda a, b: a + "-" + b, sys.argv[1:])
 dirs = f"logs/{name}/"
 Path(dirs).mkdir(parents=True, exist_ok=True)
 
-with open('mem-benchmark.awk', 'w') as file:
+with open('.mem-benchmark.awk', 'w') as file:
     loops = create_nested_fors(num_dims, "tree_insert", ["rand()"])
     code = 'BEGIN {\n' + loops + "}\n"
     loops = create_nested_whiles(num_dims)
@@ -110,10 +110,10 @@ with open('mem-benchmark.awk', 'w') as file:
         process = subprocess.run(f'command time -o {dirs}{out[0]}.time -v {command}', shell=True, check=True)
 
 if "bin" in args:
-    script = "mem-benchmark.awk"
-    args = " -lghtrees"
+    script = ".mem-benchmark.awk"
+    args = " -lhtrees"
 else:
-    script = "mem-benchmark-noext.awk"
+    script = ".mem-benchmark-noext.awk"
     args = ""
 
     with open(script, 'w') as file:

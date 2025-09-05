@@ -1,6 +1,6 @@
 compile_flags.txt
 *.o
-debug.sh
 bin/*
 __pycache__
-/tools/convert/data/*
+tools/benchmark/.mem-benchmark-noext.awk
+tools/benchmark/.mem-benchmark.awk

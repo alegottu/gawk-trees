@@ -1,0 +1,1034 @@
+desc: --pages-as-heap=yes --massif-out-file=logs/100000/bin.massif
+cmd: gawk -lbinhtrees -f mem-benchmark.awk
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=45056
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=1146003
+mem_heap_B=15413248
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n4: 15413248 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 13864960 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 13864960 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7151616 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7151616 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7151616 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7151616 0x400A600: _dl_map_object (dl-load.c:2327)
+       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
+        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
+           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
+             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
+              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+               n1: 7131136 0x3: ???
+                n1: 7131136 0x1FFF000192: ???
+                 n1: 7131136 0x1FFF000197: ???
+                  n1: 7131136 0x1FFF0001A3: ???
+                   n0: 7131136 0x1FFF0001A6: ???
+       n0: 20480 in 1 place, below massif's threshold (1.00%)
+   n1: 6627328 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6627328 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6627328 0x400A600: _dl_map_object (dl-load.c:2327)
+      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
+       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
+          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
+            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
+             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+              n1: 6610944 0x3: ???
+               n1: 6610944 0x1FFF000192: ???
+                n1: 6610944 0x1FFF000197: ???
+                 n1: 6610944 0x1FFF0001A3: ???
+                  n0: 6610944 0x1FFF0001A6: ???
+      n0: 16384 in 1 place, below massif's threshold (1.00%)
+   n0: 86016 in 3 places, all below massif's threshold (1.00%)
+ n0: 1003520 0x0: ???
+ n1: 409600 0x4DE8A27: __mmap64 (mmap64.c:58)
+  n2: 409600 0x4DE8A27: mmap (mmap64.c:46)
+   n1: 372736 0x4D01C00: _nl_load_locale (loadlocale.c:223)
+    n1: 372736 0x4D017D0: _nl_find_locale (findlocale.c:237)
+     n1: 372736 0x4D00A90: setlocale (setlocale.c:414)
+      n2: 372736 0x4D00A90: setlocale (setlocale.c:217)
+       n1: 356352 0x115027: ??? (in /usr/bin/gawk)
+        n0: 356352 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+       n0: 16384 in 4 places, all below massif's threshold (1.00%)
+   n0: 36864 in 2 places, all below massif's threshold (1.00%)
+ n0: 135168 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=2
+#-----------
+time=21542799
+mem_heap_B=15949824
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n5: 15949824 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 14004224 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 14004224 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7229440 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7229440 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7229440 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7229440 0x400A600: _dl_map_object (dl-load.c:2327)
+       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
+        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
+           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
+             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
+              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+               n1: 7131136 0x3: ???
+                n1: 7131136 0x1FFF000192: ???
+                 n1: 7131136 0x1FFF000197: ???
+                  n1: 7131136 0x1FFF0001A3: ???
+                   n0: 7131136 0x1FFF0001A6: ???
+       n0: 98304 in 2 places, all below massif's threshold (1.00%)
+   n1: 6688768 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6688768 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6688768 0x400A600: _dl_map_object (dl-load.c:2327)
+      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
+       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
+          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
+            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
+             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+              n1: 6610944 0x3: ???
+               n1: 6610944 0x1FFF000192: ???
+                n1: 6610944 0x1FFF000197: ???
+                 n1: 6610944 0x1FFF0001A3: ???
+                  n0: 6610944 0x1FFF0001A6: ???
+      n0: 77824 in 2 places, all below massif's threshold (1.00%)
+   n0: 86016 in 3 places, all below massif's threshold (1.00%)
+ n0: 1003520 0x0: ???
+ n1: 540672 0x4DE482B: brk (brk.c:36)
+  n1: 540672 0x4DE48F3: __sbrk (sbrk.c:74)
+   n1: 540672 0x4DE48F3: sbrk (sbrk.c:36)
+    n1: 540672 0x4D6C5C5: __glibc_morecore (morecore.c:29)
+     n1: 540672 0x4D6D5F8: sysmalloc (malloc.c:2727)
+      n2: 540672 0x4D6E8DC: _int_malloc (malloc.c:4407)
+       n2: 405504 0x4D6F261: malloc (malloc.c:3321)
+        n1: 270336 0x4D7258E: strdup (strdup.c:42)
+         n1: 270336 0x4F88DA3: BinTreeInsert (bintree.c:70)
+          n1: 270336 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 270336 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 270336 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 270336 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 270336 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 270336 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 270336 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n1: 401408 0x4DE8A27: __mmap64 (mmap64.c:58)
+  n2: 401408 0x4DE8A27: mmap (mmap64.c:46)
+   n1: 372736 0x4D01C00: _nl_load_locale (loadlocale.c:223)
+    n1: 372736 0x4D017D0: _nl_find_locale (findlocale.c:237)
+     n1: 372736 0x4D00A90: setlocale (setlocale.c:414)
+      n2: 372736 0x4D00A90: setlocale (setlocale.c:217)
+       n1: 356352 0x115027: ??? (in /usr/bin/gawk)
+        n0: 356352 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+       n0: 16384 in 4 places, all below massif's threshold (1.00%)
+   n0: 28672 in 2 places, all below massif's threshold (1.00%)
+ n0: 0 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=3
+#-----------
+time=42429345
+mem_heap_B=16220160
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=63557845
+mem_heap_B=16490496
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=74195526
+mem_heap_B=16625664
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=95456887
+mem_heap_B=16896000
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=116541714
+mem_heap_B=17166336
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=137854522
+mem_heap_B=17436672
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=159474616
+mem_heap_B=17707008
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=181053549
+mem_heap_B=17977344
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=202232267
+mem_heap_B=18247680
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=223622523
+mem_heap_B=18518016
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=245271034
+mem_heap_B=18788352
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=267116469
+mem_heap_B=19058688
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=288292243
+mem_heap_B=19329024
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=309781842
+mem_heap_B=19599360
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=331453876
+mem_heap_B=19869696
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=353375835
+mem_heap_B=20140032
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=374743070
+mem_heap_B=20410368
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=396246559
+mem_heap_B=20680704
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=418066753
+mem_heap_B=20951040
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=429017817
+mem_heap_B=21086208
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=450867038
+mem_heap_B=21356544
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n5: 21356544 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 14004224 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 14004224 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7229440 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7229440 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7229440 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7229440 0x400A600: _dl_map_object (dl-load.c:2327)
+       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
+        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
+           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
+             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
+              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+               n1: 7131136 0x3: ???
+                n1: 7131136 0x1FFF000192: ???
+                 n1: 7131136 0x1FFF000197: ???
+                  n1: 7131136 0x1FFF0001A3: ???
+                   n0: 7131136 0x1FFF0001A6: ???
+       n0: 98304 in 2 places, all below massif's threshold (1.00%)
+   n1: 6688768 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6688768 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6688768 0x400A600: _dl_map_object (dl-load.c:2327)
+      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
+       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
+          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
+            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
+             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+              n1: 6610944 0x3: ???
+               n1: 6610944 0x1FFF000192: ???
+                n1: 6610944 0x1FFF000197: ???
+                 n1: 6610944 0x1FFF0001A3: ???
+                  n0: 6610944 0x1FFF0001A6: ???
+      n0: 77824 in 2 places, all below massif's threshold (1.00%)
+   n0: 86016 in 3 places, all below massif's threshold (1.00%)
+ n1: 5947392 0x4DE482B: brk (brk.c:36)
+  n1: 5947392 0x4DE48F3: __sbrk (sbrk.c:74)
+   n1: 5947392 0x4DE48F3: sbrk (sbrk.c:36)
+    n1: 5947392 0x4D6C5C5: __glibc_morecore (morecore.c:29)
+     n1: 5947392 0x4D6D5F8: sysmalloc (malloc.c:2727)
+      n3: 5947392 0x4D6E8DC: _int_malloc (malloc.c:4407)
+       n2: 3379200 0x4D6F261: malloc (malloc.c:3321)
+        n2: 3244032 0x4D7258E: strdup (strdup.c:42)
+         n1: 1622016 0x4F88DA3: BinTreeInsert (bintree.c:70)
+          n1: 1622016 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 1622016 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 1622016 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 1622016 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 1622016 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 1622016 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 1622016 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+         n1: 1622016 0x4F88DBB: BinTreeInsert (bintree.c:71)
+          n1: 1622016 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 1622016 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 1622016 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 1622016 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 1622016 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 1622016 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 1622016 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n1: 2433024 0x4D705F8: calloc (malloc.c:3679)
+        n1: 2433024 0x4F8AD79: Calloc (misc.c:97)
+         n1: 2433024 0x4F88D8A: BinTreeInsert (bintree.c:69)
+          n1: 2433024 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 2433024 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 2433024 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 2433024 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 2433024 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2433024 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2433024 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n0: 1003520 0x0: ???
+ n1: 401408 0x4DE8A27: __mmap64 (mmap64.c:58)
+  n2: 401408 0x4DE8A27: mmap (mmap64.c:46)
+   n1: 372736 0x4D01C00: _nl_load_locale (loadlocale.c:223)
+    n1: 372736 0x4D017D0: _nl_find_locale (findlocale.c:237)
+     n1: 372736 0x4D00A90: setlocale (setlocale.c:414)
+      n2: 372736 0x4D00A90: setlocale (setlocale.c:217)
+       n1: 356352 0x115027: ??? (in /usr/bin/gawk)
+        n0: 356352 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+       n0: 16384 in 4 places, all below massif's threshold (1.00%)
+   n0: 28672 in 2 places, all below massif's threshold (1.00%)
+ n0: 0 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=24
+#-----------
+time=472383504
+mem_heap_B=21626880
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=494067453
+mem_heap_B=21897216
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=505028617
+mem_heap_B=22032384
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=516060668
+mem_heap_B=22167552
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=527156161
+mem_heap_B=22302720
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=538137786
+mem_heap_B=22437888
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=559670128
+mem_heap_B=22708224
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n5: 22708224 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 14004224 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 14004224 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7229440 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7229440 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7229440 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7229440 0x400A600: _dl_map_object (dl-load.c:2327)
+       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
+        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
+           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
+             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
+              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+               n1: 7131136 0x3: ???
+                n1: 7131136 0x1FFF000192: ???
+                 n1: 7131136 0x1FFF000197: ???
+                  n1: 7131136 0x1FFF0001A3: ???
+                   n0: 7131136 0x1FFF0001A6: ???
+       n0: 98304 in 2 places, all below massif's threshold (1.00%)
+   n1: 6688768 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6688768 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6688768 0x400A600: _dl_map_object (dl-load.c:2327)
+      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
+       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
+          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
+            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
+             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+              n1: 6610944 0x3: ???
+               n1: 6610944 0x1FFF000192: ???
+                n1: 6610944 0x1FFF000197: ???
+                 n1: 6610944 0x1FFF0001A3: ???
+                  n0: 6610944 0x1FFF0001A6: ???
+      n0: 77824 in 2 places, all below massif's threshold (1.00%)
+   n0: 86016 in 3 places, all below massif's threshold (1.00%)
+ n1: 7299072 0x4DE482B: brk (brk.c:36)
+  n1: 7299072 0x4DE48F3: __sbrk (sbrk.c:74)
+   n1: 7299072 0x4DE48F3: sbrk (sbrk.c:36)
+    n1: 7299072 0x4D6C5C5: __glibc_morecore (morecore.c:29)
+     n1: 7299072 0x4D6D5F8: sysmalloc (malloc.c:2727)
+      n3: 7299072 0x4D6E8DC: _int_malloc (malloc.c:4407)
+       n2: 4190208 0x4D6F261: malloc (malloc.c:3321)
+        n2: 4055040 0x4D7258E: strdup (strdup.c:42)
+         n1: 2162688 0x4F88DA3: BinTreeInsert (bintree.c:70)
+          n1: 2162688 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 2162688 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 2162688 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 2162688 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 2162688 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2162688 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2162688 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+         n1: 1892352 0x4F88DBB: BinTreeInsert (bintree.c:71)
+          n1: 1892352 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 1892352 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 1892352 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 1892352 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 1892352 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 1892352 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 1892352 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n1: 2973696 0x4D705F8: calloc (malloc.c:3679)
+        n1: 2973696 0x4F8AD79: Calloc (misc.c:97)
+         n1: 2973696 0x4F88D8A: BinTreeInsert (bintree.c:69)
+          n1: 2973696 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 2973696 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 2973696 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 2973696 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 2973696 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2973696 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2973696 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n0: 1003520 0x0: ???
+ n1: 401408 0x4DE8A27: __mmap64 (mmap64.c:58)
+  n2: 401408 0x4DE8A27: mmap (mmap64.c:46)
+   n1: 372736 0x4D01C00: _nl_load_locale (loadlocale.c:223)
+    n1: 372736 0x4D017D0: _nl_find_locale (findlocale.c:237)
+     n1: 372736 0x4D00A90: setlocale (setlocale.c:414)
+      n2: 372736 0x4D00A90: setlocale (setlocale.c:217)
+       n1: 356352 0x115027: ??? (in /usr/bin/gawk)
+        n0: 356352 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+       n0: 16384 in 4 places, all below massif's threshold (1.00%)
+   n0: 28672 in 2 places, all below massif's threshold (1.00%)
+ n0: 0 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=31
+#-----------
+time=581478610
+mem_heap_B=22978560
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=603462276
+mem_heap_B=23248896
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=614576989
+mem_heap_B=23384064
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=625723811
+mem_heap_B=23519232
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=647325746
+mem_heap_B=23789568
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=658211424
+mem_heap_B=24838144
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=743687598
+mem_heap_B=24973312
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n5: 24973312 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 14004224 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 14004224 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7229440 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7229440 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7229440 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7229440 0x400A600: _dl_map_object (dl-load.c:2327)
+       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
+        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
+           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
+             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
+              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+               n1: 7131136 0x3: ???
+                n1: 7131136 0x1FFF000192: ???
+                 n1: 7131136 0x1FFF000197: ???
+                  n1: 7131136 0x1FFF0001A3: ???
+                   n0: 7131136 0x1FFF0001A6: ???
+       n0: 98304 in 2 places, all below massif's threshold (1.00%)
+   n1: 6688768 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6688768 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6688768 0x400A600: _dl_map_object (dl-load.c:2327)
+      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
+       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
+          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
+            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
+             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+              n1: 6610944 0x3: ???
+               n1: 6610944 0x1FFF000192: ???
+                n1: 6610944 0x1FFF000197: ???
+                 n1: 6610944 0x1FFF0001A3: ???
+                  n0: 6610944 0x1FFF0001A6: ???
+      n0: 77824 in 2 places, all below massif's threshold (1.00%)
+   n0: 86016 in 3 places, all below massif's threshold (1.00%)
+ n1: 8380416 0x4DE482B: brk (brk.c:36)
+  n1: 8380416 0x4DE48F3: __sbrk (sbrk.c:74)
+   n1: 8380416 0x4DE48F3: sbrk (sbrk.c:36)
+    n1: 8380416 0x4D6C5C5: __glibc_morecore (morecore.c:29)
+     n1: 8380416 0x4D6D5F8: sysmalloc (malloc.c:2727)
+      n3: 8380416 0x4D6E8DC: _int_malloc (malloc.c:4407)
+       n2: 4730880 0x4D6F261: malloc (malloc.c:3321)
+        n2: 4595712 0x4D7258E: strdup (strdup.c:42)
+         n1: 2433024 0x4F88DA3: BinTreeInsert (bintree.c:70)
+          n1: 2433024 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 2433024 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 2433024 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 2433024 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 2433024 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2433024 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2433024 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+         n1: 2162688 0x4F88DBB: BinTreeInsert (bintree.c:71)
+          n1: 2162688 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 2162688 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 2162688 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 2162688 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 2162688 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2162688 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2162688 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n1: 3514368 0x4D705F8: calloc (malloc.c:3679)
+        n1: 3514368 0x4F8AD79: Calloc (misc.c:97)
+         n1: 3514368 0x4F88D8A: BinTreeInsert (bintree.c:69)
+          n1: 3514368 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 3514368 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 3514368 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 3514368 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 3514368 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n1: 1585152 0x4DE8A27: __mmap64 (mmap64.c:58)
+  n3: 1585152 0x4DE8A27: mmap (mmap64.c:46)
+   n1: 1183744 0x4D6BE61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 1183744 0x4D6D335: sysmalloc (malloc.c:2752)
+     n1: 1183744 0x4D6E8DC: _int_malloc (malloc.c:4407)
+      n1: 1183744 0x4D705F8: calloc (malloc.c:3679)
+       n1: 1183744 0x4F8AD79: Calloc (misc.c:97)
+        n1: 1183744 0x4F88D8A: BinTreeInsert (bintree.c:69)
+         n1: 1183744 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+          n1: 1183744 0x4F88244: HTreeInsert (htree.c:95)
+           n1: 1183744 0x4F8523E: tree_insert (htrees.c:68)
+            n1: 1183744 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+             n1: 1183744 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 1183744 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 1183744 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+   n1: 372736 0x4D01C00: _nl_load_locale (loadlocale.c:223)
+    n1: 372736 0x4D017D0: _nl_find_locale (findlocale.c:237)
+     n1: 372736 0x4D00A90: setlocale (setlocale.c:414)
+      n2: 372736 0x4D00A90: setlocale (setlocale.c:217)
+       n1: 356352 0x115027: ??? (in /usr/bin/gawk)
+        n0: 356352 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+       n0: 16384 in 4 places, all below massif's threshold (1.00%)
+   n0: 28672 in 2 places, all below massif's threshold (1.00%)
+ n0: 1003520 0x0: ???
+ n0: 0 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=38
+#-----------
+time=765661689
+mem_heap_B=25243648
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=776758209
+mem_heap_B=25378816
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=787935890
+mem_heap_B=25513984
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=799181454
+mem_heap_B=25649152
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=810365353
+mem_heap_B=25784320
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=832064708
+mem_heap_B=26054656
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=843029375
+mem_heap_B=26189824
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=854076613
+mem_heap_B=26324992
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n5: 26324992 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 14004224 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 14004224 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7229440 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7229440 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7229440 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7229440 0x400A600: _dl_map_object (dl-load.c:2327)
+       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
+        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
+           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
+             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
+              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+               n1: 7131136 0x3: ???
+                n1: 7131136 0x1FFF000192: ???
+                 n1: 7131136 0x1FFF000197: ???
+                  n1: 7131136 0x1FFF0001A3: ???
+                   n0: 7131136 0x1FFF0001A6: ???
+       n0: 98304 in 2 places, all below massif's threshold (1.00%)
+   n1: 6688768 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6688768 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6688768 0x400A600: _dl_map_object (dl-load.c:2327)
+      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
+       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
+          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
+            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
+             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+              n1: 6610944 0x3: ???
+               n1: 6610944 0x1FFF000192: ???
+                n1: 6610944 0x1FFF000197: ???
+                 n1: 6610944 0x1FFF0001A3: ???
+                  n0: 6610944 0x1FFF0001A6: ???
+      n0: 77824 in 2 places, all below massif's threshold (1.00%)
+   n0: 86016 in 3 places, all below massif's threshold (1.00%)
+ n1: 8380416 0x4DE482B: brk (brk.c:36)
+  n1: 8380416 0x4DE48F3: __sbrk (sbrk.c:74)
+   n1: 8380416 0x4DE48F3: sbrk (sbrk.c:36)
+    n1: 8380416 0x4D6C5C5: __glibc_morecore (morecore.c:29)
+     n1: 8380416 0x4D6D5F8: sysmalloc (malloc.c:2727)
+      n3: 8380416 0x4D6E8DC: _int_malloc (malloc.c:4407)
+       n2: 4730880 0x4D6F261: malloc (malloc.c:3321)
+        n2: 4595712 0x4D7258E: strdup (strdup.c:42)
+         n1: 2433024 0x4F88DA3: BinTreeInsert (bintree.c:70)
+          n1: 2433024 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 2433024 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 2433024 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 2433024 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 2433024 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2433024 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2433024 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+         n1: 2162688 0x4F88DBB: BinTreeInsert (bintree.c:71)
+          n1: 2162688 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 2162688 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 2162688 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 2162688 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 2162688 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2162688 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2162688 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n1: 3514368 0x4D705F8: calloc (malloc.c:3679)
+        n1: 3514368 0x4F8AD79: Calloc (misc.c:97)
+         n1: 3514368 0x4F88D8A: BinTreeInsert (bintree.c:69)
+          n1: 3514368 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 3514368 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 3514368 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 3514368 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 3514368 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n1: 2936832 0x4DE8A27: __mmap64 (mmap64.c:58)
+  n3: 2936832 0x4DE8A27: mmap (mmap64.c:46)
+   n1: 2535424 0x4D6BE61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 2535424 0x4D6D335: sysmalloc (malloc.c:2752)
+     n2: 2535424 0x4D6E8DC: _int_malloc (malloc.c:4407)
+      n1: 1859584 0x4D705F8: calloc (malloc.c:3679)
+       n1: 1859584 0x4F8AD79: Calloc (misc.c:97)
+        n1: 1859584 0x4F88D8A: BinTreeInsert (bintree.c:69)
+         n1: 1859584 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+          n1: 1859584 0x4F88244: HTreeInsert (htree.c:95)
+           n1: 1859584 0x4F8523E: tree_insert (htrees.c:68)
+            n1: 1859584 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+             n1: 1859584 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 1859584 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 1859584 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+      n1: 675840 0x4D6F261: malloc (malloc.c:3321)
+       n1: 675840 0x4D7258E: strdup (strdup.c:42)
+        n1: 675840 0x4F88DA3: BinTreeInsert (bintree.c:70)
+         n1: 675840 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+          n1: 675840 0x4F88244: HTreeInsert (htree.c:95)
+           n1: 675840 0x4F8523E: tree_insert (htrees.c:68)
+            n1: 675840 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+             n1: 675840 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 675840 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 675840 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+   n1: 372736 0x4D01C00: _nl_load_locale (loadlocale.c:223)
+    n1: 372736 0x4D017D0: _nl_find_locale (findlocale.c:237)
+     n1: 372736 0x4D00A90: setlocale (setlocale.c:414)
+      n2: 372736 0x4D00A90: setlocale (setlocale.c:217)
+       n1: 356352 0x115027: ??? (in /usr/bin/gawk)
+        n0: 356352 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+       n0: 16384 in 4 places, all below massif's threshold (1.00%)
+   n0: 28672 in 2 places, all below massif's threshold (1.00%)
+ n0: 1003520 0x0: ???
+ n0: 0 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=46
+#-----------
+time=865130159
+mem_heap_B=26460160
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=876261740
+mem_heap_B=26595328
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=887457478
+mem_heap_B=26730496
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=898707729
+mem_heap_B=26865664
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=981446656
+mem_heap_B=27000832
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=1618191522
+mem_heap_B=27000832
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=peak
+n5: 27000832 (page allocation syscalls) mmap/mremap/brk, --alloc-fns, etc.
+ n1: 14004224 0x4026CB7: __mmap64 (mmap64.c:58)
+  n3: 14004224 0x4026CB7: mmap (mmap64.c:46)
+   n1: 7229440 0x4008F1B: _dl_map_segment (dl-map-segments.h:29)
+    n1: 7229440 0x4008F1B: _dl_map_segments (dl-map-segments.h:102)
+     n1: 7229440 0x4008F1B: _dl_map_object_from_fd (dl-load.c:1258)
+      n2: 7229440 0x400A600: _dl_map_object (dl-load.c:2327)
+       n1: 7131136 0x4003494: openaux (dl-deps.c:64)
+        n1: 7131136 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+         n1: 7131136 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+          n1: 7131136 0x402339F: dl_main (rtld.c:1970)
+           n1: 7131136 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+            n1: 7131136 0x4021597: _dl_start_final (rtld.c:507)
+             n1: 7131136 0x4021597: _dl_start (rtld.c:596)
+              n1: 7131136 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+               n1: 7131136 0x3: ???
+                n1: 7131136 0x1FFF000192: ???
+                 n1: 7131136 0x1FFF000197: ???
+                  n1: 7131136 0x1FFF0001A3: ???
+                   n0: 7131136 0x1FFF0001A6: ???
+       n0: 98304 in 2 places, all below massif's threshold (1.00%)
+   n1: 6688768 0x4009098: _dl_map_segments (dl-map-segments.h:140)
+    n1: 6688768 0x4009098: _dl_map_object_from_fd (dl-load.c:1258)
+     n2: 6688768 0x400A600: _dl_map_object (dl-load.c:2327)
+      n1: 6610944 0x4003494: openaux (dl-deps.c:64)
+       n1: 6610944 0x401D349: _dl_catch_exception (dl-error-skeleton.c:208)
+        n1: 6610944 0x4003C7B: _dl_map_object_deps (dl-deps.c:248)
+         n1: 6610944 0x402339F: dl_main (rtld.c:1970)
+          n1: 6610944 0x401F83B: _dl_sysdep_start (dl-sysdep.c:256)
+           n1: 6610944 0x4021597: _dl_start_final (rtld.c:507)
+            n1: 6610944 0x4021597: _dl_start (rtld.c:596)
+             n1: 6610944 0x4020297: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+              n1: 6610944 0x3: ???
+               n1: 6610944 0x1FFF000192: ???
+                n1: 6610944 0x1FFF000197: ???
+                 n1: 6610944 0x1FFF0001A3: ???
+                  n0: 6610944 0x1FFF0001A6: ???
+      n0: 77824 in 2 places, all below massif's threshold (1.00%)
+   n0: 86016 in 3 places, all below massif's threshold (1.00%)
+ n1: 8380416 0x4DE482B: brk (brk.c:36)
+  n1: 8380416 0x4DE48F3: __sbrk (sbrk.c:74)
+   n1: 8380416 0x4DE48F3: sbrk (sbrk.c:36)
+    n1: 8380416 0x4D6C5C5: __glibc_morecore (morecore.c:29)
+     n1: 8380416 0x4D6D5F8: sysmalloc (malloc.c:2727)
+      n3: 8380416 0x4D6E8DC: _int_malloc (malloc.c:4407)
+       n2: 4730880 0x4D6F261: malloc (malloc.c:3321)
+        n2: 4595712 0x4D7258E: strdup (strdup.c:42)
+         n1: 2433024 0x4F88DA3: BinTreeInsert (bintree.c:70)
+          n1: 2433024 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 2433024 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 2433024 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 2433024 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 2433024 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2433024 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2433024 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+         n1: 2162688 0x4F88DBB: BinTreeInsert (bintree.c:71)
+          n1: 2162688 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 2162688 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 2162688 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 2162688 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 2162688 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 2162688 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 2162688 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+       n1: 3514368 0x4D705F8: calloc (malloc.c:3679)
+        n1: 3514368 0x4F8AD79: Calloc (misc.c:97)
+         n1: 3514368 0x4F88D8A: BinTreeInsert (bintree.c:69)
+          n1: 3514368 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+           n1: 3514368 0x4F88244: HTreeInsert (htree.c:95)
+            n1: 3514368 0x4F8523E: tree_insert (htrees.c:68)
+             n1: 3514368 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+              n1: 3514368 0x14E71B: ??? (in /usr/bin/gawk)
+               n1: 3514368 0x1174A6: ??? (in /usr/bin/gawk)
+                n0: 3514368 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+       n0: 135168 in 1 place, below massif's threshold (1.00%)
+ n1: 3612672 0x4DE8A27: __mmap64 (mmap64.c:58)
+  n3: 3612672 0x4DE8A27: mmap (mmap64.c:46)
+   n1: 3211264 0x4D6BE61: sysmalloc_mmap_fallback.constprop.0 (malloc.c:2526)
+    n1: 3211264 0x4D6D335: sysmalloc (malloc.c:2752)
+     n2: 3211264 0x4D6E8DC: _int_malloc (malloc.c:4407)
+      n1: 2129920 0x4D705F8: calloc (malloc.c:3679)
+       n1: 2129920 0x4F8AD79: Calloc (misc.c:97)
+        n1: 2129920 0x4F88D8A: BinTreeInsert (bintree.c:69)
+         n1: 2129920 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+          n1: 2129920 0x4F88244: HTreeInsert (htree.c:95)
+           n1: 2129920 0x4F8523E: tree_insert (htrees.c:68)
+            n1: 2129920 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+             n1: 2129920 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 2129920 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 2129920 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+      n1: 1081344 0x4D6F261: malloc (malloc.c:3321)
+       n2: 1081344 0x4D7258E: strdup (strdup.c:42)
+        n1: 946176 0x4F88DA3: BinTreeInsert (bintree.c:70)
+         n1: 946176 0x4F87FC5: HTreeInsertHelper (htree.c:53)
+          n1: 946176 0x4F88244: HTreeInsert (htree.c:95)
+           n1: 946176 0x4F8523E: tree_insert (htrees.c:68)
+            n1: 946176 0x4F846EA: do_tree_insert (gawk_ext.c:102)
+             n1: 946176 0x14E71B: ??? (in /usr/bin/gawk)
+              n1: 946176 0x1174A6: ??? (in /usr/bin/gawk)
+               n0: 946176 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+        n0: 135168 in 1 place, below massif's threshold (1.00%)
+   n1: 372736 0x4D01C00: _nl_load_locale (loadlocale.c:223)
+    n1: 372736 0x4D017D0: _nl_find_locale (findlocale.c:237)
+     n1: 372736 0x4D00A90: setlocale (setlocale.c:414)
+      n2: 372736 0x4D00A90: setlocale (setlocale.c:217)
+       n1: 356352 0x115027: ??? (in /usr/bin/gawk)
+        n0: 356352 0x4CF3D8F: (below main) (libc_start_call_main.h:58)
+       n0: 16384 in 4 places, all below massif's threshold (1.00%)
+   n0: 28672 in 2 places, all below massif's threshold (1.00%)
+ n0: 1003520 0x0: ???
+ n0: 0 in 1 place, below massif's threshold (1.00%)

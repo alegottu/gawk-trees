@@ -1,9 +1,6 @@
 ### Building
-In order to compile htrees.so with just source and header files, do the following:
 1. Clone this repository
-2. Use "make" or "make debug"
-
-If libwayne.a is recompiled with -fPIC flags enabled in order to contribute to a shared object, it's possible to compile htrees.so using the libwayne.a library file. If you'd prefer this, use the awk_value_t branch, then make.
+2. Use `make` or `make debug`
 
 ### Usage
 1. Follow the steps above to compile the file "htrees.so" in your current directory
@@ -13,6 +10,14 @@ If libwayne.a is recompiled with -fPIC flags enabled in order to contribute to a
 4. Refer to the table of examples below to use the extension in your awk code; on the left is what you would
 see in awk code without the extension, on the right a replacement the extension offers using htrees. The
 extension functions behave exactly as standard awk arrays would unless otherwise noted
+
+Note: if you encounter the error `version mismatch with gawk!` upon running, it's likely because you have a
+version of the gawk API on your machine that's incompatible with the one used to compile this extension.
+If you don't want to install a different version of the API, you can try building the extension with a different
+version of the API instead using the following:
+1. `cd gawk` then `git branch -r` to see possible versions
+2. checkout the branch closest to your gawk API version (check with `gawk --version`)
+3. `cd ..` then `make` or `make debug` again
 
 | Standark AWK code | Using the "htrees" extension  | Extra Notes |
 |-------------------|-------------------------------|-------------|

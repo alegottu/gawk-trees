@@ -1,1 +1,0 @@
-{++m; ++edge[$1][$2]}END{for(u in edge)for(v in edge[u]){if(u""==v""){++self; print(u,": ",v); continue;} if((v in edge) && (u in edge[v]))++both}; printf "%d directed edges, %d self-loops, %d both directions\n", m, self, both/2}
