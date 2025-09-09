@@ -157,7 +157,7 @@ const double tree_modify(const char* tree, const char** subscripts, const unsign
 		te_free(te);
 		free(_expr);
 
-		// TODO: over max size for now (64), see if we can figure out exact size from mantissa digits * max_10_exp in float.h
+		// TODO: 64 max for now, see if we can figure out exact size from mantissa digits * max_10_exp in float.h
 		result->s = realloc(result->s, 64 * sizeof(char)); 
 		sprintf(result->s, "%f", x);
 		result->s = remove_trailing_zeroes(result->s);
@@ -320,7 +320,7 @@ static LINKED_LIST* get_iterator(const char* tree, const char* query, const char
 	LINKED_LIST* result;
 
 	if (!STreeLookup(trees, (foint){.s=tree}, &_htree))
-		return NULL; // NOTE: should possibly be forced exit
+		return NULL;
 
 	HTREE* htree = _htree.v;
 	const unsigned char htree_depth = htree->depth;
@@ -431,11 +431,6 @@ const unsigned int tree_iters_remaining(const char* tree, const char** subscript
 	foint result, _query;
 	void (*finish)(char*);
 
-	/* NOTE: the stucture of the function is a bit convoluted because
-	  we can't safely delete an element from the iterators tree without
-	  the TreeLookDel function, even though we previously just found
-	  the same element with the same function; if the logic is seperated
-	  a bit in libwayne, we can optimize this	*/
 	if (depth == 0)
 	{
 		_query.s = tree;
