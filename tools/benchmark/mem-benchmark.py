@@ -4,9 +4,6 @@ import os
 import subprocess
 from pathlib import Path
 
-# usage mem-benchmark.py dimension1 [dimension2] [...]
-# make sure to have set the AWKLIBPATH env var correctly
-
 if "benchmark" not in os.getcwd():
     print("Please run from the benchmark directory")
     exit()
@@ -14,21 +11,22 @@ if "benchmark" not in os.getcwd():
 def concat_args(arg1, arg2):
     return arg1 + ", " + arg2
 
-def create_nested_fors(n, command, args=[""], use_ext=True):
+def create_nested_fors(dimensions, name, command, args=[""], use_ext=True):
+    n = len(dimensions)
     loops =""
     tab = "    "
-    body = f'{command}("test", ' if use_ext else command + " test"
+    body = f'{command}("{name}", ' if use_ext else command + f" {name}"
 
     for i in range(1, n+1):
         iter_var = chr(96+i)
         loops += tab * i
-        loops += f"for ({iter_var}=0; {iter_var}<{sys.argv[i]}; {iter_var}++)\n"
+        loops += f"for ({iter_var}=0; {iter_var}<{dimensions[i-1]}; {iter_var}++)\n"
         loops += tab * i
         loops += "{\n"
         body += f"{iter_var}, " if use_ext else f"[{iter_var}]"
     else:
         body += f"{reduce(concat_args, args)})\n" if use_ext else reduce(str.__add__, args) + "\n"
-        body = (tab * len(sys.argv)) + body
+        body = (tab * (n+1)) + body
         loops += body
 
     for i in range(n, 0, -1):
@@ -37,26 +35,26 @@ def create_nested_fors(n, command, args=[""], use_ext=True):
 
     return loops
 
-def create_nested_whiles(n):
+def create_nested_whiles(n, name):
     tab = "    "
     iter_vars = [chr(97)]
-    loops = tab + 'while(tree_iters_remaining("test") > 0)\n'
+    loops = tab + f'while(tree_iters_remaining("{name}") > 0)\n'
     loops += tab + "{\n"
-    loops += (tab * 2) + f'{iter_vars[0]}=tree_next("test")\n'
-    body = 'print query_tree("test", '
+    loops += (tab * 2) + f'{iter_vars[0]}=tree_next("{name}")\n'
+    body = f'print query_tree("{name}", '
 
     for i in range(2, n+1):
         iter_vars.append(chr(96+i))
         var_args = reduce(concat_args, iter_vars[:-1])
         loops += tab * i
-        loops += f'while (tree_iters_remaining("test", {var_args}) > 0)\n'
+        loops += f'while (tree_iters_remaining("{name}", {var_args}) > 0)\n'
         loops += tab * i
         loops += "{\n"
         loops += tab * (i+1)
-        loops += f'{iter_vars[i-1]}=tree_next("test", {var_args})\n'
+        loops += f'{iter_vars[i-1]}=tree_next("{name}", {var_args})\n'
     else:
         body += f"{reduce(concat_args, iter_vars)})\n"
-        body = (tab * len(sys.argv)) + body
+        body = tab * (n+1) + body
         loops += body
 
     for i in range(n, 0, -1):
@@ -67,47 +65,83 @@ def create_nested_whiles(n):
 
 
 args = " -lhtrees"
+iteration = False
 massif = False
 out = ("ext", "normal")
 
 if len(sys.argv) == 1:
-    print("""usage: mem-benchmark.py [-v|--verbose] [-m|--massif] [-b|--bintree] dimensions
-    dimensions refer to the number of elements for each depth of the tree structure, e.g. 100 100 = htree[100][100]
+    print("""usage: mem-benchmark.py [-i|--iteration] [-v|--verbose] [-m|--massif] [-b|--bintree] dimensions
+    dimensions should be formated as x-y for each tree structure, e.g. mem-benchmark.py 100-100 250
+    to test two tree structures equivalent to an array of 100x100 and 250 elements respectively;
+    you can also use the short hand AxB, e.g. 700x3 to mean three tree structures with 700 elements each
+    --iteration: also test iterating through each element of each tree structure
     --verbose: also print info about the number of steps needed to traverse AVL trees during key operations
     --massif: use valgrind --tool=massif to profile instead of time -v
     --bintree: test the AVL tree version of htrees against the regular binary tree version""")
     exit()
-else:
-    for arg in sys.argv[1:]:
-        if 'v' in sys.argv[1]:
-            args = " -lvhtrees"
-            sys.argv.pop(1)
-        elif 'm' in sys.argv[1]:
-            massif = True
-            sys.argv.pop(1)
-        elif 'b' in sys.argv[1]:
-            args = " -lbinhtrees"
-            out = ("bin", "avl")
-            sys.argv.pop(1)
 
-num_dims = len(sys.argv) - 1
-name = reduce(lambda a, b: a + "-" + b, sys.argv[1:])
-dirs = f"logs/{name}/"
-Path(dirs).mkdir(parents=True, exist_ok=True)
+for arg in sys.argv[1:]:
+    if 'i' in arg:
+        iteration = True
+    elif 'v' in arg:
+        args = " -lvhtrees"
+    elif 'm' in arg:
+        massif = True
+    elif 'b' in arg:
+        args = " -lbinhtrees"
+        out = ("bin", "avl")
+    else:
+        break
+    sys.argv.pop(1)
 
-with open('.mem-benchmark.awk', 'w') as file:
-    loops = create_nested_fors(num_dims, "tree_insert", ["rand()"])
+num_trees = len(sys.argv) - 1
+dims = []
+name = reduce(lambda a, b: a + "+" + b, sys.argv[1:])
+
+def write_script(loop_writers, file):
+    loops = ""
+    for i, dim in enumerate(dims):
+        loops += loop_writers[0](dim, i)
     code = 'BEGIN {\n' + loops + "}\n"
-    loops = create_nested_whiles(num_dims)
-    code += "BEGIN {\n" + loops + "}"
+
+    if iteration:
+        loops = ""
+        for i, dim in enumerate(dims):
+            loops += loop_writers[1](dim, i)
+        code += "BEGIN {\n" + loops + "}"
+
     file.write(code)
     file.flush()
-    command = f"gawk{args} -f {file.name}"
 
+def do_test(command, n):
     if massif:
-        process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}{out[0]}.massif {command}', shell=True, check=True)
+        dirs = f"logs/{name}/"
+        Path(dirs).mkdir(parents=True, exist_ok=True)
+        subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}{out[n]}.massif {command}', shell=True, check=True)
     else:
-        process = subprocess.run(f'command time -o {dirs}{out[0]}.time -v {command}', shell=True, check=True)
+        p1 = subprocess.run(f"command time -v {command}", stderr=subprocess.PIPE, shell=True)
+        process = subprocess.run("grep -E 'wall|Max|Command'", input=p1.stderr, stdout=subprocess.PIPE, shell=True)
+        mode = 'w' if n == 0 else 'a'
+        with open(f"{name}.data", mode) as data:
+            data.write(f"{out[n]}:\n")
+            data.write(process.stdout.decode())
+            data.flush()
+
+for dim in sys.argv[1:]:
+    if 'x' in dim:
+        n, times = dim.split('x')
+        for i in range(int(times)):
+            dims.append(n.split('-'))
+        continue
+    dims.append(dim.split('-'))
+
+with open('.mem-benchmark.awk', 'w') as file:
+    loop_writers = (
+        lambda dim, i: create_nested_fors(dim, f"test{i}", "tree_insert", ["rand()"]),
+        lambda dim, i: create_nested_whiles(len(dim), f"test{i}")
+        )
+    write_script(loop_writers, file)
+    do_test(f"gawk{args} -f {file.name}", 0)
 
 if "bin" in args:
     script = ".mem-benchmark.awk"
@@ -117,17 +151,12 @@ else:
     args = ""
 
     with open(script, 'w') as file:
-        loops = create_nested_fors(num_dims, "", ["=rand()"], False)
-        code = "BEGIN {\n" + loops + "}\n"
-        loops = create_nested_fors(num_dims, "print", use_ext=False)
-        code += "BEGIN {\n" + loops + "}"
-        file.write(code)
-        file.flush()
+        loop_writers = (
+            lambda dim, i: create_nested_fors(dim, f"test{i}", "", ["=rand()"], False),
+            lambda dim, i: create_nested_fors(dim, f"test{i}", "print", use_ext=False)
+            )
+        write_script(loop_writers, file)
 
 with open(script, 'r') as file:
-    command = f"gawk{args} -f {file.name}"
+    do_test(f"gawk{args} -f {file.name}", 1)
 
-    if massif:
-        process = subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}{out[1]}.massif {command}', shell=True, check=True)
-    else:
-        process = subprocess.run(f'command time -o {dirs}{out[1]}.time -v {command}', shell=True, check=True)
