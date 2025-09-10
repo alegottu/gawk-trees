@@ -1,6 +1,14 @@
 #!/bin/bash
 
-points=$(find "$1" -type d | cut -d '/' -f 2 | tail -n +2)
+if [[ "$1" == *"-b"* ]]; then
+	shift
+	pattern='.*/[ab].*time'
+else
+	pattern='.*/[en].*time'
+fi;
+files=$(find "$1" -type f -regex "$pattern")
+
+points=$(echo "$files" | cut -d '/' -f 2 | tail -n +2 | uniq)
 rows=""
 
 for line in $points; do
@@ -8,8 +16,7 @@ for line in $points; do
 "
 done
 
-
-types=$(find "$1" -name '*.time' | head -n 2 | cut -d '/' -f 3 | sed 's/.time//')
+types=$(echo "$files" | head -n 2 | grep -oE '[a-zA-Z]+.time' | sed 's/.time//')
 
 echo -n '| dimensions '
 for line in $types; do
@@ -28,7 +35,7 @@ for line in $types; do
 done
 echo '|'
 
-data=$(find "$1" -name '*.time' -exec grep "$2" {} \; | grep -oE '[0-9].*[0-9]')
+data=$(find -type f -regex "$pattern" -exec grep "$2" {} \; | grep -oE '[0-9].*[0-9]')
 ends=""
 
 for line in $data; do

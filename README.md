@@ -1,6 +1,6 @@
 ### Building
 1. Clone this repository
-2. Use `make` or `make debug`
+2. Use `make`
 
 ### Usage
 1. Follow the steps above to compile the file "htrees.so" in your current directory
@@ -17,7 +17,7 @@ If you don't want to install a different version of the API, you can try buildin
 version of the API instead using the following:
 1. `cd gawk` then `git branch -r` to see possible versions
 2. checkout the branch closest to your gawk API version (check with `gawk --version`)
-3. `cd ..` then `make` or `make debug` again
+3. `cd ..` then `make` again
 
 | Standark AWK code | Using the "htrees" extension  | Extra Notes |
 |-------------------|-------------------------------|-------------|
