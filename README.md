@@ -44,12 +44,8 @@ version of the API instead using the following:
 | for i in arr[1][2] {break} | while (tree_iters_remaining("arr", 1, 2) > 0) {i = tree_next("arr", 1, 2); tree_iter_break("arr", 1, 2)} | if you break out of a while loop using the pattern shown above without using this function, the next time you use that iterator, it will resume from where it was previously. To forcefully reset the iterator at the query, or just to free it from memory, use this function. |
 
 ### Performance (WIP; see tools/benchmark)
-For both of the tables below, randomized tests were conducted using the script "mem_benchmark.py"
-seen in the tools/benchmark directory. This script generates two awk scripts, one using regular associative
-arrays and the other using the extension, where both scripts create one giant associative data structure with
-certain dimensions, and the python script finishes by running commands to profile each of these scripts
-(at the moment, just using `time -v`). The dimensions in the tables are how many elements per depth,
-sometimes asymetrical.
+The dimensions in the tables are how many elements per depth, sometimes asymetrical.
+If you want to see more about how this data was gathered, take a look at the tools/benchmark directory.
 
 ### Memory usage
 | Dimensions | gawk_trees Peak Memory Usage | gawk Peak Memory Usage | Memory Decrease | 

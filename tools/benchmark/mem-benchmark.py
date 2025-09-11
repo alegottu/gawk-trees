@@ -70,14 +70,8 @@ massif = False
 out = ("ext", "normal")
 
 if len(sys.argv) == 1:
-    print("""usage: mem-benchmark.py [-i|--iteration] [-v|--verbose] [-m|--massif] [-b|--bintree] dimensions
-    dimensions should be formated as x-y for each tree structure, e.g. mem-benchmark.py 100-100 250
-    to test two tree structures equivalent to an array of 100x100 and 250 elements respectively;
-    you can also use the short hand AxB, e.g. 700x3 to mean three tree structures with 700 elements each
-    --iteration: also test iterating through each element of each tree structure
-    --verbose: also print info about the number of steps needed to traverse AVL trees during key operations
-    --massif: use valgrind --tool=massif to profile instead of time -v
-    --bintree: test the AVL tree version of htrees against the regular binary tree version""")
+    with open("README.md") as file:
+        print(file.read())
     exit()
 
 for arg in sys.argv[1:]:
