@@ -2,13 +2,17 @@
 
 if [[ "$1" == *"-b"* ]]; then
 	shift
-	pattern='.*/[ab].*time'
+	pattern='.*/[ab].*data'
+	header='| dimensions | avl | binary |
+|------------|-----|--------|'
 else
-	pattern='.*/[en].*time'
+	pattern='.*/[^ab].*data'
+	header='| dimensions | extension | normal |
+|------------|-----------|--------|'
 fi;
-files=$(find "$1" -type f -regex "$pattern")
+files=$(find "$1" -type f -regex "$pattern" -printf '%f\n')
 
-points=$(echo "$files" | cut -d '/' -f 2 | tail -n +2 | uniq)
+points=$(echo "$files" | sed 's/.data//')
 rows=""
 
 for line in $points; do
@@ -16,24 +20,7 @@ for line in $points; do
 "
 done
 
-types=$(echo "$files" | head -n 2 | grep -oE '[a-zA-Z]+.time' | sed 's/.time//')
-
-echo -n '| dimensions '
-for line in $types; do
-	echo -n "| $line "
-done
-echo -n '|
-|'
-for (( i=-1; i<11; i++ )); do
-	echo -n '-'
-done
-for line in $types; do
-	echo -n '|'
-	for (( i=-2; i<${#line}; i++ )); do
-		echo -n '-'
-	done
-done
-echo '|'
+echo "$header"
 
 data=$(find -type f -regex "$pattern" -exec grep "$2" {} \; | grep -oE '[0-9].*[0-9]')
 ends=""
