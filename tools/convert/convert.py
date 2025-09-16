@@ -248,7 +248,8 @@ if __name__ == "__main__":
     result = ""
     
     if len(argv) == 1:
-        print("usage: python convert.py [file.awk] [script only if no file] [-verbose]")
+        with open("README.md", 'r') as file:
+            print(file.read())
         exit(0)
     elif '{' in argv[1]:
         result = process_statements(argv[1], verbose)

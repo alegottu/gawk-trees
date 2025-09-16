@@ -5,11 +5,10 @@
 ### Usage
 1. Follow the steps above to compile the file "htrees.so" in your current directory
 2. Make sure to set the environment variable "AWKLIBPATH" to the gawk-trees/bin directory (or wherever you have your "htrees.so" file)
-3. If you have an existing program that you want to use htrees instead of standard gawk arrays, you can convert it using the convert.py script in tools/convert. I'm can't 100% guarantee that this script will always produce the right result, so make sure you do a small test of the converted AWK program: make sure to use `-lhtrees` as an option to gawk whenever you run an AWK program that uses this extension, or you can write `@load htrees` as the first line of the file to load the library file automatically
-3. If you want to start from scratch, at the top of your awk program, write `@load "htrees"`, or use `-lhtrees` as an option to the gawk command once you're done writing the rest of your script
-4. Refer to the table of examples below to use the extension in your awk code; on the left is what you would
-see in awk code without the extension, on the right a replacement the extension offers using htrees. The
+3. If you have an existing program that you want to use htrees instead of standard gawk arrays, see the tools/convert directory, which can help you convert your script automatically
+4. Otherwise, refer to the table of examples below to use the extension in your awk code; on the left is what you would see in awk code without the extension, on the right a replacement the extension offers using htrees. The
 extension functions behave exactly as standard awk arrays would unless otherwise noted
+3. To load the extension before runtime and allow the script to run properly, you can either write `@load "htrees"` as the first line of your awk program, or use `-lhtrees` as an option to the gawk command
 
 Note: if you encounter the error `version mismatch with gawk!` upon running, it's likely because you have a
 version of the gawk API on your machine that's incompatible with the one used to compile this extension.
