@@ -1,4 +1,4 @@
-Usage: mem-benchmark.py [-i|--iteration] [-v|--verbose] [-m|--massif] [-b|--bintree] dimensions
+Usage: mem-benchmark.py [-i|--iteration] [-v|--verbose] [-m|--massif] [-b|--bintree] [-p|--print n] dimensions
 
 "dimensions" should be formated as x-y for each tree structure, e.g. mem-benchmark.py 100-100 250
 to test two tree structures equivalent to an array of [100][100] and 250 elements respectively;
@@ -10,6 +10,8 @@ you can also use the short hand AxB, e.g. 700x3 to mean three tree structures wi
 --massif: use valgrind --tool=massif to profile instead of time -v; outputs *.massif, see below
 --bintree: test the AVL tree version of htrees against the regular binary tree version""");
     make sure you've built the "bintree" target if you want to use this
+--print: just print the generated script according to the provided argument n,
+    1 being the extension version, 2 being the regular version
 
 By default, benchmarks will use the time command and put the Maximum resident sizes,
 as well as the wall-clock times elapsed by both tests (with and without the extension,

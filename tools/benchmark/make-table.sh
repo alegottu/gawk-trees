@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ $# -eq 0 ]]; then
+	echo 'Usage: make-table [--bintree] directory search-term'
+	exit
+fi
+
 if [[ "$1" == *"-b"* ]]; then
 	shift
 	pattern='.*/[ab].*data'
