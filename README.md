@@ -5,7 +5,7 @@
 ### Usage
 1. Follow the steps above to compile the file "htrees.so" in your current directory
 2. Make sure to set the environment variable "AWKLIBPATH" to the gawk-trees/bin directory (or wherever you have your "htrees.so" file)
-3. If you have an existing program that you want to use htrees instead of standard gawk arrays, see the tools/convert directory, which can help you convert your script automatically
+3. If you have an existing program that you want to use htrees instead of standard gawk arrays, see [tools/convert](https://github.com/alegottu/gawk-trees/tree/main/tools/convert) which can help you convert your script automatically
 4. Otherwise, refer to the table of examples below to use the extension in your awk code; on the left is what you would see in awk code without the extension, on the right a replacement the extension offers using htrees. The
 extension functions behave exactly as standard awk arrays would unless otherwise noted
 3. To load the extension before runtime and allow the script to run properly, you can either write `@load "htrees"` as the first line of your awk program, or use `-lhtrees` as an option to the gawk command
@@ -44,7 +44,7 @@ version of the API instead using the following:
 
 ### Performance (WIP; see tools/benchmark)
 The dimensions in the tables are how many elements per depth, sometimes asymetrical.
-If you want to see more about how this data was gathered, take a look at the tools/benchmark directory.
+If you want to see more about how this data was gathered, take a look at [tools/benchmark](https://github.com/alegottu/gawk-trees/tree/main/tools/benchmark)
 
 ### Memory usage
 | Dimensions | gawk_trees Peak Memory Usage | gawk Peak Memory Usage | Memory Decrease | 
