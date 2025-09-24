@@ -4,3 +4,4 @@ bin/*
 __pycache__
 tools/benchmark/.mem-benchmark-noext.awk
 tools/benchmark/.mem-benchmark.awk
+test/test
