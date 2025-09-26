@@ -97,12 +97,23 @@ if __name__ == "__main__":
     name = reduce(lambda a, b: a + "+" + b, sys.argv[1:])
     dims = []
 
+    def translate_exp(dim) -> str:
+        base, exp = dim.split('^')
+        dim = (base + '-') * int(exp)
+        dim = dim[:-1]
+        return dim
+
     for dim in sys.argv[1:]:
         if 'x' in dim:
             n, times = dim.split('x')
+            if '^' in n:
+                n = translate_exp(n)
             for i in range(int(times)):
                 dims.append(n.split('-'))
             continue
+        elif '^' in dim:
+            dim = translate_exp(dim)
+
         dims.append(dim.split('-'))
 
     def write_script(loop_writers) -> str:

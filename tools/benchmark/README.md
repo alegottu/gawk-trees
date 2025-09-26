@@ -2,7 +2,9 @@ Usage: mem-benchmark.py [-i|--iteration] [-v|--verbose] [-m|--massif] [-b|--bint
 
 "dimensions" should be formated as x-y for each tree structure, e.g. mem-benchmark.py 100-100 250
 to test two tree structures equivalent to an array of [100][100] and 250 elements respectively;
-you can also use the short hand AxB, e.g. 700x3 to mean three tree structures with 700 elements each.
+you can also use the short hand AxB, e.g. 100-100x5 to mean 5 tree structures equivalent to
+an array of [100][100], as well as the shorthand A^B, e.g. 100^3 to mean a tree structure
+equivalent to an array of [100][100][100], and you may combine these shorthands together
 
 --iteration: also test iterating through each element of each tree structure
 --verbose: also print info about the number of steps needed to traverse AVL trees during key operations;
