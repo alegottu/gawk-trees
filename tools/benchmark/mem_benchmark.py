@@ -126,7 +126,7 @@ if __name__ == "__main__":
             subprocess.run(f'valgrind --tool=massif --pages-as-heap=yes --massif-out-file={dirs}{out[n]}.massif {command}', shell=True, check=True)
         else:
             p1 = subprocess.run(f"command time -v {command}", stderr=subprocess.PIPE, shell=True)
-            process = subprocess.run("grep -E 'wall|Max|Command'", input=p1.stderr, stdout=subprocess.PIPE, shell=True)
+            process = subprocess.run("grep -E 'wall|Max|User|Command'", input=p1.stderr, stdout=subprocess.PIPE, shell=True)
             mode = 'w' if n == 0 else 'a'
             with open(f"{name}.data", mode) as data:
                 data.write(f"{out[n]}:\n")

@@ -19,7 +19,7 @@ if [[ "$2" == *"m"* ]]; then
 elif [[ "$2" == *"t"* ]]; then
 	header='| Dimensions | gawk_trees Runtime | gawk Runtime | Slowdown |
 |------------|--------------------|--------------|----------|'
-	search='wall'
+	search='User'
 fi
 
 # if --bintree
@@ -46,13 +46,6 @@ for line in $data; do
 	ends+=$(echo "| $line | ")
 done
 
-function convert_to_ms () {
-	local ms=$(echo $1 | cut -d '.' -f 2)
-	ms=$(expr $ms + 60000 \* `echo $1 | cut -d ':' -f 2 | sed 's/\..*//'`)
-	ms=$(expr $ms + 3600000 \* `echo $1 | cut -d ':' -f 1`)
-	echo $ms
-}
-
 stats=""
 i=1
 
@@ -69,10 +62,7 @@ do
 	if [[ "$search" == "Max" ]]; then
 		stats+=$(awk '{print ($2 - $1) / $2 * 100}' <<< "$data1 $data2")
 	else
-		# TODO: echo $data | grep -o ':' | wc -l == 2 to figure if h:mm:ss, for now assume mm:ss.ms
-		ms1=$(convert_to_ms $data1)
-		ms2=$(convert_to_ms $data2)
-		stats+=$(awk '{print ($1 - $2) / $2 * 100}' <<< "$ms1 $ms2")
+		stats+=$(awk '{print ($1 - $2) / $2 * 100}' <<< "$data1 $data2")
 	fi
 
 	i=$(expr $i + 1)
@@ -80,7 +70,11 @@ do
 done <<< $data
 
 stats+=' |'
-stats=$(echo "$stats" | sort)
+sort_reverse=""
+if [[ "$search" == "Max" ]]; then
+	sort_reverse=" -r"
+fi
+stats=$(echo "$stats" | sort -n$sort_reverse -t '|' -k 5)
 
 while read stat
 do

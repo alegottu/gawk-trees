@@ -18,12 +18,12 @@ fi
 
 if [[ -f "$1" ]]; then
 	while read line; do
-		#echo "python3 mem_benchmark.py$args $line"
+		echo "python3 mem_benchmark.py$args $line"
 		python3 mem_benchmark.py$args $line
 	done < "$1"
 else
 	for test in "$@"; do
-		#echo "python3 mem_benchmark.py$args $test"
+		echo "python3 mem_benchmark.py$args $test"
 		python3 mem_benchmark.py$args $test
 	done
 fi
