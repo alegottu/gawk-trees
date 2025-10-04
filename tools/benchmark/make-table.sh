@@ -1,8 +1,15 @@
 #!/bin/bash
 
 if [[ $# -eq 0 ]]; then
-	echo 'Usage: make-table [--bintree] directory search-term'
+	echo 'Usage: make-table [--sort-strict] [--bintree] directory search-term'
 	exit
+fi
+
+if [[ "$1" == *"-s"* ]]; then
+	sort_key=2
+	shift
+else
+	sort_key=5
 fi
 
 if [[ "$1" == *"-b"* ]]; then
@@ -71,10 +78,10 @@ done <<< $data
 
 stats+=' |'
 sort_reverse=""
-if [[ "$search" == "Max" ]]; then
+if [[ $sort_key -ne 2 ]] && [[ "$search" == "Max" ]]; then
 	sort_reverse=" -r"
 fi
-stats=$(echo "$stats" | sort -n$sort_reverse -t '|' -k 5)
+stats=$(echo "$stats" | sort -n$sort_reverse -t '|' -k $sort_key)
 
 while read stat
 do

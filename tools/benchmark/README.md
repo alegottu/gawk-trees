@@ -26,3 +26,6 @@ If you'd like to see exactly what the tests are doing, check out the hidden file
 ".mem-benchmark.awk" and ".mem-benchmark-no-ext.awk" for the code that the script
 generates then runs. When --bintree is used, the first script is used for both tests,
 being run with different arguments to load a different library file for the extension.
+
+make_graph.py is an internal tool to make graphs using matplotlib from the data output by make-table.sh,
+to use it make sure to create a virtual environment with matplotlib installed.
