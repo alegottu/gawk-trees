@@ -20,7 +20,7 @@ def get_line_data(line: str, x: list, y: list):
     dimensions = dimensions.replace('^', "**")
     dimensions = dimensions.replace('x', '*')
     dimensions = dimensions.replace('-', '*')
-    x.append(eval(dimensions) / 1000)
+    x.append(eval(dimensions))
     y.append(float(savings.rstrip('%')))
 
 if len(sys.argv) > 1:
@@ -42,5 +42,5 @@ else:
     plot.plot(x, y, marker='.', markersize=MARKERSIZE)
     plot.ylabel("Memory Decrease (%)")
 
-plot.xlabel("Total Elements / 1,000")
+plot.xlabel("Total Elements")
 plot.savefig("graphs/graph.jpg")

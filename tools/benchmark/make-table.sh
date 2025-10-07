@@ -82,8 +82,5 @@ if [[ $sort_key -ne 2 ]] && [[ "$search" == "Max" ]]; then
 	sort_reverse=" -r"
 fi
 stats=$(echo "$stats" | sort -n$sort_reverse -t '|' -k $sort_key)
+echo "$stats"
 
-while read stat
-do
-	echo $stat
-done <<< $stats
