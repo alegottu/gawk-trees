@@ -1,0 +1,9 @@
+ext:
+	Command being timed: "gawk -lhtrees -f .mem-benchmark.awk"
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 25:19.81
+	Maximum resident set size (kbytes): 148236544
+normal:
+	Command being timed: "gawk -f .mem-benchmark-noext.awk"
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 8:15.31
+	Maximum resident set size (kbytes): 193229824
+NOTE: I think this is .idata

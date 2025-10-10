@@ -1,0 +1,10 @@
+ext:
+	Command being timed: "gawk -lhtrees -f .mem-benchmark.awk"
+	User time (seconds): 1777.91
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 30:13.22
+	Maximum resident set size (kbytes): 64255744
+normal:
+	Command being timed: "gawk -f .mem-benchmark-noext.awk"
+	User time (seconds): 328.92
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 6:15.15
+	Maximum resident set size (kbytes): 137173248

@@ -1,0 +1,9 @@
+definitely a pattern with the larger dimension(s) being frontloaded leading to bigger savings,
+	(the opposite is also true), keep honing in on different shapes and sizes for that
+multiple array tests did worse compared to tests of the same overall size
+	with multiple dimensions, however we don't have great numbers to compare vs flat arrays;
+	a potential benefit of the many arrays is that the savings don't drop off, see if true
+huge dropoff from 900 mil to 1.25 bil, investigate the gap between these more closely
+	(even if some is repeat data), somehow better savings near 2 bil,
+	make sure not to just use flat arrays for this, really just trying to see how best to
+	get savings at this large of scale

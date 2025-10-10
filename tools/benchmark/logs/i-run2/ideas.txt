@@ -1,0 +1,15 @@
+ideas for next tests (i-run2):
+100000-10 (1mil total) got the best results by a pretty big margin (10%),
+	including over its flipped counterpart,
+	can try something similar to this but with less total,
+	or with a similar total but broken up into more dimensions (where one is still much larger)
+try less of a total in general, 100 000 is the lowest we can reasonably go
+	(time doesn't stay at 0), can also use this figure and above for tests with multiple arrs
+take adv of the new exp notation
+try to see what the effect of shifting the amounts for dimensions is,
+	particularly for >2 dimensions so we're not just flipping them,
+	and this time at a total closer to 1mil
+total of 2bil is too much but maybe 1.5bil, can start with 1.25 even
+only one test with several arrays, try more of those,
+	especially against their counterparts in terms of totals, once again lowerish total
+big gap between total of 1 mil and 1 bil, get somewhere around 500 mil, 750 mil, 900 mil, etc
