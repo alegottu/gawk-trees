@@ -48,7 +48,7 @@ where "-" seperates these dimensions, "^" means that many dimensions sized at th
 and "x" means that many seperate arrays whose dimensions are specificed before it.
 If you want to see more about how this data was gathered, take a look at [tools/benchmark](https://github.com/alegottu/gawk-trees/tree/main/tools/benchmark)
 
-### Memory usage
+### Memory usage (Kb)
 | Dimensions | gawk_trees Peak Memory Usage | gawk Peak Memory Usage | Memory Decrease |
 |------------|------------------------------|------------------------|-----------------|
 | 1-1000000 | 121088 | 199680 | 39.359% |
@@ -82,7 +82,7 @@ If you want to see more about how this data was gathered, take a look at [tools/
 | 1500000000 | 137172736 | 137636096 | 0.336656% |
 | 1750000000 | 137195520 | 139059712 | 1.34057% |
 
-### Speed
+### Speed (seconds)
 | Dimensions | gawk_trees Runtime | gawk Runtime | Slowdown |
 |------------|--------------------|--------------|----------|
 | 1-1000000 | 1.95 | 0.51 | 282.353% |
