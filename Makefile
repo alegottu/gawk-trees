@@ -1,4 +1,4 @@
-LW_PATH = libwayne
+LW_PATH = ..
 GAWK_PATH = gawk
 TE_PATH = tinyexpr
 BASE_FLAGS = -Wno-discarded-qualifiers -Wno-incompatible-pointer-types -fPIC -shared -DHAVE_CONFIG_H -c -DTE_NAT_LOG -DTE_POW_FROM_RIGHT
