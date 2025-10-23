@@ -41,20 +41,20 @@ bintree: setup
 
 htrees:
 	gcc $(OPTS) $(BASE_FLAGS) $(INCLUDES) $(SOURCE)
-	$(MAKE) -C libwayne $(LW_OPTS)
+	$(MAKE) -C $(LW_PATH) $(LW_OPTS)
 	gcc $(OPTS) $(OBJ_FLAGS) *.o -o $(BUILD)/$(OUT) -lm -L$(LW_PATH) -l:$(LW_NAME)
 	rm *.o
-	$(MAKE) -C libwayne raw_clean
+	$(MAKE) -C $(LW_PATH) raw_clean
 
 # Made to be entirely seperate from gawk source to test memory leaks
 test: setup
-	$(MAKE) -C libwayne shared-debug
+	$(MAKE) -C $(LW_PATH) shared-debug
 	gcc $(DEBUG_FLAGS) -Wno-discarded-qualifiers -Wno-incompatible-pointer-types $(INCLUDES) -Itest $(SOURCE) test/print_info.c test/test.c -o test/test -lm -L$(LW_PATH) -l:libwayne-g.a
-	$(MAKE) -C libwayne raw_clean
+	$(MAKE) -C $(LW_PATH) raw_clean
 
 setup:
 	if [ ! -d $(BUILD) ]; then \
 		mkdir $(BUILD); \
 		git submodule update --init --remote --recursive; \
 	fi
-	$(MAKE) -C libwayne clean
+	$(MAKE) -C $(LW_PATH) clean
