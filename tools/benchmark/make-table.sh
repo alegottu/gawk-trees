@@ -39,7 +39,24 @@ files=$(find "$1" -type f -regex "$pattern" -printf '%f\n')
 points=$(echo "$files" | sed 's/.data//')
 rows=""
 
+# replace scheme in file names with C-style array syntax
 for line in $points; do
+	line=$(sed -E 's/([0-9]+)-/\[\1\]/g' <<< "$line")
+	line=$(sed -E 's/([0-9]+)([x^])/\[\1\]\2/g' <<< "$line")
+	line=$(sed -E 's/\]([0-9]+)$/\]\[\1\]/' <<< "$line")
+	line=$(sed -E 's/^[0-9]+$/\[\0\]/' <<< "$line")
+	
+	# NOTE: seperate case for long version of translating '^'
+	# if grep -q '\^' <<< "$line"; then
+	# 	num=$(grep -oE '[0-9]+$' <<< "$line")
+	# 	figure=$(sed -E 's/\^[0-9]+//' <<< "$line")
+	# 	line=""
+
+	# 	for ((i=0;i<num;i++)); do
+	# 		line+="[$figure]"
+	# 	done
+	# fi
+
 	rows+="| $line 
 "
 done
