@@ -202,7 +202,7 @@ def first_sig_char(s: str) -> int:
             return idx
     return 0
 
-def process_statements(line: str, verbose: bool, line_num = 1) -> str:
+def process_statements(line: str, verbose: bool, line_num: int) -> str:
     statements = re.split("[;{}]", line)
     statements = [s for s in statements if len(s) > 0 and not s.isspace()]
     current_pos = 0
@@ -239,20 +239,29 @@ def process_statements(line: str, verbose: bool, line_num = 1) -> str:
 
         before = line
         line = line.replace(statement, translated, 1)
-        if verbose and before != line: print(f"Token {i+1} of line {line_num} ({statement}):\n", before, " -> ", line)
+        if verbose and before != line: 
+            print(f"Token {i+1} of line {line_num}: {statement}\n", before, "---\n", line)
     else:
         return line # line is translated by this point
 
 if __name__ == "__main__":
-    verbose = len(argv) > 2
+    verbose = False
     result = ""
+
+    for arg in argv[1:]:
+        if '-v' in arg:
+            verbose = True
+        else:
+            break
+        argv.pop(1)
     
     if len(argv) == 1:
         with open("README.md", 'r') as file:
             print(file.read())
         exit(0)
     elif '{' in argv[1]:
-        result = process_statements(argv[1], verbose)
+        for i, line in enumerate(argv[1].split('\n')):
+            result += process_statements(line+'\n', verbose, i+1)
     else:
         with open(argv[1]) as file:
             for i, line in enumerate(file):

@@ -1,4 +1,4 @@
-Usage: convert.py [file.awk] [script only if no file] [-verbose]
+Usage: convert.py [-v|--verbose] [file.awk] [script only if no file]
 
 The output will be the converted version of the provided script, which with you can do whatever you like.
 

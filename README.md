@@ -46,7 +46,7 @@ version of the API instead using the following:
 In the tables below, memory usage is measured in KB, while speed is measured in seconds.
 "x" means repetition of structures, e.g. [100][100]x5 would mean 5 separate structures, each equivalent to
 an array of [100][100].
-"^" means repetition of a dimension, e.g. 100^3 to mean a tree structure equivalent to an array of
+"^" means repetition of a dimension, e.g. [100]^3 to mean a structure equivalent to an array of
 [100][100][100].
 If you want to see more about how this data was gathered, take a look at [tools/benchmark](https://github.com/alegottu/gawk-trees/tree/main/tools/benchmark).
 
