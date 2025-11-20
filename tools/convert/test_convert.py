@@ -113,9 +113,25 @@ class TestTranslations(unittest.TestCase):
     # TODO: next
         pass
 
-    def test_statement(self):
-    # TODO: test process_statement
-        pass
+    # NOTE: specifically using this to test for-in edge cases for now
+    def test_statements(self):
+        test = "for(c=3; c<NF; c+=2) op[nodePair][edge][$c]=$(c+1)"
+        target = 'for(c=3;c<NF;c+=2)tree_insert("op", nodePair, edge, $c, $(c+1))'
+        result = convert.process_statements(test, False, 0)
+        self.assertEqual(result, target)
+
+        test = 'for(u in edge)for(v in edge[u]){if(u""==v""){++self; print(u,": ",v); continue;} if((v in edge) && (u in edge[v]))++both}'
+        target = 'while (tree_iters_remaining("edge") > 0){u = tree_next("edge"); while (tree_iters_remaining("edge", u) > 0){v = tree_next("edge", u); {if(u""==v""){++self;print(u,": ",v);continue;}if((tree_elem_exists("edge", v)) && (tree_elem_exists("edge", v, u)))++both } } }'
+        result = convert.process_statements(test, False, 0)
+        self.maxDiff = None
+        self.assertEqual(result, target)
+
+        test = "delete res;for(g in T1)res[g]=1;for(g in T2)res[g]=1; return length(res)"
+        # TODO: technically res should be a tree but would need to do a lookup for that,
+        # also no length function yet
+        target = 'delete res;while (tree_iters_remaining("T1") > 0){g = tree_next("T1"); tree_insert("res", g, 1) } while (tree_iters_remaining("T2") > 0){g = tree_next("T2"); tree_insert("res", g, 1) } return length(res)'
+        result = convert.process_statements(test, True, 0)
+        self.assertEqual(result, target)
 
 if __name__ == '__main__':
     unittest.main()

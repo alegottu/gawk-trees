@@ -111,7 +111,6 @@ def process_expression(statement: str) -> str:
         token = match.group(0)
         query = f"query_tree({process_brackets(token)})"
         statement = statement.replace(token, query, 1)
-
         match = re.search(pattern, statement)
 
     return statement
@@ -207,10 +206,10 @@ def process_statements(line: str, verbose: bool, line_num: int) -> str:
     statements = [s for s in statements if len(s) > 0 and not s.isspace()]
     current_pos = 0
     missing_brace = False
-    check_for = False # handles special case where a standard for loop uses no braces
+    check_for = False # Handles special case where a standard for loop uses no braces
 
     for i, statement in enumerate(statements):
-        current_pos = line.find(statement)+len(statement)
+        current_pos = line.find(statement) + len(statement)
 
         if check_for and ')' in statement:
             if line[current_pos-1] != ')' or line[current_pos-2] != ')':
@@ -222,7 +221,11 @@ def process_statements(line: str, verbose: bool, line_num: int) -> str:
         if "while" in statement and '(' in statement:
             breakers.append(None)
         elif "for" in statement and '(' in statement:
-            check_for = True
+            if not 'in' in statement:
+                check_for = True
+            elif current_pos < len(line) and line[current_pos] == ';':
+                # If the 'for-in' we're translating has a ';' at the end, it'll be replaced by '}'
+                line = line[:current_pos] + line[current_pos+1:]
         elif current_pos < len(line) and line[current_pos] == '}':
             if len(breakers) > 0:
                 breakers.pop()
@@ -241,8 +244,8 @@ def process_statements(line: str, verbose: bool, line_num: int) -> str:
         line = line.replace(statement, translated, 1)
         if verbose and before != line: 
             print(f"Token {i+1} of line {line_num}: {statement}\n", before, "---\n", line)
-    else:
-        return line # line is translated by this point
+
+    return line # Line is translated by this point
 
 if __name__ == "__main__":
     verbose = False
