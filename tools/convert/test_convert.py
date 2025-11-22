@@ -43,6 +43,16 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_in(test)
         self.assertEqual(result, target)
 
+    def test_query(self):
+        test = "ARGV[0]"
+        result = convert.process_query(test, True)
+        self.assertEqual(result, test)
+
+        test = "random[32][variable]"
+        target = 'query_tree("random", 32, variable)'
+        result = convert.process_query(test, True)
+        self.assertEqual(result, target)
+
     def test_assignment(self):
         test = ["tree[1][x]", "457"]
         target = 'tree_insert("tree", 1, x, 457)'
@@ -113,15 +123,15 @@ class TestTranslations(unittest.TestCase):
     # TODO: next
         pass
 
-    # NOTE: specifically using this to test for-in edge cases for now
     def test_statements(self):
+        # Test for-in edge cases
         test = "for(c=3; c<NF; c+=2) op[nodePair][edge][$c]=$(c+1)"
         target = 'for(c=3;c<NF;c+=2)tree_insert("op", nodePair, edge, $c, $(c+1))'
         result = convert.process_statements(test, False, 0)
         self.assertEqual(result, target)
 
         test = 'for(u in edge)for(v in edge[u]){if(u""==v""){++self; print(u,": ",v); continue;} if((v in edge) && (u in edge[v]))++both}'
-        target = 'while (tree_iters_remaining("edge") > 0){u = tree_next("edge"); while (tree_iters_remaining("edge", u) > 0){v = tree_next("edge", u); {if(u""==v""){++self;print(u,": ",v);continue;}if((tree_elem_exists("edge", v)) && (tree_elem_exists("edge", v, u)))++both } } }'
+        target = 'while (tree_iters_remaining("edge") > 0){u = tree_next("edge"); while (tree_iters_remaining("edge", u) > 0){v = tree_next("edge", u); if(u""==v""){++self;print(u,": ",v);continue; } }if((tree_elem_exists("edge", v)) && (tree_elem_exists("edge", v, u)))++both}'
         result = convert.process_statements(test, False, 0)
         self.maxDiff = None
         self.assertEqual(result, target)
@@ -130,7 +140,19 @@ class TestTranslations(unittest.TestCase):
         # TODO: technically res should be a tree but would need to do a lookup for that,
         # also no length function yet
         target = 'delete res;while (tree_iters_remaining("T1") > 0){g = tree_next("T1"); tree_insert("res", g, 1) } while (tree_iters_remaining("T2") > 0){g = tree_next("T2"); tree_insert("res", g, 1) } return length(res)'
-        result = convert.process_statements(test, True, 0)
+        result = convert.process_statements(test, False, 0)
+        self.assertEqual(result, target)
+
+        # Test standard for-in
+        test = "for (i in indices) { op[i]++; print(op[i]) }"
+        target = 'while (tree_iters_remaining("indices") > 0){i = tree_next("indices"); tree_increment("op", i, 1);print(query_tree("op", i))}'
+        result = convert.process_statements(test, False, 0)
+        self.assertEqual(result, target)
+
+        # Test edge case with comments
+        test = 'for(u in edge) for(v in edge[u]) { print(edge[v]) } # This is a comment; no[x][y] = z; if (true) { print(list[9]) }'
+        target = 'while (tree_iters_remaining("edge") > 0){u = tree_next("edge"); while (tree_iters_remaining("edge", u) > 0){v = tree_next("edge", u); print(query_tree("edge", v)) } } # This is a comment; no[x][y] = z; if (true) { print(list[9]) }'
+        result = convert.process_statements(test, False, 0)
         self.assertEqual(result, target)
 
 if __name__ == '__main__':

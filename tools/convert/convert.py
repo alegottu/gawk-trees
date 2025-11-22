@@ -50,27 +50,31 @@ def process_in(statement: str) -> str:
 
     return statement
 
+def process_query(token: str, has_bracket: bool) -> str:
+    BUILTINS = ["ARGV", "ENVIRON", "FUNCTAB", "PROCINFO", "SYMTAB"]
+
+    if has_bracket and not token[:token.find('[')] in BUILTINS:
+        return f"query_tree({process_brackets(token)})"
+    else:
+        return token
+
 def process_assignment(tokens: list) -> str:
     if '[' in tokens[0]:
-        value = f"query_tree({process_brackets(tokens[1])})" \
-            if '[' in tokens[1] else tokens[1]
+        value = process_query(tokens[1], '[' in tokens[1])
         subscripts = process_brackets(tokens[0], True)
         return f"tree_insert({subscripts}{value})"
     else:
-        all_params = process_brackets(tokens[1])
-        return f"{tokens[0]} = query_tree({all_params})"
+        return f"{tokens[0]} = {process_query(tokens[1], True)}"
 
 def process_increment(tokens: list, decrement: bool = False) -> str:
     if '[' in tokens[0]:
-        value = f"query_tree({process_brackets(tokens[1])})" \
-            if '[' in tokens[1] else tokens[1]
+        value = process_query(tokens[1], '[' in tokens[1])
         subscripts = process_brackets(tokens[0], True)
         func = "tree_increment" if not decrement else "tree_decrement"
         return f"{func}({subscripts}{value})"
     else:
-        all_params = process_brackets(tokens[1])
         symbol = '+' if not decrement else '-'
-        return f"{tokens[0]} {symbol}= query_tree({all_params})"
+        return f"{tokens[0]} {symbol}= {process_query(tokens[1], True)}"
 
 def process_modify(tokens: list, op: str) -> str:
     if '[' in tokens[0]:
@@ -96,8 +100,7 @@ def process_modify(tokens: list, op: str) -> str:
         subscripts = process_brackets(tokens[0], True)
         return f"tree_modify({subscripts}{exp})"
     else:
-        all_params = process_brackets(tokens[1])
-        return f"{tokens[0]} {op}= query_tree({all_params})"
+        return f"{tokens[0]} {op}= {process_query(tokens[1], True)}"
 
 def process_delete_element(token: str) -> str:
     all_params = process_brackets(token)
@@ -109,7 +112,7 @@ def process_expression(statement: str) -> str:
 
     while match != None:
         token = match.group(0)
-        query = f"query_tree({process_brackets(token)})"
+        query = process_query(token, True)
         statement = statement.replace(token, query, 1)
         match = re.search(pattern, statement)
 
@@ -136,15 +139,15 @@ def process_statement(statement: str, depth: int = 0) -> str:
             if end != len(statement)-1: # accounts for if body of for loop is attached
                 return result + process_statement(statement[end+1:], depth+1) + " } "
             elif depth > 0:
-                return result + ';'
-                # NOTE: ';' Denotes a special meaning here as it is a delimiter for
-                # statements and could not otherwise be part of the string;
-                # specifically, it means that the body of an inline for-in
+                return result + '|'
+                # NOTE: '|' here couldn't otherwise be part of the string,
+                # so it's meant to denote that the body of an inline for-in
                 # (from the past recursive call) ends with a non-inline for-in,
                 # which would ruin the structure of the braces created by
                 # the recursion without special behavior
-
-            return result
+            else:
+                return result + '~'
+                # NOTE: '~' instead denotes that an extra '{' needs to be removed
         else:
             breakers.append(None)
     elif " in " in statement:
@@ -202,14 +205,16 @@ def first_sig_char(s: str) -> int:
     return 0
 
 def process_statements(line: str, verbose: bool, line_num: int) -> str:
-    statements = re.split("[;{}]", line)
+    statements = re.split("[;{}#]", line)
     statements = [s for s in statements if len(s) > 0 and not s.isspace()]
     current_pos = 0
-    missing_brace = False
     check_for = False # Handles special case where a standard for loop uses no braces
+    check_for_in = False # Handles getting rid of an extra '{' if the for-in already had one
 
     for i, statement in enumerate(statements):
-        current_pos = line.find(statement) + len(statement)
+        current_pos = line.find(statement)
+        if line[current_pos-1] == '#': break
+        current_pos += len(statement)
 
         if check_for and ')' in statement:
             if line[current_pos-1] != ')' or line[current_pos-2] != ')':
@@ -223,22 +228,27 @@ def process_statements(line: str, verbose: bool, line_num: int) -> str:
         elif "for" in statement and '(' in statement:
             if not 'in' in statement:
                 check_for = True
-            elif current_pos < len(line) and line[current_pos] == ';':
-                # If the 'for-in' we're translating has a ';' at the end, it'll be replaced by '}'
-                line = line[:current_pos] + line[current_pos+1:]
+            else:
+                check_for_in = True
+                if current_pos < len(line) and line[current_pos] == ';':
+                    # If the 'for-in' we're translating has a ';' at the end, it'll be replaced by '}'
+                    line = line[:current_pos] + line[current_pos+1:]
         elif current_pos < len(line) and line[current_pos] == '}':
             if len(breakers) > 0:
                 breakers.pop()
-
-            if missing_brace:
-                line = line[:current_pos] + " } } " + line[current_pos:]
-                missing_brace = False
-
+ 
         translated = process_statement(statement.strip())
         # TODO: only accounts for one inner loop (depth of 1)
-        if len(translated) >= 4 and translated[-4] == ';': # See note in process_statement
-            translated = translated[:-4]
-            missing_brace = True
+        if check_for_in:
+            if translated[-4] == '|': # See note at line 144
+                translated = translated[:-4]
+                line = line[:current_pos] + line[current_pos+1:] # Remove extra opening brace
+                close_brace_pos = line[current_pos+1:].find('}') + current_pos + 1
+                line = line[:close_brace_pos] + " } " + line[close_brace_pos:] # Add missing closing brace
+            elif translated[-1] == '~': # See note at line 151
+                translated = translated[:-1]
+                line = line[:current_pos] + line[current_pos+1:]
+            check_for_in = False
 
         before = line
         line = line.replace(statement, translated, 1)
