@@ -10,8 +10,8 @@ def process_brackets(token: str, trailing_sep: bool = False) -> str:
     tree_name = split.pop(0)
     parameters = ""
     
-    while len(split) > 0:
-        parameters += f"{split.pop(0).rstrip(']')}, "
+    for subscript in split:
+        parameters += f"{subscript.rstrip(']')}, "
     
     if not trailing_sep: parameters = parameters[:-2]
     return f'"{tree_name}", {parameters}'
@@ -32,10 +32,9 @@ def process_for_in(tokens: list) -> tuple[ str, str ]:
 
 def process_in(statement: str) -> str:
     pattern = r"\w+(?:\[.+\])* in \w+(?:\[.+\])*"
-    match = re.search(pattern, statement)
-    # Could be part of an expression, so we have to repeat the process
 
-    while match != None:
+    # Could be part of an expression, so we have to repeat the process
+    for match in re.finditer(pattern, statement):
         tokens = match.group(0).split(" in ", 1)
         value = process_expression(tokens[0])
 
@@ -46,7 +45,6 @@ def process_in(statement: str) -> str:
 
         result = f"tree_elem_exists({all_params}{value})"
         statement = statement.replace(match.group(0), result, 1)
-        match = re.search(pattern, statement)
 
     return statement
 
@@ -60,21 +58,21 @@ def process_query(token: str, has_bracket: bool) -> str:
 
 def process_assignment(tokens: list) -> str:
     if '[' in tokens[0]:
-        value = process_query(tokens[1], '[' in tokens[1])
+        value = process_expression(tokens[1])
         subscripts = process_brackets(tokens[0], True)
         return f"tree_insert({subscripts}{value})"
     else:
-        return f"{tokens[0]} = {process_query(tokens[1], True)}"
+        return f"{tokens[0]} = {process_expression(tokens[1])}"
 
 def process_increment(tokens: list, decrement: bool = False) -> str:
     if '[' in tokens[0]:
-        value = process_query(tokens[1], '[' in tokens[1])
+        value = process_expression(tokens[1])
         subscripts = process_brackets(tokens[0], True)
         func = "tree_increment" if not decrement else "tree_decrement"
         return f"{func}({subscripts}{value})"
     else:
         symbol = '+' if not decrement else '-'
-        return f"{tokens[0]} {symbol}= {process_query(tokens[1], True)}"
+        return f"{tokens[0]} {symbol}= {process_expression(tokens[1])}"
 
 def process_modify(tokens: list, op: str) -> str:
     if '[' in tokens[0]:
@@ -100,7 +98,7 @@ def process_modify(tokens: list, op: str) -> str:
         subscripts = process_brackets(tokens[0], True)
         return f"tree_modify({subscripts}{exp})"
     else:
-        return f"{tokens[0]} {op}= {process_query(tokens[1], True)}"
+        return f"{tokens[0]} {op}= {process_expression(tokens[1])}"
 
 def process_delete_element(token: str) -> str:
     all_params = process_brackets(token)
@@ -108,13 +106,11 @@ def process_delete_element(token: str) -> str:
 
 def process_expression(statement: str) -> str:
     pattern = r"\w+(?:\[[^\s\[]+\])+"
-    match = re.search(pattern, statement)
 
-    while match != None:
+    for match in re.finditer(pattern, statement):
         token = match.group(0)
         query = process_query(token, True)
         statement = statement.replace(token, query, 1)
-        match = re.search(pattern, statement)
 
     return statement
 
@@ -153,7 +149,16 @@ def process_statement(statement: str, depth: int = 0) -> str:
     elif " in " in statement:
         return process_in(statement)
     elif '[' in statement:
-        if '=' in statement:
+        if "if" in statement and '(' in statement: # In case of an inline if
+            open_paren_pos = statement.find('(')
+            close_paren_pos = statement.find(')')
+            condition = statement[open_paren_pos+1:close_paren_pos]
+            body = statement[close_paren_pos+1:]
+            return f"{statement[:open_paren_pos]}({process_expression(condition)}) {process_statement(body)}"
+        elif "else" in statement: # In case of an inline else
+            body = statement[statement.find(' ')+1:]
+            return f"else {process_statement(body)}"
+        elif '=' in statement:
             tokens = statement.split('=', maxsplit=1)
             tokens[0] = tokens[0].rstrip(' ')
             tokens[1] = tokens[1].lstrip(' ')

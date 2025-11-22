@@ -64,6 +64,12 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_assignment(test)
         self.assertEqual(result, target)
 
+        test = ["seed", 'systime()+PROCINFO["gid"]+PROCINFO["uid"]+PROCINFO["pgrpid"]+PROCINFO["ppid"]+PROCINFO["pid"]']
+        target = 'seed = systime()+PROCINFO["gid"]+PROCINFO["uid"]+PROCINFO["pgrpid"]+PROCINFO["ppid"]+PROCINFO["pid"]'
+        result = convert.process_assignment(test)
+        self.assertEqual(result, target)
+
+
     def test_increment(self):
         test = ["tree[40][$1]", "25.2"]
         target = 'tree_increment("tree", 40, $1, 25.2)'
@@ -105,6 +111,11 @@ class TestTranslations(unittest.TestCase):
 
         test = "random_func(small[1] * z + another[x++])"
         target = 'random_func(query_tree("small", 1) * z + query_tree("another", x++))'
+        result = convert.process_expression(test)
+        self.assertEqual(result, target)
+
+        test = "unit[12][54]"
+        target = 'query_tree("unit", 12, 54)'
         result = convert.process_expression(test)
         self.assertEqual(result, target)
 
@@ -152,6 +163,12 @@ class TestTranslations(unittest.TestCase):
         # Test edge case with comments
         test = 'for(u in edge) for(v in edge[u]) { print(edge[v]) } # This is a comment; no[x][y] = z; if (true) { print(list[9]) }'
         target = 'while (tree_iters_remaining("edge") > 0){u = tree_next("edge"); while (tree_iters_remaining("edge", u) > 0){v = tree_next("edge", u); print(query_tree("edge", v)) } } # This is a comment; no[x][y] = z; if (true) { print(list[9]) }'
+        result = convert.process_statements(test, False, 0)
+        self.assertEqual(result, target)
+
+        # Test inline if
+        test = "if(u[i]==v[i])res[i]+=36; else res[i]-=log(ABS(u[i]-v[i]));"
+        target = 'if(query_tree("u", i)==query_tree("v", i)) tree_increment("res", i, 36);else tree_decrement("res", i, log(ABS(query_tree("u", i)-query_tree("v", i))));'
         result = convert.process_statements(test, False, 0)
         self.assertEqual(result, target)
 
