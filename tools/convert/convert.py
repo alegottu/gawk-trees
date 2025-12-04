@@ -16,7 +16,10 @@ def process_brackets(token: str, trailing_sep: bool = False) -> str:
     if not trailing_sep: parameters = parameters[:-2]
     return f'"{tree_name}", {parameters}'
 
-def process_for_in(tokens: list) -> tuple[ str, str ]:
+def process_for_in(statement: str) -> str:
+    end = statement.find(')')
+    tokens = statement[statement.find('(')+1:end].split(" in ", maxsplit=1)
+
     var_name = tokens[0]
     container = tokens[1]
     all_params = f'"{container}"'
@@ -24,11 +27,12 @@ def process_for_in(tokens: list) -> tuple[ str, str ]:
     if '[' in container:
         all_params = process_brackets(container)
 
-    result = f"while (tree_iters_remaining({all_params}) > 0)" + '{'
+    result = f"while (tree_iters_remaining({all_params}) > 0) " + "{ "
     result += f"{var_name} = tree_next({all_params}); "
     breaker = f"tree_iter_break({all_params})"
+    breakers.append(breaker)
 
-    return (result, breaker)
+    return result
 
 def process_in(statement: str) -> str:
     pattern = r"\w+(?:\[.+\])* in \w+(?:\[.+\])*"
@@ -47,6 +51,40 @@ def process_in(statement: str) -> str:
         statement = statement.replace(match.group(0), result, 1)
 
     return statement
+
+# In case of an inline if
+def process_if(statement: str) -> tuple[str, str]:
+    open_paren_pos = statement.find('(')
+    close_paren_pos = statement.find(')')
+    next = statement.find('(', open_paren_pos+1)
+
+    # TODO: can utilize something similar for other places that might have multiple sets of parens
+    while next != -1 and next < close_paren_pos:
+        close_paren_pos = statement.find(')', close_paren_pos+1)
+        next = statement.find('(', next+1)
+
+    condition = statement[open_paren_pos+1:close_paren_pos]
+    body = statement[close_paren_pos+1:]
+    result = f"{statement[:open_paren_pos]}({process_expression(condition)})"
+    return (result, body)
+
+def process_equals(statement: str) -> str:
+    tokens = statement.split('=', maxsplit=1)
+    tokens[0] = tokens[0].rstrip(' ')
+    tokens[1] = tokens[1].lstrip(' ')
+
+    if tokens[0][-1] == '+':
+        tokens[0] = tokens[0].rstrip(" +")
+        return process_increment(tokens)
+    elif tokens[0][-1] == '-':
+        tokens[0] = tokens[0].rstrip(" -")
+        return process_increment(tokens, True)
+    elif re.match("[%/*^]", tokens[0][-1]) != None:
+        op = tokens[0][-1]
+        tokens[0] = tokens[0][:-1].rstrip(' ')
+        return process_modify(tokens, op)
+    else:
+        return process_assignment(tokens)
 
 def process_query(token: str, has_bracket: bool) -> str:
     BUILTINS = ["ARGV", "ENVIRON", "FUNCTAB", "PROCINFO", "SYMTAB"]
@@ -124,143 +162,140 @@ def process_is_array(token: str) -> str:
 
     return f"is_array({container})"
 
-def process_statement(statement: str, depth: int = 0) -> str: 
-    if "for" in statement and '(' in statement:
-        if " in " in statement:
-            end = statement.find(')')
-            tokens = statement[statement.find('(')+1:end].split(" in ", maxsplit=1)
-            result, breaker = process_for_in(tokens)
-            breakers.append(breaker)
+# Check that the given keyword is present (by itself, i.e. with whitespace surrounding it) followed by a '('
+def keyword_present(keyword: str, statement: str) -> bool:
+    return re.search(r"(^|\s)\s*" + keyword + r"\s*\(", statement) != None
 
-            if end != len(statement)-1: # accounts for if body of for loop is attached
-                return result + process_statement(statement[end+1:], depth+1) + " } "
-            elif depth > 0:
-                return result + '|'
-                # NOTE: '|' here couldn't otherwise be part of the string,
-                # so it's meant to denote that the body of an inline for-in
-                # (from the past recursive call) ends with a non-inline for-in,
-                # which would ruin the structure of the braces created by
-                # the recursion without special behavior
-            else:
-                return result + '~'
-                # NOTE: '~' instead denotes that an extra '{' needs to be removed
-        else:
-            breakers.append(None)
-    elif " in " in statement:
-        return process_in(statement)
-    elif '[' in statement:
-        if "if" in statement and '(' in statement: # In case of an inline if
-            open_paren_pos = statement.find('(')
-            close_paren_pos = statement.find(')')
-            condition = statement[open_paren_pos+1:close_paren_pos]
-            body = statement[close_paren_pos+1:]
-            return f"{statement[:open_paren_pos]}({process_expression(condition)}) {process_statement(body)}"
-        elif "else" in statement: # In case of an inline else
-            body = statement[statement.find(' ')+1:]
-            return f"else {process_statement(body)}"
-        elif '=' in statement:
-            tokens = statement.split('=', maxsplit=1)
-            tokens[0] = tokens[0].rstrip(' ')
-            tokens[1] = tokens[1].lstrip(' ')
+def parse_statements(line: str) -> tuple[list, list]:
+    delim_spacing = { ';': "; ", '#': "# ", '{': " { ", '}': " } ", '\n': '\n' }
+    statements, delims = ([], [])
+    current_pos = 0
 
-            if tokens[0][-1] == '+':
-                tokens[0] = tokens[0].rstrip(" +")
-                return process_increment(tokens)
-            elif tokens[0][-1] == '-':
-                tokens[0] = tokens[0].rstrip(" -")
-                return process_increment(tokens, True)
-            elif re.match("[%/*^]", tokens[0][-1]) != None:
-                op = tokens[0][-1]
-                tokens[0] = tokens[0][:-1].rstrip(' ')
-                return process_modify(tokens, op)
-            else:
-                return process_assignment(tokens)
-        elif "++" in statement:
-            tokens = [statement.strip('+')]
-            tokens.append("1")
-            return process_increment(tokens)
-        elif "--" in statement:
-            tokens = [statement.strip('-')]
-            tokens.append("1")
-            return process_increment(tokens, True)
-        elif "delete " in statement:
-            token = statement[7:]
-            return process_delete_element(token)
-        else: # "[ ]" used within an expression
-            return process_expression(statement)
-    elif "delete " in statement:
-        token = statement[7:]
-        if token in trees:
-            return process_delete_array(token)
-    elif "is_array" in statement: 
-        start, end = statement.find('('), statement.find(')')
-        token = statement[start+1:end]
-        return process_is_array(token)
-    elif statement == "break" and len(breakers) != 0:
-        breaker = breakers.pop()
-        if breaker != None:
-            return f"{breaker}; break"
+    while current_pos < len(line):
+        last_pos = current_pos
+        while line[current_pos] not in ";{}#\n":
+            current_pos += 1
+            if current_pos == len(line):
+                current_pos -= 1
+                break
 
-    return statement
+        statement = line[last_pos:current_pos].strip()
+        statements.append(statement)
 
-def first_sig_char(s: str) -> int:
-    for idx, c in enumerate(s):
-        if not c.isspace():
-            return idx
-    return 0
+        if line[current_pos] == '#':
+            delims.append("# ")
+            statements.append(line[current_pos+1:].strip())
+            break
+
+        delims.append(delim_spacing[line[current_pos]])
+        current_pos += 1
+
+    return statements, delims
 
 def process_statements(line: str, verbose: bool, line_num: int) -> str:
-    statements = re.split("[;{}#]", line)
-    statements = [s for s in statements if len(s) > 0 and not s.isspace()]
-    current_pos = 0
-    check_for = False # Handles special case where a standard for loop uses no braces
-    check_for_in = False # Handles getting rid of an extra '{' if the for-in already had one
+    result = ""
+    statements, delims = parse_statements(line)
 
     for i, statement in enumerate(statements):
-        current_pos = line.find(statement)
-        if line[current_pos-1] == '#': break
-        current_pos += len(statement)
+        delim = delims[i]
+        translated = statement
 
-        if check_for and ')' in statement:
-            if line[current_pos-1] != ')' or line[current_pos-2] != ')':
-                correct_split = statement.split(')', 1)
-                statement = correct_split[0]
-                statements.insert(i+1, correct_split[1])
-            check_for = False
+        if len(statement) > 0: 
+            if keyword_present("for", statement):
+                if " in " in statement:
+                    # TODO: same concern with extra set of parens
+                    parts = statement.split(')', 1)
+                    statement = parts.pop(0) + ')'
+                    translated = process_for_in(statement)
 
-        if "while" in statement and '(' in statement:
-            breakers.append(None)
-        elif "for" in statement and '(' in statement:
-            if not 'in' in statement:
-                check_for = True
-            else:
-                check_for_in = True
-                if current_pos < len(line) and line[current_pos] == ';':
-                    # If the 'for-in' we're translating has a ';' at the end, it'll be replaced by '}'
-                    line = line[:current_pos] + line[current_pos+1:]
-        elif current_pos < len(line) and line[current_pos] == '}':
-            if len(breakers) > 0:
-                breakers.pop()
- 
-        translated = process_statement(statement.strip())
-        # TODO: only accounts for one inner loop (depth of 1)
-        if check_for_in:
-            if translated[-4] == '|': # See note at line 144
-                translated = translated[:-4]
-                line = line[:current_pos] + line[current_pos+1:] # Remove extra opening brace
-                close_brace_pos = line[current_pos+1:].find('}') + current_pos + 1
-                line = line[:close_brace_pos] + " } " + line[close_brace_pos:] # Add missing closing brace
-            elif translated[-1] == '~': # See note at line 151
-                translated = translated[:-1]
-                line = line[:current_pos] + line[current_pos+1:]
-            check_for_in = False
+                    if len(parts[0].strip()) == 0:
+                        delim = '' # Remove extra opening brace
+                    else: # Inline for-in
+                        statements.insert(i+1, parts[0])
+                        if delim == "; ":
+                            delim = ''
+                            delims.insert(i+1, " } ") # Replace ending ';' with '}'
+                        else: # Special case where an inline for-in is followed by a regular loop
+                            delims.insert(i+1, " { ")
+                            delim = '' # Remove extra opening brace
+                            j = delims.index(" } ", i+2)
+                            statements.insert(j+1, '')
+                            delims.insert(j+1, " } ") # Add missing closing brace
+                else:
+                    # TODO: could be expression to process here, also need to account for inline?
+                    temp, statements[i+2] = [s.strip() for s in statements[i+2].split(')', 1)]
+                    # TODO: common func for splitting by matching parens
+                    statement += f"; {statements.pop(i+1)}; {temp})"
+                    translated = statement
+                    delims.pop(i+1)
+                    delim = ' '
+                    breakers.append(None)
+            elif " in " in statement:
+                translated = process_in(statement)
+            elif keyword_present("while", statement):
+                breakers.append(None)
+                # TODO: could be inline while loop, maybe make common function for splitting inline body stuff
+            elif '[' in statement:
+                if keyword_present("if", statement):
+                    if delim != " { ":
+                        translated, body = process_if(statement)
+                        statements.insert(i+1, body)
+                        delims.insert(i+1, "; ")
+                        delim = ' '
+                    else:
+                        translated = process_expression(statement)
+                # TODO: maybe stricter check for this
+                elif "else " in statement:
+                    if delim != " { ": # In case of an inline else
+                        body = statement[statement.find(' ')+1:]
+                        translated = f"else "
+                        statements.insert(i+1, body)
+                        delims.insert(i+1, "; ")
+                        delim = ''
+                    else:
+                        translated = process_expression(statement)
+                elif '=' in statement:
+                    translated = process_equals(statement)
+                elif "++" in statement:
+                    tokens = [statement.strip('+')]
+                    tokens.append("1")
+                    translated = process_increment(tokens)
+                elif "--" in statement:
+                    tokens = [statement.strip('-')]
+                    tokens.append("1")
+                    translated = process_increment(tokens, True)
+                elif "delete " in statement:
+                    token = statement[7:] # Assuming delete is right at the start of the statement
+                    translated = process_delete_element(token)
+                else: # "[ ]" used within an expression
+                    translated = process_expression(statement)
+            elif "delete " in statement:
+                token = statement[7:] # Assuming delete is right at the start of the statement
+                if token in trees: # TODO: not tracking trees
+                    translated = process_delete_array(token)
+            elif keyword_present("is_array", statement):
+                # TODO: also check if the name given is a valid tree, otherwise do so in the appropiate extension func
+                start, end = statement.find('('), statement.find(')')
+                token = statement[start+1:end]
+                translated = process_is_array(token)
+            elif statement == "break" and len(breakers) != 0:
+                breaker = breakers.pop()
+                if breaker != None:
+                    translated = f"{breaker}; break"
 
-        before = line
-        line = line.replace(statement, translated, 1)
-        if verbose and before != line: 
-            print(f"Token {i+1} of line {line_num}: {statement}\n", before, "---\n", line)
+        if delim == " } " and len(breakers) > 0:
+            breakers.pop()
+       
+        result += translated + delim
 
-    return line # Line is translated by this point
+        if verbose and statement != translated: 
+            print(f"Token {i+1} of line {line_num}: {statement}\n", line, "---\n", result)
+
+        if delim == "# ":
+            result += statements[i+1] + '\n'
+            break
+
+    return result
 
 if __name__ == "__main__":
     verbose = False
