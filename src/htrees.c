@@ -47,6 +47,21 @@ const bool delete_tree(const char* name)
 	return TreeDelete(trees, (foint){.s=name});
 }
 
+const double tree_length(const char* name)
+{
+	foint* _htree = TreeLookup(trees, (foint){.s=name});
+
+	if (_htree != NULL)
+	{
+		HTREE* htree = _htree->v;
+		return htree->n;
+	}
+	else
+	{
+		return strlen(name);
+	}
+}
+
 static void fill_foints(const char** strs, foint* result, const unsigned char count)
 {
 	for (unsigned char i = 0; i < count; ++i)
