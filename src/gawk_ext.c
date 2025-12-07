@@ -51,8 +51,26 @@ static awk_value_t* do_delete_tree(const int nargs, awk_value_t* result, struct 
 	}
 	else
 		fatal(ext_id, "delete_tree: Invalid arguments");
+		// TODO: stuff like this should be fatal? check awk's behavior
 
 	return make_number((double)ret, result);
+}
+
+static awk_value_t* do_tree_length(const int nargs, awk_value_t* result, struct awk_ext_func* _)
+{
+	assert(result != NULL);
+
+	awk_value_t awk_name;
+	double ret;
+
+	if (get_argument(0, AWK_STRING, &awk_name))
+	{
+		ret = tree_length(awk_name.str_value.str);
+	}
+	else
+		ret = 0;
+
+	return make_number(ret, result);
 }
 
 static query_t get_query()
@@ -219,6 +237,7 @@ static awk_ext_func_t func_table[] =
 {
 	{ "create_tree", do_create_tree, 2, 2, awk_false, NULL },
 	{ "delete_tree", do_delete_tree, 1, 1, awk_false, NULL },
+	{ "tree_length", do_tree_length, 1, 1, awk_false, NULL },
 	{ "tree_insert", do_tree_insert, 0, 2, awk_true, NULL },
 	{ "query_tree", do_query_tree, 0, 2, awk_true, NULL },
 	{ "tree_modify", do_tree_modify, 0, 3, awk_true, NULL },

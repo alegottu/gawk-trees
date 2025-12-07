@@ -26,6 +26,8 @@ HTREE* create_tree(const char* name, const int depth);
 
 const bool delete_tree(const char* name);
 
+const double tree_length(const char* name);
+
 void tree_insert(const char* tree, const char** subscripts, const foint value, const unsigned char depth);
 
 const foint query_tree(const char* tree, const char** subscripts, const unsigned char depth);
