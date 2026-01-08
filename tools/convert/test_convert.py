@@ -14,6 +14,16 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_brackets(test, True)
         self.assertEqual(result, target)
 
+        test = "sortTb[sortTc[i]]"
+        target = '"sortTb", query_tree("sortTc", i)'
+        result = convert.process_brackets(test)
+        self.assertEqual(result, target)
+
+        test = "sortTb[sortTc[i][j]]"
+        target = '"sortTb", query_tree("sortTc", i, j)'
+        result = convert.process_brackets(test)
+        self.assertEqual(result, target)
+
     def test_for_in(self):
         test = "for (x in list)"
         targets = ('while (tree_iters_remaining("list") > 0) { x = tree_next("list"); ', 
@@ -29,20 +39,21 @@ class TestTranslations(unittest.TestCase):
         self.assertEqual(results, targets[0])
         self.assertEqual(convert.breakers[-1], targets[1])
 
+    # NOTE: process_in is a smaller part of process_expression
     def test_in(self):
         test = "now[0][a+b] in list"
         target = 'tree_elem_exists("list", query_tree("now", 0, a+b))'
-        result = convert.process_in(test)
+        result = convert.process_expression(test)
         self.assertEqual(result, target)
 
         test = '43 in example["3sys4"][0]'
         target = 'tree_elem_exists("example", "3sys4", 0, 43)'
-        result = convert.process_in(test)
+        result = convert.process_expression(test)
         self.assertEqual(result, target)
 
         test = "if((v in edge) && (u in edge[v]))"
         target = 'if((tree_elem_exists("edge", v)) && (tree_elem_exists("edge", v, u)))'
-        result = convert.process_in(test)
+        result = convert.process_expression(test)
         self.assertEqual(result, target)
 
     def test_query(self):
@@ -121,13 +132,23 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_expression(test)
         self.assertEqual(result, target)
 
+        test = "sortTb[sortTc[i]]"
+        target = 'query_tree("sortTb", query_tree("sortTc", i))'
+        result = convert.process_expression(test)
+        self.assertEqual(result, target)
+
+        test = "n[inner[another[2][1]]]"
+        target = 'query_tree("n", query_tree("inner", query_tree("another", 2, 1)))'
+        result = convert.process_expression(test)
+        self.assertEqual(result, target)
+
     def test_delete_array(self):
-        test = "delete_this_tree_next781462"
+        test = "delete delete_this_tree_next781462"
         target = 'delete_tree("delete_this_tree_next781462")'
         result = convert.process_delete_array(test)
         self.assertEqual(result, target)
 
-        test = "simple"
+        test = "delete simple"
         target = 'delete_tree("simple")'
         result = convert.process_delete_array(test)
         self.assertEqual(result, target)
@@ -137,48 +158,126 @@ class TestTranslations(unittest.TestCase):
         pass
 
     def test_statements(self):
-        # Test for-in edge cases
+        # Test inline regular for
         test = "for(c=3; c<NF; c+=2) op[nodePair][edge][$c]=$(c+1)\n"
         target = 'for(c=3; c<NF; c+=2) tree_insert("op", nodePair, edge, $c, $(c+1))\n'
-        result = convert.process_statements(test, False, 0)
+        result = convert.process_statements(test)
         self.assertEqual(result, target)
 
+        # Test for-in following inline for-in
         test = 'for(u in edge)for(v in edge[u]){if(u""==v""){++self; print(u,": ",v); continue;} if((v in edge) && (u in edge[v]))++both}\n'
-        target = 'while (tree_iters_remaining("edge") > 0) { u = tree_next("edge"); while (tree_iters_remaining("edge", u) > 0) { v = tree_next("edge", u); if(u""==v"") { ++self; print(u,": ",v); continue;  }  } if((tree_elem_exists("edge", v)) && (tree_elem_exists("edge", v, u)))++both } \n'
-        result = convert.process_statements(test, False, 0)
+        target = 'while (tree_iters_remaining("edge") > 0) { u = tree_next("edge"); while (tree_iters_remaining("edge", u) > 0) { v = tree_next("edge", u); if(u""==v"") { ++self; print(u,": ",v); continue;  }  } if((tree_elem_exists("edge", v)) && (tree_elem_exists("edge", v, u))) ++both } \n'
+        result = convert.process_statements(test)
         self.maxDiff = None
         self.assertEqual(result, target)
 
+        # TODO: test length within an expression
+        # Test inline for-in following another inline for-in + length
         test = "delete res;for(g in T1)res[g]=1;for(g in T2)res[g]=1; return length(res)\n"
-        # TODO: technically res should be a tree but would need to do a lookup for that,
-        # also no length function yet
-        target = 'delete res; while (tree_iters_remaining("T1") > 0) { g = tree_next("T1"); tree_insert("res", g, 1) } while (tree_iters_remaining("T2") > 0) { g = tree_next("T2"); tree_insert("res", g, 1) } return length(res)\n'
-        result = convert.process_statements(test, False, 0)
+        target = 'delete_tree("res"); while (tree_iters_remaining("T1") > 0) { g = tree_next("T1"); tree_insert("res", g, 1);  } while (tree_iters_remaining("T2") > 0) { g = tree_next("T2"); tree_insert("res", g, 1);  } return tree_length("res")\n'
+        result = convert.process_statements(test)
         self.assertEqual(result, target)
 
         # Test standard for-in
         test = "for (i in indices) { op[i]++; print(op[i]) }\n"
         target = 'while (tree_iters_remaining("indices") > 0) { i = tree_next("indices"); tree_increment("op", i, 1); print(query_tree("op", i)) } \n'
-        result = convert.process_statements(test, False, 0)
+        result = convert.process_statements(test)
         self.assertEqual(result, target)
 
         # Test edge case with comments
         test = 'for(u in edge) for(v in edge[u]) { print(edge[v]) } # This is a comment; no[x][y] = z; if (true) { print(list[9]) }\n'
         target = 'while (tree_iters_remaining("edge") > 0) { u = tree_next("edge"); while (tree_iters_remaining("edge", u) > 0) { v = tree_next("edge", u); print(query_tree("edge", v)) }  } # This is a comment; no[x][y] = z; if (true) { print(list[9]) }\n'
-        result = convert.process_statements(test, False, 0)
+        result = convert.process_statements(test)
         self.assertEqual(result, target)
 
         # Test inline if, including with multiple sets of parentheses for the condition
         test = "if(u[i]==log(v[i]))res[i]+=36; else res[i]-=log(ABS(u[i]-v[i]));"
         target = 'if(query_tree("u", i)==log(query_tree("v", i))) tree_increment("res", i, 36); else tree_decrement("res", i, log(ABS(query_tree("u", i)-query_tree("v", i)))); '
-        result = convert.process_statements(test, False, 0)
+        result = convert.process_statements(test)
         self.assertEqual(result, target)
 
         # Test regular if-else
         test = "if(u[i]==log(v[i])) { res[i]+=36; } else { res[i]-=log(ABS(u[i]-v[i])) }"
         target = 'if(query_tree("u", i)==log(query_tree("v", i))) { tree_increment("res", i, 36);  } else { tree_decrement("res", i, log(ABS(query_tree("u", i)-query_tree("v", i)))) } '
-        result = convert.process_statements(test, False, 0)
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+        
+        # Test triple inline for-in
+        test = "for (a in b) for (x in y) for (i in j) print a+x+i;"
+        target = 'while (tree_iters_remaining("b") > 0) { a = tree_next("b"); while (tree_iters_remaining("y") > 0) { x = tree_next("y"); while (tree_iters_remaining("j") > 0) { i = tree_next("j"); print a+x+i;  }  }  } '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
+        # Test functions + inline if following inline for-in
+        test = "function GeoMeanDist(u,v,    i,res) { for(i in u) if(u[i]==v[i])res+=log(1e-16); else res+=log(ABS(u[i]-v[i])); return exp(res/length(u)); }"
+        target = 'function GeoMeanDist(u,v,    i,res) { while (tree_iters_remaining(u) > 0) { i = tree_next(u); if(query_tree(u, i)==query_tree(v, i)) res+=log(1e-16); else res += log(ABS(query_tree(u, i)-query_tree(v, i)));  } return exp(res/tree_length(u));  } '
+        convert.universal = False
+        convert.trees = set()
+        # TODO: have this as universal set up somewhere, same for cleanup
+        result = convert.process_statements(test)
+        convert.universal = True
+        convert.trees = set()
+        self.assertEqual(result, target)
+
+        # Test assignment with nested brackets following inline for
+        test = "for(i=1;i<=NsortTc;i++)ai[i]=sortTb[sortTc[i]];"
+        target = 'for(i=1; i<=NsortTc; i++) tree_insert("ai", i, query_tree("sortTb", query_tree("sortTc", i))); '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
+        # Test return statement including array assignment, retaining indentation, and () surrounding a statement
+        test = "    return (_memAccLog1[x]=sum);"
+        target = '    return (tree_insert("_memAccLog1", x, sum)); '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
+        # Test quoting remains unchanged
+        test = '    ASSERT(M>=m,"BUG: M is not greater than m in LogSumLogs"); \n'
+        result = convert.process_statements(test)
+        self.assertEqual(result, test)
+
+        # Test return statement following inline if/else
+        test = "function floor(x) {if(x>=0) return int(x); else return int(x)-1}"
+        target = "function floor(x) { if(x>=0) return int(x); else return int(x)-1 } "
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
+        # Test multiple "in"s as part of an expression
+        test = "if(n in _memLogChoose && k in _memLogChoose[n]) return _memLogChoose[n][k];"
+        target = 'if(tree_elem_exists("_memLogChoose", n) && tree_elem_exists("_memLogChoose", n, k)) return query_tree("_memLogChoose", n, k); '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
+        # Test lengths using string vars as condition + correctly closing scope from combo of inline / regular if
+        test = "{delete res;if(length(T1)<length(T2)){for(g in T1)if(g in T2)res[g]=1}"
+        target = ' { delete_tree("res"); if(tree_length("T1")<tree_length("T2")) { while (tree_iters_remaining("T1") > 0) { g = tree_next("T1"); if(tree_elem_exists("T2", g)) tree_insert("res", g, 1) }  } '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
+        # Test multiple assignment
+        test = "_statN[name] = _statSum[name] = _statSum2[name] = 0;"
+        target = 'tree_insert("_statN", name, 0); tree_insert("_statSum", name, 0); tree_insert("_statSum2", name, 0); '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
+        # Test assertions + string escaping
+        test = 'ASSERT(x==0|| (x in _statHistCDF[name]), "oops, x "x" is not in _statHistCDF["name"]");'
+        target = 'ASSERT(x==0|| (tree_elem_exists("_statHistCDF", name, x)), "oops, x "x" is not in _statHistCDF["name"]"); '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
+        # Test not changing regular for with no array usage
+        test = "for(i=1;i<=k;i++){term*=l/i;sum+=term}"
+        target = "for(i=1; i<=k; i++) { term*=l/i; sum+=term } "
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
+        # Test assigning result of increment / modification
+        test = "_SpN=(_Spearman_N[name]++);"
+        target = '_SpN = (tree_increment("_Spearman_N", name, 1)); '
+        result = convert.process_statements(test)
         self.assertEqual(result, target)
 
 if __name__ == '__main__':
+    convert.universal = True
     unittest.main()
