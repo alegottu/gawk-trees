@@ -24,7 +24,7 @@ bool init_trees();
 
 HTREE* create_tree(const char* name, const int depth);
 
-const bool delete_tree(const char* name);
+void delete_tree(const char* name);
 
 const double tree_length(const char* name);
 
@@ -40,7 +40,7 @@ const double tree_decrement(const char* tree, const char** args, const unsigned 
 
 const bool tree_elem_exists(const char* tree, const char** subscripts, const unsigned char depth);
 
-const bool tree_remove(const char* tree, const char** subscripts, const unsigned char depth);
+void tree_remove(const char* tree, const char** subscripts, const unsigned char depth);
 
 const unsigned short is_tree(const char* tree, const char** subscripts, const unsigned char depth);
 
@@ -48,7 +48,7 @@ const char* tree_next(const char* tree, const char** subscripts, const unsigned 
 
 const unsigned int tree_iters_remaining(const char* tree, const char** subscripts, const unsigned char depth);
 
-const bool tree_iter_break(const char* tree, const char** subscripts, const unsigned char depth);
+void tree_iter_break(const char* tree, const char** subscripts, const unsigned char depth);
 
 void do_at_exit(void* data, int exit_status);
 

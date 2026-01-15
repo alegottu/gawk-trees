@@ -13,7 +13,7 @@ static awk_bool_t do_at_init()
 	trees = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree); 
 	current_iterators = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)LinkedListFree); 
 
-	awk_atexit((void*)do_at_exit, NULL); // possible to use 2nd arg instead of global trees
+	awk_atexit((void*)do_at_exit, NULL); // Possible to use 2nd arg instead of global trees
 
 	return trees != NULL;
 }
@@ -42,18 +42,17 @@ static awk_value_t* do_delete_tree(const int nargs, awk_value_t* result, struct 
 	assert(result != NULL);
 
 	awk_value_t awk_name;
-	bool ret;
 
 	if (get_argument(0, AWK_STRING, &awk_name))
 	{
 		char* name = awk_name.str_value.str;
-		ret = delete_tree(name);
+		delete_tree(name);
 	}
 	else
 		fatal(ext_id, "delete_tree: Invalid arguments");
-		// TODO: stuff like this should be fatal? check awk's behavior
 
-	return make_number((double)ret, result);
+	// `delete` can't be used in expressions, but we need to fill "result" with something to avoid memory errors
+	return make_null_string(result); 
 }
 
 static awk_value_t* do_tree_length(const int nargs, awk_value_t* result, struct awk_ext_func* _)
@@ -117,9 +116,10 @@ static awk_value_t* do_tree_insert(const int nargs, awk_value_t* result, struct 
 	const char** subscripts = query.subscripts;
 	const unsigned char num_subs = query.num_subs - 1;
 	
-	tree_insert(query.name, subscripts, (foint){.s=subscripts[num_subs]}, num_subs);
+	const foint value = {.s=subscripts[num_subs]};
+	tree_insert(query.name, subscripts, value, num_subs);
 	free_query(query);
-	return make_number(1, result); // assume success if we get to this point
+	return make_number(atof(value.s), result);
 }
 
 static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct awk_ext_func* _)
@@ -172,10 +172,11 @@ static awk_value_t* do_tree_remove(const int nargs, awk_value_t* result, struct 
 	assert(result != NULL);
 
 	query_t query = get_query();
-	double ret = tree_remove(query.name, query.subscripts, query.num_subs);
+	tree_remove(query.name, query.subscripts, query.num_subs);
 
 	free_query(query);
-	return make_number(ret, result);
+	return make_null_string(result); 
+	// `delete` can't be used in expressions, but we need to fill "result" with something to avoid memory errors
 }
 
 static awk_value_t* do_tree_elem_exists(const int nargs, awk_value_t* result, struct awk_ext_func* _)
@@ -227,10 +228,11 @@ static awk_value_t* do_tree_iter_break(const int nargs, awk_value_t* result, str
 	assert(result != NULL);
 
 	query_t query = get_query();
-	bool ret = tree_iter_break(query.name, query.subscripts, query.num_subs);
+	tree_iter_break(query.name, query.subscripts, query.num_subs);
 	
 	free_query(query);
-	return make_number((double)ret, result);
+	return make_null_string(result); 
+	// `break` can't be used in expressions, but we need to fill "result" with something to avoid memory errors
 }
 
 static awk_ext_func_t func_table[] = 

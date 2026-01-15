@@ -42,9 +42,9 @@ HTREE* create_tree(const char* name, const int depth)
 	return array;
 }
 
-const bool delete_tree(const char* name)
+void delete_tree(const char* name)
 {
-	return TreeDelete(trees, (foint){.s=name});
+	TreeDelete(trees, (foint){.s=name});
 }
 
 const double tree_length(const char* name)
@@ -275,20 +275,19 @@ const bool tree_elem_exists(const char* tree, const char** subscripts, const uns
 	return SHTreeLookup(htree, _subscripts, depth, NULL);
 }
 
-const bool tree_remove(const char* tree, const char** subscripts, const unsigned char depth)
+void tree_remove(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	foint _htree;
 	bool result;
 	bool found = STreeLookup(trees, (foint){.s=tree}, &_htree);
 
-	if (!found)
-		return false;
-
-	HTREE* htree = _htree.v;
-	foint _subscripts[depth];
-	fill_foints(subscripts, _subscripts, depth);
-	
-	return HTreeLookDel(htree, _subscripts, depth, true) != NULL;
+	if (found)
+	{
+		HTREE* htree = _htree.v;
+		foint _subscripts[depth];
+		fill_foints(subscripts, _subscripts, depth);
+		HTreeLookDel(htree, _subscripts, depth, true);
+	}
 }
 
 const unsigned short is_tree(const char* tree, const char** subscripts, const unsigned char depth)
@@ -477,7 +476,7 @@ const unsigned int tree_iters_remaining(const char* tree, const char** subscript
 	return remaining;
 }
 
-const bool tree_iter_break(const char* tree, const char** subscripts, const unsigned char depth)
+void tree_iter_break(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	foint query;
 
@@ -486,7 +485,11 @@ const bool tree_iter_break(const char* tree, const char** subscripts, const unsi
 	else
 		query.s = get_full_query(tree, subscripts, depth);
 
-	return TreeDelete(current_iterators, query);
+	if (!TreeDelete(current_iterators, query))
+	{
+		fputs("tree_iter_break: Cannot break if the corresponding iterator does not exist", stderr);
+		exit(1);
+	}
 }
 
 void do_at_exit(void* data, int exit_status)
