@@ -2,6 +2,7 @@
 
 int main(int argc, char *argv[])
 {
+	// TODO: change all puts() to assert()
 	init_trees();
 
 	puts("testing basics");
@@ -151,7 +152,7 @@ int main(int argc, char *argv[])
 
 		if (strcmp(i, "3") == 0)
 		{
-			tree_iter_break("new", NULL, 0);
+			tree_iter_break();
 			break;
 		}
 	}

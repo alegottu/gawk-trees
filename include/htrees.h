@@ -48,7 +48,7 @@ const char* tree_next(const char* tree, const char** subscripts, const unsigned 
 
 const unsigned int tree_iters_remaining(const char* tree, const char** subscripts, const unsigned char depth);
 
-void tree_iter_break(const char* tree, const char** subscripts, const unsigned char depth);
+void tree_iter_break();
 
 void do_at_exit(void* data, int exit_status);
 

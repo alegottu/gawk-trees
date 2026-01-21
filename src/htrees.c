@@ -1,4 +1,5 @@
 #include "htrees.h"
+#include "stack.h"
 
 #include <string.h>
 #include <tinyexpr.h>
@@ -14,8 +15,8 @@ Memory for all strings passed into gawk from the extension must come from callin
 // HTrees, found by their name in a gawk program, are contained here
 TREETYPE* trees = NULL; 
 
-// keys = tree or sub-tree name, value = node queue (LL*)
-TREETYPE* current_iterators = NULL; 
+// Stack of node queues (LL*)
+STACK* current_iterators = NULL;
 
 void free_htree(foint tree)
 {
@@ -25,10 +26,10 @@ void free_htree(foint tree)
 bool init_trees()
 {
 	trees = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree);
-	current_iterators = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)LinkedListFree); 
+	current_iterators = StackAlloc(4);
+	// NOTE: 4 seems like a reasonable maximum (before the stack has to resize) of for-in loops going at once
 
 	on_exit((void*)do_at_exit, NULL); // TODO: possible to use 2nd arg instead of global trees?
-
 	return trees != NULL;
 }
 
@@ -307,31 +308,45 @@ const unsigned short is_tree(const char* tree, const char** subscripts, const un
 	return depth < htree->depth;
 }
 
-// NOTE: Make sure to free the result of this function
-static const char* get_full_query(const char* tree, const char** subscripts, const unsigned char depth)
+typedef struct _iterator
 {
-	unsigned int length = strlen(tree) + strlen(subscripts[0]);
-	char* result = malloc((length + 1) * sizeof(char));
-	strcpy(result, tree);
-	strcat(result, subscripts[0]);
+	unsigned int hash; // Needed to validate if a certain iterator already exists or not
+	LINKED_LIST* current;
+} ITERATOR;
 
-	for (unsigned char i = 1; i < depth; ++i)
+static const unsigned int hash_query(const char* tree, const char** subscripts, const unsigned char depth)
+{
+	unsigned int length = strlen(tree);
+	char* query = malloc((length + 1) * sizeof(char));
+	strcpy(query, tree);
+
+	for (unsigned char i = 0; i < depth; ++i)
 	{
-		length += strlen(subscripts[i]);
-		result = realloc(result, (length + 2) * sizeof(char));
-		strcat(result, subscripts[i]);
-		strcat(result, " "); // space needed to prevent mismatches
+		length += strlen(subscripts[i]) + 1;
+		query = realloc(query, (length + 1) * sizeof(char)); // TODO: analyze this function and see if one alloc is better (maybe with sprintf or stpcpy)
+		strcat(query, " "); // Delimiter needed to prevent mismatches
+		strcat(query, subscripts[i]);
 	}
 
+	const unsigned char p = 67;
+	const unsigned int m = 1e9 + 9;
+	unsigned int result = 0;
+	unsigned int p_raised_i = 1;
+
+	for (unsigned int i = 0; i < length; ++i)
+	{
+		result = (result + query[i] * p_raised_i) % m;
+		p_raised_i = (p_raised_i * p) % m;
+	}
+
+	free(query);
 	return result;
-	// might want to analyze this function and see if one alloc is better (maybe with sprintf or stpcpy), although might be insignificant
 }
 
 // Creates an iterator if one is not found for the given query, and the HTREE of that name has valid elements to create one
-static LINKED_LIST* get_iterator(const char* tree, const char* query, const char** subscripts, const unsigned char depth)
+static LINKED_LIST* get_iterator(const char* tree, const char** subscripts, const unsigned char depth)
 {
-	foint iterator, _htree;
-	LINKED_LIST* result;
+	foint _htree;
 
 	if (!STreeLookup(trees, (foint){.s=tree}, &_htree))
 		return NULL;
@@ -345,9 +360,11 @@ static LINKED_LIST* get_iterator(const char* tree, const char* query, const char
 		exit(1);
 	}
 
-	foint _query = {.s=query};
-			
-	if (!STreeLookup(current_iterators, _query, &iterator))
+	ITERATOR* last;
+	unsigned int hash;
+
+	if (StackSize(current_iterators) == 0 ||
+	(hash = hash_query(tree, subscripts, depth)) != (last = StackTop(current_iterators).v)->hash)
 	{
 		if (htree->tree->root == NULL)
 		{
@@ -355,7 +372,9 @@ static LINKED_LIST* get_iterator(const char* tree, const char* query, const char
 		}
 		else
 		{
-			result = LinkedListAlloc(NULL, false);
+			ITERATOR* new = malloc(sizeof(ITERATOR));
+			new->current = LinkedListAlloc(NULL, false);
+			new->hash = hash;
 			foint root_node;
 
 			if (depth == 0)
@@ -368,16 +387,16 @@ static LINKED_LIST* get_iterator(const char* tree, const char* query, const char
 				root_node.v = ((TREETYPE*)result.v)->root;
 			}
 
-			LinkedListAppend(result, root_node);
-			iterator.v = result;
-			TreeInsert(current_iterators, _query, iterator);
+			LinkedListAppend(new->current, root_node);
+			foint iterator = {.v=new};
+			StackPush(current_iterators, iterator);
 
-			return result;
+			return new->current;
 		}
 	}
 	else
 	{
-		return iterator.v;
+		return last->current;
 	}
 }
 
@@ -400,17 +419,8 @@ static Boolean visit_next_node(LINKED_LIST* iterator, foint* result)
 // Returns the next index, not the next element
 const char* tree_next(const char* tree, const char** subscripts, const unsigned char depth)
 {
-	LINKED_LIST* node_queue;
 	foint result;
-
-	if (depth == 0)
-		node_queue = get_iterator(tree, tree, subscripts, depth);	
-	else
-	{
-		char* query = get_full_query(tree, subscripts, depth);
-		node_queue = get_iterator(tree, query, subscripts, depth);
-		free(query);
-	}
+	LINKED_LIST* node_queue = get_iterator(tree, subscripts, depth);
 
 	if (node_queue != NULL)
 	{
@@ -425,75 +435,53 @@ const char* tree_next(const char* tree, const char** subscripts, const unsigned 
 		}
 	}
 	else
+	{
 		fputs("get_tree_next: No items in tree\n", stderr); 
+		return "";
+	}
 
-	return "ERROR";
 }
 
-static void tree_iters_remaining_exit(char* query)
+static void iterators_pop()
 {
-	free(query);	
+	ITERATOR* item = StackPop(current_iterators).v;
+	LinkedListFree(item->current);
+	free(item);
 }
-
-static void tree_iters_remaining_exit_no_free(char* _) { }
 
 // NOTE: Might have to change to larger return type
 const unsigned int tree_iters_remaining(const char* tree, const char** subscripts, const unsigned char depth)
 {
-	LINKED_LIST* node_queue;
-	char* query;
-	foint result, _query;
-	void (*finish)(char*);
-
-	if (depth == 0)
-	{
-		_query.s = tree;
-		node_queue = get_iterator(tree, tree, subscripts, depth);
-		finish = &tree_iters_remaining_exit_no_free;
-	}
-	else
-	{
-		query = get_full_query(tree, subscripts, depth);
-		_query.s = query;
-		node_queue = get_iterator(tree, query, subscripts, depth);
-		finish = &tree_iters_remaining_exit;
-	}
-
+	foint result;
+	LINKED_LIST* node_queue = get_iterator(tree, subscripts, depth);
+	
 	if (node_queue == NULL) // No elements found to iterate
-	{
-		finish(query);
 		return 0;
-	}
 
 	const int remaining = LinkedListSize(node_queue);
 
 	if (remaining == 0)
-	{
-		TreeDelete(current_iterators, _query);
-	}
+		iterators_pop();
 
-	finish(query);
 	return remaining;
 }
 
-void tree_iter_break(const char* tree, const char** subscripts, const unsigned char depth)
+void tree_iter_break()
 {
-	foint query;
-
-	if (depth == 0)
-		query.s = tree;
-	else
-		query.s = get_full_query(tree, subscripts, depth);
-
-	if (!TreeDelete(current_iterators, query))
+	if (StackSize(current_iterators) == 0)
 	{
 		fputs("tree_iter_break: Cannot break if the corresponding iterator does not exist", stderr);
 		exit(1);
 	}
+
+	iterators_pop();
 }
 
 void do_at_exit(void* data, int exit_status)
 {
+	while(StackSize(current_iterators) > 0)
+		iterators_pop();
+
 	TreeFree(trees);
-	TreeFree(current_iterators);
+	StackFree(current_iterators);
 }
