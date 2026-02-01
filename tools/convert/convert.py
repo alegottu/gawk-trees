@@ -1,5 +1,6 @@
-from collections import deque
 import re
+from collections import deque
+from itertools import pairwise
 from typing import Callable
 from sys import argv
 
@@ -23,12 +24,25 @@ def find_matching(s: str, pos: int) -> int:
 
     for i, c in enumerate(s[pos+1:]):
         # Counts up if another pair starts, counts down if a pair ends
-        remaining += int(c == same) - (c == find)
+        remaining += int(c == same) - int(c == find)
 
         if remaining == 0:
-            return i+pos+1
+            return pos+i+1
 
     return -1
+
+# Continues if a new pair is opened directly after one closing
+def find_brackets(s: str, pos: int) -> int:
+    remaining = 1
+
+    for i, pair in enumerate(pairwise(s[pos+1:])):
+        c = pair[0]
+        remaining += int(c == '[') - int(c == ']')
+
+        if remaining == 0 and pair[1] != '[':
+            return pos+i+1
+
+    return len(s)-1
 
 def process_function(statement: str) -> None:
     first_pos = statement.find('(') + 1
@@ -97,13 +111,17 @@ def get_tree_name(name: str) -> str:
         return name
 
 def process_in(statement: str) -> str:
-    pattern = r'\w+(?:\[(?:[^\s]+|".+?")\])* in \w+(?:\[(?:[^\s]+|".+?")\])*'
-    # Makes sure to account for expressions or strings inside brackets w/o going beyond the ending bracket
+    pattern = r'\w+(:?\[(?:\S*|".*")\])* in \w+\[?'
+    # Makes sure to account for expressions or strings inside brackets
+    result = statement
 
     # Could be part of an expression, so we have to repeat the process
     for match in re.finditer(pattern, statement):
-        if not valid_token(match.group(0), statement): continue
-        tokens = match.group(0).split(" in ", 1)
+        end = match.end()-1
+        if statement[end] == '[': end = find_brackets(statement, end)
+        full = statement[match.start():end+1]
+        if not valid_token(full, statement): continue
+        tokens = full.split(" in ", 1)
         value = tokens[0]
         tree_name = tokens[1]
         all_params = ""
@@ -115,10 +133,10 @@ def process_in(statement: str) -> str:
             if not valid_tree(tree_name): continue
             all_params = f"{get_tree_name(tree_name)}, {value}"
 
-        result = f"tree_elem_exists({all_params})"
-        statement = statement.replace(match.group(0), result, 1)
+        translated = f"tree_elem_exists({all_params})"
+        result = result.replace(full, translated, 1)
 
-    return statement
+    return result
 
 def process_length(statement: str) -> str:
     tree_name = statement[statement.find('(')+1:-1]
@@ -143,7 +161,7 @@ def process_is_array(statement: str) -> str:
 def process_equals(statement: str) -> str:
     add_parens = False
     
-    # TODO: could improve this just in case of different spacing or more outer parens, same with in process_exp
+    # NOTE: could improve this in cases like ( ( x + y ) ), but only affects spacing; same with process_exp
     if statement[0] == '(':
         statement = statement[1:-1]
         add_parens = True
@@ -182,7 +200,7 @@ def process_query(token: str, has_bracket: bool) -> str:
     else:
         return token
 
-ASSIGNMENT = r"[^\=+\-%\/*\^]=[^\=+\-%\/*\^]"
+ASSIGNMENT = r"[^!<>=%/*^+-]=[^=]"
 
 def process_assignment(tokens: list) -> str:
     if re.search(ASSIGNMENT, tokens[1]) != None:
@@ -248,7 +266,7 @@ def process_pattern(pattern: str, statement: str, processor: Callable[[str], str
     result = statement
 
     for match in re.finditer(pattern, statement):
-        start = match.start(0)
+        start = match.start()
         if statement[start] not in ['l', 'i']: start += 1
         end = find_matching(statement, statement.find('(', start+6)) # 6 = len("length")
         part = statement[start:end+1]
@@ -272,28 +290,23 @@ def process_expression(statement: str) -> str:
     end = 0
 
     for match in re.finditer(pattern, statement):
-        start = match.start(0)
+        start = match.start()
         if start < end or not valid_token(match.group(0), statement): continue
-        end = find_matching(statement, statement.find('[', start+1))
-
-        while end+1 < len(statement) and statement[end+1]=='[':
-            end = find_matching(statement, end+1)
-
+        end = find_brackets(statement, statement.find('[', start+1))
         token = statement[start:end+1]
 
         # end+1:end+4 makes sure any assignment is directly after '['
-        # TODO: if we want to make the search account for spacing besides e.g. " = ", use find('=') etc.
         if search := re.search(ASSIGNMENT, statement[end+1:end+4]):
             value = statement[search.start()+1:]
             translated = process_assignment([token, value])
             end = len(statement) if statement[0] != '(' else -1
             return result.replace(statement[start:end], translated, 1)
-        elif search := re.search(r"([+\-])([+\-=])", statement[end+1:end+4]):
+        elif search := re.search(r"([+-])([=+-])", statement[end+1:end+4]):
             value = "1" if search.group(2) != '=' else statement[search.end()+1:].lstrip()
             translated = process_increment([token, value], search.group(1)=='-')
             end = len(statement) if statement[0] != '(' else -1
             return result.replace(statement[start:end], translated, 1)
-        elif search := re.search(r"([%/*\^])([=*])", statement[end+1:end+4]):
+        elif search := re.search(r"([*/%^])([=*])", statement[end+1:end+4]):
             value = statement[search.end()+1:].lstrip()
             op = search.group(1) if search.group(2) != '*' else '^'
             translated = process_modify([token, value], op)
@@ -377,8 +390,8 @@ def process_statements(line: str, line_num: int = 0) -> str:
     if nonspace == None: return ""
 
     result = ""
-    indentation = nonspace.start(0); del nonspace
-    # TODO: this could be mix of tabs and spaces, loop through space chars
+    indentation = sum([ 1 if c == ' ' else 4 for c in line[:nonspace.start()] ])
+    del nonspace
     statements, delims = parse_statements(line[indentation:])
     global close_scope_timer; close_scope_timer = -1
     global new_scopes_opened; new_scopes_opened = 0
@@ -392,8 +405,8 @@ def process_statements(line: str, line_num: int = 0) -> str:
             process_function(statement)
         if keyword_present("for", statement):
             if valid_token(" in ", statement):
-                # TODO: same concern with extra set of parens
-                parts = statement.split(')', 1)
+                match = find_matching(statement, statement.find('('))
+                parts = [statement[:match], statement[match+1:]]
                 statement = parts.pop(0) + ')'
                 translated = process_for_in(statement)
 
@@ -417,10 +430,11 @@ def process_statements(line: str, line_num: int = 0) -> str:
                             statements.append('')
                             delims.append(" } ") # Add missing closing brace
             else: # Standard for
-                # TODO: could be expression to process within parens
-                temp, next = [s.strip() for s in statements[i+2].split(')', 1)]
-                translated += f"; {statements.pop(i+1)}; {temp})"
-                # TODO: use find_matching for parentheses instead
+                # TODO: could be expression to process for each part between ';'
+                temp = translated + f"; {statements.pop(i+1)}; {statements[i+1]}"
+                match = find_matching(temp, temp.find('('))
+                translated, next = (temp[:match].rstrip(), temp[match+1:].lstrip())
+                translated += ')'
                 delims.pop(i+1)
                 delim = ' '
 
