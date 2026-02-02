@@ -29,18 +29,14 @@ class TestTranslations(unittest.TestCase):
 
     def test_for_in(self):
         test = "for (x in list)"
-        targets = ('while (tree_iters_remaining("list") > 0) { x = tree_next("list"); ', 
-            'tree_iter_break("list")')
+        target = 'while (tree_iters_remaining("list") > 0) { x = tree_next("list"); '
         result = convert.process_for_in(test)
-        self.assertEqual(result, targets[0])
-        self.assertEqual(convert.breakers[0], targets[1])
+        self.assertEqual(result, target)
 
         test = 'for (x in list[y][2]["abc"])'
-        targets = ('while (tree_iters_remaining("list", y, 2, "abc") > 0) { x = tree_next("list", y, 2, "abc"); ', 
-                   'tree_iter_break("list", y, 2, "abc")')
+        target = 'while (tree_iters_remaining("list", y, 2, "abc") > 0) { x = tree_next("list", y, 2, "abc"); '
         results = convert.process_for_in(test)
-        self.assertEqual(results, targets[0])
-        self.assertEqual(convert.breakers[-1], targets[1])
+        self.assertEqual(results, target)
 
     # NOTE: process_in is a smaller part of process_expression
     def test_in(self):
@@ -176,7 +172,7 @@ class TestTranslations(unittest.TestCase):
         self.assertEqual(result, target)
 
     # TODO: test length within an expression
-    def test_inline_for_in_in_inline_in_with_length(self):
+    def test_double_inline_for_in_and_length(self):
         test = "delete res;for(g in T1)res[g]=1;for(g in T2)res[g]=1; return length(res)\n"
         target = 'delete_tree("res"); while (tree_iters_remaining("T1") > 0) { g = tree_next("T1"); tree_insert("res", g, 1);  } while (tree_iters_remaining("T2") > 0) { g = tree_next("T2"); tree_insert("res", g, 1);  } return tree_length("res")\n'
         result = convert.process_statements(test)
@@ -206,13 +202,13 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_statements(test)
         self.assertEqual(result, target)
         
-    def test_triple_inline_for_in(self):
+    def test_triple_nested_inline_for_in(self):
         test = "for (a in b) for (x in y) for (i in j) print a+x+i;"
         target = 'while (tree_iters_remaining("b") > 0) { a = tree_next("b"); while (tree_iters_remaining("y") > 0) { x = tree_next("y"); while (tree_iters_remaining("j") > 0) { i = tree_next("j"); print a+x+i;  }  }  } '
         result = convert.process_statements(test)
         self.assertEqual(result, target)
 
-    def test_function_and_if_in_inline_for_in(self):
+    def test_function_and_inline_if_else_in_inline_for_in(self):
         test = "function GeoMeanDist(u,v,    i,res) { for(i in u) if(u[i]==v[i])res+=log(1e-16); else res+=log(ABS(u[i]-v[i])); return exp(res/length(u)); }"
         target = 'function GeoMeanDist(u,v,    i,res) { while (tree_iters_remaining(u) > 0) { i = tree_next(u); if(query_tree(u, i)==query_tree(v, i)) res+=log(1e-16); else res += log(ABS(query_tree(u, i)-query_tree(v, i)));  } return exp(res/tree_length(u));  } '
         convert.universal = False
@@ -287,6 +283,12 @@ class TestTranslations(unittest.TestCase):
         convert.universal = False
         result = convert.process_statements(test)
         convert.universal = True
+        self.assertEqual(result, target)
+
+    def test_inline_for_in_inline_if(self):
+        test = "if(k>=n/2) for(i=n;i>=k;i--) sum+=BinomialPMF(p,n,i);"
+        target = "if(k>=n/2) for(i=n; i>=k; i--) sum+=BinomialPMF(p,n,i); "
+        result = convert.process_statements(test)
         self.assertEqual(result, target)
 
 if __name__ == '__main__':

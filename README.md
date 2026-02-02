@@ -39,8 +39,8 @@ version of the API instead using the following:
 | is_array(arr[1][2]) | is_tree("arr", 1, 2) | |
 | for i in name {...} | while (tree_iters_remaining("name") > 0) {i = tree_next("name"); ...} | |
 | for i in arr[1][2] {...} | while (tree_iters_remaining("arr", 1, 2) > 0) {i = tree_next("arr", 1, 2); ...} | both `tree_next` and `tree_iters_remaining` will create an internal iterator within the extension if one under the query (for a tree or subtree) doesn't exist yet. The iterator does not hold all the elements in the tree in memory at once, so the return value of `tree_iters_remaining` does not reflect the total number of elements at the query. Once `tree_iters_remaining = 0`, the given iterator will be freed and therefore reset; this can be done forcibly using `tree_iter_break`. The order of the indices returned by `tree_next` are according to a DFS of the tree at the query |
-| for i in name {break} | while (tree_iters_remaining("name") > 0) {i = tree_next("name"); tree_iter_break("name")} | | 
-| for i in arr[1][2] {break} | while (tree_iters_remaining("arr", 1, 2) > 0) {i = tree_next("arr", 1, 2); tree_iter_break("arr", 1, 2)} | if you break out of a while loop using the pattern shown above without using this function, the next time you use that iterator, it will resume from where it was previously. To forcefully reset the iterator at the query, or just to free it from memory, use this function. |
+| for i in name {break} | while (tree_iters_remaining("name") > 0) {i = tree_next("name"); tree_iter_break(); break} | | 
+| for i in arr[1][2] {break} | while (tree_iters_remaining("arr", 1, 2) > 0) {i = tree_next("arr", 1, 2); tree_iter_break(); break} | if you break out of a while loop using the pattern shown above without using this function, the next time you use that iterator, it will resume from where it was previously. To forcefully reset the iterator at the query, or just to free it from memory, use this function. |
 
 ### Performance
 In the tables below, memory usage is measured in KB, while speed is measured in seconds.

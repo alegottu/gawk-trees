@@ -84,8 +84,7 @@ def process_for_in(statement: str) -> str:
 
     result = f"while (tree_iters_remaining({all_params}) > 0) " + "{ "
     result += f"{var_name} = tree_next({all_params}); "
-    breaker = f"tree_iter_break({all_params})"
-    breakers.append(breaker)
+    breakers.append("tree_iter_break()")
 
     return result
 
@@ -386,13 +385,12 @@ def parse_statements(line: str) -> tuple[list, list]:
     return statements, delims
 
 def process_statements(line: str, line_num: int = 0) -> str:
-    nonspace = re.search(r"[^\s]", line)
-    if nonspace == None: return ""
-
+    nonspace = re.search(r"\S", line)
     result = ""
+    if nonspace == None: return result
     indentation = sum([ 1 if c == ' ' else 4 for c in line[:nonspace.start()] ])
+    statements, delims = parse_statements(line[nonspace.start():])
     del nonspace
-    statements, delims = parse_statements(line[indentation:])
     global close_scope_timer; close_scope_timer = -1
     global new_scopes_opened; new_scopes_opened = 0
 
@@ -403,7 +401,7 @@ def process_statements(line: str, line_num: int = 0) -> str:
 
         if statement[:9] == "function ":
             process_function(statement)
-        if keyword_present("for", statement):
+        elif keyword_present("for", statement) and statement[0] == 'f':
             if valid_token(" in ", statement):
                 match = find_matching(statement, statement.find('('))
                 parts = [statement[:match], statement[match+1:]]
@@ -444,10 +442,10 @@ def process_statements(line: str, line_num: int = 0) -> str:
                     delim = delims.pop(i+1)
                 else:
                     statements[i+1] = next
-        elif keyword_present("while", statement):
+        elif keyword_present("while", statement) and statement[0] == 'w':
             breakers.append(None)
             # TODO: could be inline while loop, maybe make common function for splitting inline body stuff
-        elif keyword_present("if", statement):
+        elif keyword_present("if", statement) and statement[0] == 'i':
             if delim != " { ":
                 close_scope_timer = 1
                 if i+1 < len(statements) and valid_token("else ", statements[i+1]): close_scope_timer = 2
@@ -458,7 +456,7 @@ def process_statements(line: str, line_num: int = 0) -> str:
             elif contains_expression(statement):
                 translated = process_expression(statement)
         # TODO: maybe stricter check for this
-        elif valid_token("else ", statement):
+        elif valid_token("else ", statement) and statement[0] == 'e':
             if delim != " { ": # In case of an inline else
                 close_scope_timer = 1
                 body = statement[statement.find(' ')+1:].lstrip()
