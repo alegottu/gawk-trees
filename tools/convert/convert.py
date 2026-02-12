@@ -555,7 +555,7 @@ if __name__ == "__main__":
         for i, line in enumerate(argv[1].split('\n')):
             result += process_statements(line+'\n', i+1)
     else:
-        with open(argv[1]) as file:
+        with open(argv[1], newline='\n') as file:
             for i, line in enumerate(file):
                 result += process_statements(line, i+1)
 
