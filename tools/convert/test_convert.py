@@ -299,5 +299,11 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_statements(test)
         self.assertEqual(result, target)
 
+    def test_prefix_decrement(self):
+        test = "if(--_PQ_[name][p][element]==0) {"
+        target = 'if(tree_decrement("_PQ_", name, p, element, 1)==0) { '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
 if __name__ == '__main__':
     unittest.main()

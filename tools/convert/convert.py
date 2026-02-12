@@ -296,24 +296,25 @@ def process_expression(statement: str) -> str:
         end = find_brackets(statement, statement.find('[', start+1))
         token = statement[start:end+1]
         if not valid_token(token, statement): continue
+        last = len(statement) if statement[0] != '(' else -1
 
         # end+1:end+4 makes sure any assignment is directly after '['
         if search := re.search(ASSIGNMENT, statement[end+1:end+4]):
             value = statement[search.start()+1:]
             translated = process_assignment([token, value])
-            end = len(statement) if statement[0] != '(' else -1
-            return result.replace(statement[start:end], translated, 1)
+            return result.replace(statement[start:last], translated, 1)
         elif search := re.search(r"([+-])([=+-])", statement[end+1:end+4]):
             value = "1" if search.group(2) != '=' else statement[search.end()+1:].lstrip()
             translated = process_increment([token, value], search.group(1)=='-')
-            end = len(statement) if statement[0] != '(' else -1
-            return result.replace(statement[start:end], translated, 1)
+            return result.replace(statement[start:last], translated, 1)
+        elif search := re.search(r"[-+]{2}", statement[start-2:start]):
+            translated = process_increment([token, "1"], search.group(0)[0]=='-')
+            result = result.replace(search.group(0) + token, translated, 1)
         elif search := re.search(r"([*/%^])([=*])", statement[end+1:end+4]):
             value = statement[search.end()+1:].lstrip()
             op = search.group(1) if search.group(2) != '*' else '^'
             translated = process_modify([token, value], op)
-            end = len(statement) if statement[0] != '(' else -1
-            return result.replace(statement[start:end], translated, 1)
+            return result.replace(statement[start:last], translated, 1)
         else:
             translated = process_query(token, True)
             result = result.replace(token, translated, 1)
