@@ -176,6 +176,8 @@ def process_equals(statement: str) -> str:
     elif tokens[0][-1] == '-':
         tokens[0] = tokens[0].rstrip(" -")
         result = process_increment(tokens, True)
+    elif tokens[1][0] == '=':
+        result = process_expression(statement)
     elif re.match("[%/*^]", tokens[0][-1]) != None:
         op = tokens[0][-1]
         tokens[0] = tokens[0][:-1].rstrip(' ')
@@ -290,9 +292,10 @@ def process_expression(statement: str) -> str:
 
     for match in re.finditer(pattern, statement):
         start = match.start()
-        if start < end or not valid_token(match.group(0), statement): continue
+        if start < end: continue
         end = find_brackets(statement, statement.find('[', start+1))
         token = statement[start:end+1]
+        if not valid_token(token, statement): continue
 
         # end+1:end+4 makes sure any assignment is directly after '['
         if search := re.search(ASSIGNMENT, statement[end+1:end+4]):

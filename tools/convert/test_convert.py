@@ -4,7 +4,10 @@ import convert
 class TestTranslations(unittest.TestCase):
     
     def setUp(self) -> None:
+        convert.universal = True
         convert.trees = set()
+        convert.current_vars = set()
+        self.maxDiff = None
 
     def test_brackets(self):
         test = "list[x][y]"
@@ -168,7 +171,6 @@ class TestTranslations(unittest.TestCase):
         test = 'for(u in edge)for(v in edge[u]){if(u""==v""){++self; print(u,": ",v); continue;} if((v in edge) && (u in edge[v]))++both}\n'
         target = 'while (tree_iters_remaining("edge") > 0) { u = tree_next("edge"); while (tree_iters_remaining("edge", u) > 0) { v = tree_next("edge", u); if(u""==v"") { ++self; print(u,": ",v); continue;  }  } if((tree_elem_exists("edge", v)) && (tree_elem_exists("edge", v, u))) ++both } \n'
         result = convert.process_statements(test)
-        self.maxDiff = None
         self.assertEqual(result, target)
 
     # TODO: test length within an expression
@@ -213,7 +215,6 @@ class TestTranslations(unittest.TestCase):
         target = 'function GeoMeanDist(u,v,    i,res) { while (tree_iters_remaining(u) > 0) { i = tree_next(u); if(query_tree(u, i)==query_tree(v, i)) res+=log(1e-16); else res += log(ABS(query_tree(u, i)-query_tree(v, i)));  } return exp(res/tree_length(u));  } '
         convert.universal = False
         result = convert.process_statements(test)
-        convert.universal = True
         self.assertEqual(result, target)
 
     def test_assignment_with_nested_brackets_in_inline_for_in(self):
@@ -282,7 +283,6 @@ class TestTranslations(unittest.TestCase):
         target = 'function IsEdge(edge,u,v) { return (tree_elem_exists(edge, u))&&(tree_elem_exists(edge, u, v))&&query_tree(edge, u, v);  } '
         convert.universal = False
         result = convert.process_statements(test)
-        convert.universal = True
         self.assertEqual(result, target)
 
     def test_inline_for_in_inline_if(self):
@@ -291,6 +291,13 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_statements(test)
         self.assertEqual(result, target)
 
+    def test_assertion_of_tree_element_with_quoting(self):
+        test = 'for(u in T) { ASSERT(D[u]%2==0, "InducedEdges: D["u"]="D[u]); D[u]/=2; }'
+        target = 'while (tree_iters_remaining(T) > 0) { u = tree_next(T); ASSERT(query_tree(D, u)%2==0, "InducedEdges: D["u"]="query_tree(D, u)); tree_modify(D, u, "/2");  } '
+        convert.universal = False
+        convert.current_vars.update("T", "D")
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
 if __name__ == '__main__':
-    convert.universal = True
     unittest.main()
