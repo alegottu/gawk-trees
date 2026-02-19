@@ -35,8 +35,8 @@ version of the API instead using the following:
 | delete arr[1][2] | tree_remove("arr", 1, 2) | |
 | "subscript" in name | tree_elem_exists("name", "subscript") | |
 | 2 in arr[1] | tree_elem_exists("arr", 1, 2) | |
-| is_array(name["subscript"]) | is_tree("name", "subscript") | |
-| is_array(arr[1][2]) | is_tree("arr", 1, 2) | |
+| isarray(name["subscript"]) | is_tree("name", "subscript") | |
+| typeof(arr[1][2]) == "array" | is_tree("arr", 1, 2) | |
 | for i in name {...} | while (tree_iters_remaining("name") > 0) {i = tree_next("name"); ...} | |
 | for i in arr[1][2] {...} | while (tree_iters_remaining("arr", 1, 2) > 0) {i = tree_next("arr", 1, 2); ...} | both `tree_next` and `tree_iters_remaining` will create an internal iterator within the extension if one under the query (for a tree or subtree) doesn't exist yet. The iterator does not hold all the elements in the tree in memory at once, so the return value of `tree_iters_remaining` does not reflect the total number of elements at the query. Once `tree_iters_remaining = 0`, the given iterator will be freed and therefore reset; this can be done forcibly using `tree_iter_break`. The order of the indices returned by `tree_next` are according to a DFS of the tree at the query |
 | for i in name {break} | while (tree_iters_remaining("name") > 0) {i = tree_next("name"); tree_iter_break(); break} | | 

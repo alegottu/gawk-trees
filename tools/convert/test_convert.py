@@ -156,8 +156,15 @@ class TestTranslations(unittest.TestCase):
         self.assertEqual(result, target)
 
     def test_is_array(self):
-    # TODO: next
-        pass
+        test = "isarray(a[0][y])"
+        target = 'is_tree("a", 0, y)'
+        result = convert.process_is_array(test)
+        self.assertEqual(result, target)
+
+        test = 'typeof(b[7+1/2%0][x])=="array"'
+        target = 'is_tree("b", 7+1/2%0, x)'
+        result = convert.process_is_array(test)
+        self.assertEqual(result, target)
 
 ### All the tests below use process_statements ###
 
@@ -173,7 +180,6 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_statements(test)
         self.assertEqual(result, target)
 
-    # TODO: test length within an expression
     def test_double_inline_for_in_and_length(self):
         test = "delete res;for(g in T1)res[g]=1;for(g in T2)res[g]=1; return length(res)\n"
         target = 'delete_tree("res"); while (tree_iters_remaining("T1") > 0) { g = tree_next("T1"); tree_insert("res", g, 1);  } while (tree_iters_remaining("T2") > 0) { g = tree_next("T2"); tree_insert("res", g, 1);  } return tree_length("res")\n'

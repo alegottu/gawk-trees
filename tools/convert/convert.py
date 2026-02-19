@@ -144,17 +144,19 @@ def process_length(statement: str) -> str:
         return f"tree_length({get_tree_name(tree_name)})"
     else: return statement
 
+# Includes processing typeof() == "array"
 def process_is_array(statement: str) -> str:
-    start, end = statement.find('('), statement.find(')')
+    start = statement.find('(')
+    end = statement.find(')', start+1)
     tree_name = statement[start+1:end]
     subscripts = ""
 
     if '[' in tree_name:
-        tree_name, subscripts = process_brackets(tree_name)
+        tree_name, subscripts = process_brackets(tree_name, False, True)
         subscripts = ", " + subscripts
 
     if universal or tree_name in trees:
-        return f'is_array("{tree_name}", {subscripts})'
+        return f'is_tree("{tree_name}"{subscripts})'
     else: return statement
 
 def process_equals(statement: str) -> str:
@@ -277,13 +279,15 @@ def process_pattern(pattern: str, statement: str, processor: Callable[[str], str
 
     return result
 
+IS_ARRAY = r'(?:is_array|typeof\(.*\)\s*==\s*"array")'
+
 def process_expression(statement: str) -> str:
     result = process_in(statement)
 
     pattern = gen_keyword_pattern("length")
     result = process_pattern(pattern, result, process_length)
 
-    pattern = gen_keyword_pattern("is_array")
+    pattern = gen_keyword_pattern(IS_ARRAY)
     result = process_pattern(pattern, result, process_is_array)
 
     statement = result
@@ -360,7 +364,7 @@ def contains_expression(statement: str) -> bool:
     return valid_token('[', statement) or \
         valid_token(" in ", statement) or \
         keyword_present("length", statement) or \
-        keyword_present("is_array", statement)
+        keyword_present(IS_ARRAY, statement)
 
 def parse_statements(line: str) -> tuple[list, list]:
     delim_spacing = { ';': "; ", '#': "# ", '{': " { ", '}': " } ", '\n': '\n' }
@@ -479,7 +483,7 @@ def process_statements(line: str, line_num: int = 0) -> str:
             translated = "return"
         elif valid_token(" in ", statement) or \
             keyword_present("length", statement) or \
-            keyword_present("is_array", statement):
+            keyword_present(IS_ARRAY, statement):
                 translated = process_expression(statement)
         elif statement == "break" and len(breakers) != 0:
             breaker = breakers.pop()
