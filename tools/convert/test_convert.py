@@ -6,7 +6,7 @@ class TestTranslations(unittest.TestCase):
     def setUp(self) -> None:
         convert.universal = True
         convert.trees = set()
-        convert.current_vars = set()
+        convert.current_vars = dict()
         self.maxDiff = None
 
     def test_brackets(self):
@@ -301,7 +301,7 @@ class TestTranslations(unittest.TestCase):
         test = 'for(u in T) { ASSERT(D[u]%2==0, "InducedEdges: D["u"]="D[u]); D[u]/=2; }'
         target = 'while (tree_iters_remaining(T) > 0) { u = tree_next(T); ASSERT(query_tree(D, u)%2==0, "InducedEdges: D["u"]="query_tree(D, u)); tree_modify(D, u, "/2");  } '
         convert.universal = False
-        convert.current_vars.update("T", "D")
+        convert.current_vars.update([ ("T", 1), ("D", 1) ])
         result = convert.process_statements(test)
         self.assertEqual(result, target)
 

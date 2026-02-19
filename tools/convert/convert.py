@@ -4,7 +4,7 @@ from itertools import pairwise
 from typing import Callable
 from sys import argv
 
-current_vars = set()
+current_vars = dict()
 trees = set()
 breakers = deque()
 
@@ -47,8 +47,8 @@ def find_brackets(s: str, pos: int) -> int:
 def process_function(statement: str) -> None:
     first_pos = statement.find('(') + 1
     close = statement.find(')', first_pos+1)
-    vars = [ v.lstrip() for v in statement[first_pos:close].split(',') ]
-    # TODO: find out where / how to update global list so that vars fall out of scope
+    vars = [ (v.lstrip(), 1) for v in statement[first_pos:close].split(',') ]
+    # 1 = number of '}'s to be seen before that var falls out of scope, updated dynamically
     current_vars.update(vars)
 
 def process_brackets(token: str, trailing_sep: bool = False, separate: bool = False) -> str | tuple[str, str]:
@@ -75,7 +75,7 @@ def process_for_in(statement: str) -> str:
     tokens = statement[statement.find('(')+1:end].split(" in ", maxsplit=1)
 
     var_name = tokens[0]
-    # TODO: var name here also counts as a current var
+    current_vars[var_name] = 1
     container = tokens[1]
     all_params = get_tree_name(container)
     
@@ -518,12 +518,19 @@ def process_statements(line: str, line_num: int = 0) -> str:
     for i, statement in enumerate(statements):
         delim = delims[i]
         translated = statement
+        global current_vars
 
         if len(statement) > 0:
            translated, delim = process_statement(statement, delim)
 
-        if delim == " } " and len(breakers) > 0:
-            breakers.pop()
+        if '}' in delim:
+            for i in range(delim.count('}')):
+                if len(breakers) != 0:
+                    breakers.pop()
+                if len(current_vars) != 0:
+                    current_vars.update([ (key, val+1) for key, val in current_vars.items() ])
+            else:
+                current_vars = dict( filter(lambda i: i[1] > 0, current_vars.items()) )
 
         result += translated + delim
 

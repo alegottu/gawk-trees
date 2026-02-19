@@ -22,6 +22,7 @@ version of the API instead using the following:
 |-------------------|-------------------------------|-------------|
 | N/A | create_tree("name", depth) | creates an empty htree with `depth` dimensions, held by the extension under "name"; htrees under the extension can't store elements at variable depths, and they also cannot expand or shrink their depth dynamically, as either of these would cost significant extra memory to upkeep |
 | delete name | delete_tree("name") | specifically used for deleting the entire tree, see tree_remove for deleting elements |
+| length(name) | tree_length("name") | returns the length of the string argument if no tree for the given name is found |
 | name["subscript"] = value | tree_insert("name", "subscript", value) | |
 | arr[1][2] = value | tree_insert("arr", 1, 2, value) | |
 | name["subscript"] | query_tree("name", "subscript") | |
