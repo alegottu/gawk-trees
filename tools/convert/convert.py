@@ -1,9 +1,10 @@
-from collections import deque
 import re
+from collections import deque
+from itertools import pairwise
 from typing import Callable
 from sys import argv
 
-current_vars = set()
+current_vars = dict()
 trees = set()
 breakers = deque()
 
@@ -23,18 +24,31 @@ def find_matching(s: str, pos: int) -> int:
 
     for i, c in enumerate(s[pos+1:]):
         # Counts up if another pair starts, counts down if a pair ends
-        remaining += int(c == same) - (c == find)
+        remaining += int(c == same) - int(c == find)
 
         if remaining == 0:
-            return i+pos+1
+            return pos+i+1
 
     return -1
+
+# Continues if a new pair is opened directly after one closing
+def find_brackets(s: str, pos: int) -> int:
+    remaining = 1
+
+    for i, pair in enumerate(pairwise(s[pos+1:])):
+        c = pair[0]
+        remaining += int(c == '[') - int(c == ']')
+
+        if remaining == 0 and pair[1] != '[':
+            return pos+i+1
+
+    return len(s)-1
 
 def process_function(statement: str) -> None:
     first_pos = statement.find('(') + 1
     close = statement.find(')', first_pos+1)
-    vars = [ v.lstrip() for v in statement[first_pos:close].split(',') ]
-    # TODO: find out where / how to update global list so that vars fall out of scope
+    vars = [ (v.lstrip(), 1) for v in statement[first_pos:close].split(',') ]
+    # 1 = number of '}'s to be seen before that var falls out of scope, updated dynamically
     current_vars.update(vars)
 
 def process_brackets(token: str, trailing_sep: bool = False, separate: bool = False) -> str | tuple[str, str]:
@@ -61,7 +75,7 @@ def process_for_in(statement: str) -> str:
     tokens = statement[statement.find('(')+1:end].split(" in ", maxsplit=1)
 
     var_name = tokens[0]
-    # TODO: var name here also counts as a current var
+    current_vars[var_name] = 1
     container = tokens[1]
     all_params = get_tree_name(container)
     
@@ -70,8 +84,7 @@ def process_for_in(statement: str) -> str:
 
     result = f"while (tree_iters_remaining({all_params}) > 0) " + "{ "
     result += f"{var_name} = tree_next({all_params}); "
-    breaker = f"tree_iter_break({all_params})"
-    breakers.append(breaker)
+    breakers.append("tree_iter_break()")
 
     return result
 
@@ -97,13 +110,17 @@ def get_tree_name(name: str) -> str:
         return name
 
 def process_in(statement: str) -> str:
-    pattern = r'\w+(?:\[(?:[^\s]+|".+?")\])* in \w+(?:\[(?:[^\s]+|".+?")\])*'
-    # Makes sure to account for expressions or strings inside brackets w/o going beyond the ending bracket
+    pattern = r'\w+(:?\[(?:\S*|".*")\])* in \w+\[?'
+    # Makes sure to account for expressions or strings inside brackets
+    result = statement
 
     # Could be part of an expression, so we have to repeat the process
     for match in re.finditer(pattern, statement):
-        if not valid_token(match.group(0), statement): continue
-        tokens = match.group(0).split(" in ", 1)
+        end = match.end()-1
+        if statement[end] == '[': end = find_brackets(statement, end)
+        full = statement[match.start():end+1]
+        if not valid_token(full, statement): continue
+        tokens = full.split(" in ", 1)
         value = tokens[0]
         tree_name = tokens[1]
         all_params = ""
@@ -115,10 +132,10 @@ def process_in(statement: str) -> str:
             if not valid_tree(tree_name): continue
             all_params = f"{get_tree_name(tree_name)}, {value}"
 
-        result = f"tree_elem_exists({all_params})"
-        statement = statement.replace(match.group(0), result, 1)
+        translated = f"tree_elem_exists({all_params})"
+        result = result.replace(full, translated, 1)
 
-    return statement
+    return result
 
 def process_length(statement: str) -> str:
     tree_name = statement[statement.find('(')+1:-1]
@@ -127,23 +144,25 @@ def process_length(statement: str) -> str:
         return f"tree_length({get_tree_name(tree_name)})"
     else: return statement
 
+# Includes processing typeof() == "array"
 def process_is_array(statement: str) -> str:
-    start, end = statement.find('('), statement.find(')')
+    start = statement.find('(')
+    end = statement.find(')', start+1)
     tree_name = statement[start+1:end]
     subscripts = ""
 
     if '[' in tree_name:
-        tree_name, subscripts = process_brackets(tree_name)
+        tree_name, subscripts = process_brackets(tree_name, False, True)
         subscripts = ", " + subscripts
 
     if universal or tree_name in trees:
-        return f'is_array("{tree_name}", {subscripts})'
+        return f'is_tree("{tree_name}"{subscripts})'
     else: return statement
 
 def process_equals(statement: str) -> str:
     add_parens = False
     
-    # TODO: could improve this just in case of different spacing or more outer parens, same with in process_exp
+    # NOTE: could improve this in cases like ( ( x + y ) ), but only affects spacing; same with process_exp
     if statement[0] == '(':
         statement = statement[1:-1]
         add_parens = True
@@ -159,6 +178,8 @@ def process_equals(statement: str) -> str:
     elif tokens[0][-1] == '-':
         tokens[0] = tokens[0].rstrip(" -")
         result = process_increment(tokens, True)
+    elif tokens[1][0] == '=':
+        result = process_expression(statement)
     elif re.match("[%/*^]", tokens[0][-1]) != None:
         op = tokens[0][-1]
         tokens[0] = tokens[0][:-1].rstrip(' ')
@@ -182,7 +203,7 @@ def process_query(token: str, has_bracket: bool) -> str:
     else:
         return token
 
-ASSIGNMENT = r"[^\=+\-%\/*\^]=[^\=+\-%\/*\^]"
+ASSIGNMENT = r"[^!<>=%/*^+-]=[^=]"
 
 def process_assignment(tokens: list) -> str:
     if re.search(ASSIGNMENT, tokens[1]) != None:
@@ -248,7 +269,7 @@ def process_pattern(pattern: str, statement: str, processor: Callable[[str], str
     result = statement
 
     for match in re.finditer(pattern, statement):
-        start = match.start(0)
+        start = match.start()
         if statement[start] not in ['l', 'i']: start += 1
         end = find_matching(statement, statement.find('(', start+6)) # 6 = len("length")
         part = statement[start:end+1]
@@ -258,13 +279,15 @@ def process_pattern(pattern: str, statement: str, processor: Callable[[str], str
 
     return result
 
+IS_ARRAY = r'(?:is_array|typeof\(.*\)\s*==\s*"array")'
+
 def process_expression(statement: str) -> str:
     result = process_in(statement)
 
     pattern = gen_keyword_pattern("length")
     result = process_pattern(pattern, result, process_length)
 
-    pattern = gen_keyword_pattern("is_array")
+    pattern = gen_keyword_pattern(IS_ARRAY)
     result = process_pattern(pattern, result, process_is_array)
 
     statement = result
@@ -272,33 +295,30 @@ def process_expression(statement: str) -> str:
     end = 0
 
     for match in re.finditer(pattern, statement):
-        start = match.start(0)
-        if start < end or not valid_token(match.group(0), statement): continue
-        end = find_matching(statement, statement.find('[', start+1))
-
-        while end+1 < len(statement) and statement[end+1]=='[':
-            end = find_matching(statement, end+1)
-
+        start = match.start()
+        if start < end: continue
+        end = find_brackets(statement, statement.find('[', start+1))
         token = statement[start:end+1]
+        if not valid_token(token, statement): continue
+        last = len(statement) if statement[0] != '(' else -1
 
         # end+1:end+4 makes sure any assignment is directly after '['
-        # TODO: if we want to make the search account for spacing besides e.g. " = ", use find('=') etc.
         if search := re.search(ASSIGNMENT, statement[end+1:end+4]):
             value = statement[search.start()+1:]
             translated = process_assignment([token, value])
-            end = len(statement) if statement[0] != '(' else -1
-            return result.replace(statement[start:end], translated, 1)
-        elif search := re.search(r"([+\-])([+\-=])", statement[end+1:end+4]):
+            return result.replace(statement[start:last], translated, 1)
+        elif search := re.search(r"([+-])([=+-])", statement[end+1:end+4]):
             value = "1" if search.group(2) != '=' else statement[search.end()+1:].lstrip()
             translated = process_increment([token, value], search.group(1)=='-')
-            end = len(statement) if statement[0] != '(' else -1
-            return result.replace(statement[start:end], translated, 1)
-        elif search := re.search(r"([%/*\^])([=*])", statement[end+1:end+4]):
+            return result.replace(statement[start:last], translated, 1)
+        elif search := re.search(r"[-+]{2}", statement[start-2:start]):
+            translated = process_increment([token, "1"], search.group(0)[0]=='-')
+            result = result.replace(search.group(0) + token, translated, 1)
+        elif search := re.search(r"([*/%^])([=*])", statement[end+1:end+4]):
             value = statement[search.end()+1:].lstrip()
             op = search.group(1) if search.group(2) != '*' else '^'
             translated = process_modify([token, value], op)
-            end = len(statement) if statement[0] != '(' else -1
-            return result.replace(statement[start:end], translated, 1)
+            return result.replace(statement[start:last], translated, 1)
         else:
             translated = process_query(token, True)
             result = result.replace(token, translated, 1)
@@ -344,7 +364,7 @@ def contains_expression(statement: str) -> bool:
     return valid_token('[', statement) or \
         valid_token(" in ", statement) or \
         keyword_present("length", statement) or \
-        keyword_present("is_array", statement)
+        keyword_present(IS_ARRAY, statement)
 
 def parse_statements(line: str) -> tuple[list, list]:
     delim_spacing = { ';': "; ", '#': "# ", '{': " { ", '}': " } ", '\n': '\n' }
@@ -373,13 +393,12 @@ def parse_statements(line: str) -> tuple[list, list]:
     return statements, delims
 
 def process_statements(line: str, line_num: int = 0) -> str:
-    nonspace = re.search(r"[^\s]", line)
-    if nonspace == None: return ""
-
+    nonspace = re.search(r"\S", line)
     result = ""
-    indentation = nonspace.start(0); del nonspace
-    # TODO: this could be mix of tabs and spaces, loop through space chars
-    statements, delims = parse_statements(line[indentation:])
+    if nonspace == None: return result
+    indentation = sum([ 1 if c == ' ' else 4 for c in line[:nonspace.start()] ])
+    statements, delims = parse_statements(line[nonspace.start():])
+    del nonspace
     global close_scope_timer; close_scope_timer = -1
     global new_scopes_opened; new_scopes_opened = 0
 
@@ -390,10 +409,10 @@ def process_statements(line: str, line_num: int = 0) -> str:
 
         if statement[:9] == "function ":
             process_function(statement)
-        if keyword_present("for", statement):
+        elif keyword_present("for", statement) and statement[0] == 'f':
             if valid_token(" in ", statement):
-                # TODO: same concern with extra set of parens
-                parts = statement.split(')', 1)
+                match = find_matching(statement, statement.find('('))
+                parts = [statement[:match], statement[match+1:]]
                 statement = parts.pop(0) + ')'
                 translated = process_for_in(statement)
 
@@ -417,10 +436,11 @@ def process_statements(line: str, line_num: int = 0) -> str:
                             statements.append('')
                             delims.append(" } ") # Add missing closing brace
             else: # Standard for
-                # TODO: could be expression to process within parens
-                temp, next = [s.strip() for s in statements[i+2].split(')', 1)]
-                translated += f"; {statements.pop(i+1)}; {temp})"
-                # TODO: use find_matching for parentheses instead
+                # TODO: could be expression to process for each part between ';'
+                temp = translated + f"; {statements.pop(i+1)}; {statements[i+1]}"
+                match = find_matching(temp, temp.find('('))
+                translated, next = (temp[:match].rstrip(), temp[match+1:].lstrip())
+                translated += ')'
                 delims.pop(i+1)
                 delim = ' '
 
@@ -430,10 +450,10 @@ def process_statements(line: str, line_num: int = 0) -> str:
                     delim = delims.pop(i+1)
                 else:
                     statements[i+1] = next
-        elif keyword_present("while", statement):
+        elif keyword_present("while", statement) and statement[0] == 'w':
             breakers.append(None)
             # TODO: could be inline while loop, maybe make common function for splitting inline body stuff
-        elif keyword_present("if", statement):
+        elif keyword_present("if", statement) and statement[0] == 'i':
             if delim != " { ":
                 close_scope_timer = 1
                 if i+1 < len(statements) and valid_token("else ", statements[i+1]): close_scope_timer = 2
@@ -444,7 +464,7 @@ def process_statements(line: str, line_num: int = 0) -> str:
             elif contains_expression(statement):
                 translated = process_expression(statement)
         # TODO: maybe stricter check for this
-        elif valid_token("else ", statement):
+        elif valid_token("else ", statement) and statement[0] == 'e':
             if delim != " { ": # In case of an inline else
                 close_scope_timer = 1
                 body = statement[statement.find(' ')+1:].lstrip()
@@ -463,7 +483,7 @@ def process_statements(line: str, line_num: int = 0) -> str:
             translated = "return"
         elif valid_token(" in ", statement) or \
             keyword_present("length", statement) or \
-            keyword_present("is_array", statement):
+            keyword_present(IS_ARRAY, statement):
                 translated = process_expression(statement)
         elif statement == "break" and len(breakers) != 0:
             breaker = breakers.pop()
@@ -498,12 +518,19 @@ def process_statements(line: str, line_num: int = 0) -> str:
     for i, statement in enumerate(statements):
         delim = delims[i]
         translated = statement
+        global current_vars
 
         if len(statement) > 0:
            translated, delim = process_statement(statement, delim)
 
-        if delim == " } " and len(breakers) > 0:
-            breakers.pop()
+        if '}' in delim:
+            for i in range(delim.count('}')):
+                if len(breakers) != 0:
+                    breakers.pop()
+                if len(current_vars) != 0:
+                    current_vars.update([ (key, val+1) for key, val in current_vars.items() ])
+            else:
+                current_vars = dict( filter(lambda i: i[1] > 0, current_vars.items()) )
 
         result += translated + delim
 
@@ -539,7 +566,7 @@ if __name__ == "__main__":
         for i, line in enumerate(argv[1].split('\n')):
             result += process_statements(line+'\n', i+1)
     else:
-        with open(argv[1]) as file:
+        with open(argv[1], newline='\n') as file:
             for i, line in enumerate(file):
                 result += process_statements(line, i+1)
 

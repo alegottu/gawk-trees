@@ -37,12 +37,12 @@ BEGIN {
 	test(query_tree("test","y","z"), "", "querying 2D tree for non-existent element")
 	test(query_tree("test","x","z"), 229, "querying 2D tree for element in an existing subtree")
 	test(tree_length("test"), 3, "length after insertion")
-	# query_tree("test","x","y","z") # produces fatal error
-	# query_tree("test","x") # produces fatal error
+	# query_tree("test","x","y","z") # produces fatal error (no variable depth trees, using a scalar as an array)
+	# query_tree("test","x") # produces fatal error (using an array as a scalar)
 	
 	tree_insert("example","sub","hello")
 	test(query_tree("example","sub"), "hello", "inserting into a tree/value that don't yet exist")
-	# query_tree("example","sub","new") # produces fatal error
+	# query_tree("example","sub","new") # produces fatal error (no variable depth trees, using a scalar as an array)
 
 	test(query_tree("another",1), "", "querying a tree that doesn't yet exist with number keys")
 	tree_insert("another",1,1)
