@@ -3,8 +3,8 @@
 
 #include <string.h>
 #include <tinyexpr.h>
-
 #include <stdlib.h>
+#include <float.h>
 
 /* NOTE from gawk API documentation:
  * All pointers filled in by gawk point to memory managed by gawk and should be treated by the extension as read-only.
@@ -29,7 +29,7 @@ bool init_trees()
 	current_iterators = StackAlloc(4);
 	// NOTE: 4 seems like a reasonable maximum (before the stack has to resize) of for-in loops going at once
 
-	on_exit((void*)do_at_exit, NULL); // TODO: possible to use 2nd arg instead of global trees?
+	on_exit((void*)do_at_exit, NULL);
 	return trees != NULL;
 }
 
@@ -173,8 +173,7 @@ const double tree_modify(const char* tree, const char** subscripts, const unsign
 		te_free(te);
 		free(_expr);
 
-		// TODO: 64 max for now, see if we can figure out exact size from mantissa digits * max_10_exp in float.h
-		result->s = realloc(result->s, 64 * sizeof(char)); 
+		result->s = realloc(result->s, DBL_DECIMAL_DIG * sizeof(char));
 		sprintf(result->s, "%f", x);
 		result->s = remove_trailing_zeroes(result->s);
 
