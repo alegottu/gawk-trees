@@ -9,14 +9,16 @@
 #include <config.h>
 #endif
 
+#include <stdio.h>
+#include <sys/stat.h>
+
 #include "gawkapi.h"
 
-static const gawk_api_t* api;	// for convenience macros to work
-static awk_ext_id_t ext_id;
+const gawk_api_t* api; // for convenience macros to work
+awk_ext_id_t ext_id;
 static const char* ext_version = "htree extension: version 1.0";
 static awk_bool_t do_at_init(void);
 static awk_bool_t (*init_func)(void) = do_at_init;
-
 int plugin_is_GPL_compatible;
 
 typedef struct query
