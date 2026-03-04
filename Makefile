@@ -9,7 +9,7 @@ BUILD = bin
 OUT = htrees.so
 LW_NAME = libwayne.a
 DEBUG_FLAGS = -g3 -Og
-RELEASE_FLAGS = -Os
+RELEASE_FLAGS = -Os -DNDEBUG
 OPTS = $(RELEASE_FLAGS)
 LW_OPTS = shared-opt
 

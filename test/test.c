@@ -1,4 +1,5 @@
 #include "htrees.h"
+#include <stdlib.h>
 #include <string.h>
 
 int main(int argc, char *argv[])
@@ -78,7 +79,7 @@ int main(int argc, char *argv[])
 	assert(strcmp(query_tree("another", subscripts, 1), "9") == 0);
 
 	create_tree("new", 2);
-	unsigned int dimensions[2] = { atoi(argv[1]), atoi(argv[2]) };
+	unsigned int dimensions[2] = { atoi(argv[1]), argc == 2 ? atoi(argv[1]) : atoi(argv[2]) };
 
 	for (unsigned int i=0; i<dimensions[0]; i++)
 	{

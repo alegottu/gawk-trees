@@ -33,7 +33,7 @@ bool init_trees()
 
 // NOTE: Ignoring "discards qualifiers" when it's only because it's being put into a foint;
 // e.g. TreeInsert creates a copy of the string/key, so the char* in foint may as well be const char*
-HTREE* create_tree(const char* name, const int depth) 
+HTREE* create_tree(const char* name, const int depth)
 {
 	HTREE* array = HTreeAlloc(depth, (pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, (pFointCopyFcn)strdup, (pFointFreeFcn)free);
 	TreeInsert(trees, (foint){.s=name}, (foint){.v=array});
@@ -74,14 +74,14 @@ void tree_insert(const char* tree, const char** subscripts, const foint value, c
 	foint _htree;
 	HTREE* htree;
 	
-	if (STreeLookup(trees, (foint){.s=tree}, &_htree)) 
+	if (STreeLookup(trees, (foint){.s=tree}, &_htree))
 	{
 		htree = _htree.v;
 		foint keys[depth];
 		fill_foints(subscripts, keys, depth);
 		HTreeInsert(htree, keys, value);
 	}
-	else 
+	else
 	{
 		foint keys[depth];
 		fill_foints(subscripts, keys, depth);
@@ -103,7 +103,7 @@ static foint* get_element(const char* tree, const char** subscripts, const unsig
 
 		if (depth != htree->depth)
 		{
-			fatal(ext_id, "query_tree: Incorrect number of subscripts given for tree depth; treating array as a scalar value");
+			fatal(ext_id, "Incorrect number of subscripts given for tree depth; treating array as a scalar value");
 		}
 
 		result = HTreeLookup(htree, keys);
@@ -145,7 +145,7 @@ static char* remove_trailing_zeroes(char* num)
 	 	end_pos = from_point + first_last_zero_idx - num;
 	num[end_pos] = '\0';
 		
-	return realloc(num, (strlen(num) + 1) * sizeof(char));
+	return realloc(num, (end_pos + 1) * sizeof(char));
 }
 
 const double tree_modify(const char* tree, const char** subscripts, const unsigned char depth, const char* expr)
@@ -367,19 +367,19 @@ static LINKED_LIST* get_iterator(const char* tree, const char** subscripts, cons
 			ITERATOR* new = malloc(sizeof(ITERATOR));
 			new->current = LinkedListAlloc(NULL, false);
 			new->hash = hash;
-			foint root_node;
+			foint result;
 
 			if (depth == 0)
-				root_node.v = htree->tree->root;
+				result.v = htree->tree->root;
 			else
 			{
-				foint _subscripts[depth]; foint result;
+				foint _subscripts[depth];
 				fill_foints(subscripts, _subscripts, depth);
 				SHTreeLookup(htree, _subscripts, depth, &result);
-				root_node.v = ((TREETYPE*)result.v)->root;
+				result.v = ((TREETYPE*)result.v)->root;
 			}
 
-			LinkedListAppend(new->current, root_node);
+			LinkedListAppend(new->current, result);
 			foint iterator = {.v=new};
 			StackPush(current_iterators, iterator);
 
