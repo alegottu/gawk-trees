@@ -33,7 +33,7 @@ bool init_trees()
 
 // NOTE: Ignoring "discards qualifiers" when it's only because it's being put into a foint;
 // e.g. TreeInsert creates a copy of the string/key, so the char* in foint may as well be const char*
-HTREE* create_tree(const char* name, const int depth) 
+HTREE* create_tree(const char* name, const int depth)
 {
 	HTREE* array = HTreeAlloc(depth, (pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, (pFointCopyFcn)strdup, (pFointFreeFcn)free);
 	TreeInsert(trees, (foint){.s=name}, (foint){.v=array});
@@ -48,12 +48,11 @@ void delete_tree(const char* name)
 
 const double tree_length(const char* name)
 {
-	foint* _htree = TreeLookup(trees, (foint){.s=name});
+	foint htree;
 
-	if (_htree != NULL)
+	if (TreeLookup(trees, (foint){.s=name}, &htree))
 	{
-		HTREE* htree = _htree->v;
-		return htree->n;
+		return ((HTREE*)htree.v)->n;
 	}
 	else
 	{
@@ -74,14 +73,14 @@ void tree_insert(const char* tree, const char** subscripts, const foint value, c
 	foint _htree;
 	HTREE* htree;
 	
-	if (STreeLookup(trees, (foint){.s=tree}, &_htree)) 
+	if (TreeLookup(trees, (foint){.s=tree}, &_htree))
 	{
 		htree = _htree.v;
 		foint keys[depth];
 		fill_foints(subscripts, keys, depth);
 		HTreeInsert(htree, keys, value);
 	}
-	else 
+	else
 	{
 		foint keys[depth];
 		fill_foints(subscripts, keys, depth);
@@ -90,14 +89,14 @@ void tree_insert(const char* tree, const char** subscripts, const foint value, c
 	}
 }
 
-static foint* get_element(const char* tree, const char** subscripts, const unsigned char depth)
+static foint get_element(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	foint _htree;
 	foint keys[depth];
 	fill_foints(subscripts, keys, depth);
-	foint* result;
+	foint result;
 
-	if (STreeLookup(trees, (foint){.s=tree}, &_htree))
+	if (TreeLookup(trees, (foint){.s=tree}, &_htree))
 	{
 		HTREE* htree = _htree.v;
 
@@ -106,17 +105,17 @@ static foint* get_element(const char* tree, const char** subscripts, const unsig
 			fatal(ext_id, "query_tree: Incorrect number of subscripts given for tree depth; treating array as a scalar value");
 		}
 
-		result = HTreeLookup(htree, keys);
-		
-		if (result == NULL)
+		if (!HTreeLookup(htree, keys, &result))
 		{
-			result = HTreeInsert(htree, keys, (foint){.s=""});
+			HTreeInsert(htree, keys, (foint){.s=""});
+			HTreeLookup(htree, keys, &result);
 		}
 	}
 	else
 	{
 		HTREE* htree = create_tree(tree, depth);
-		result = HTreeInsert(htree, keys, (foint){.s=""});
+		HTreeInsert(htree, keys, (foint){.s=""});
+		HTreeLookup(htree, keys, &result);
 	}
 
 	return result;
@@ -124,10 +123,10 @@ static foint* get_element(const char* tree, const char** subscripts, const unsig
 
 const char* query_tree(const char* tree, const char** subscripts, const unsigned char depth)
 {
-	return get_element(tree, subscripts, depth)->s;
+	return get_element(tree, subscripts, depth).s;
 }
 
-static char* remove_trailing_zeroes(char* num)
+static unsigned int remove_trailing_zeroes(char* num)
 {
 	unsigned char first_last_zero_idx = 0;
 	const char* from_point = strchr(num, '.');
@@ -145,21 +144,21 @@ static char* remove_trailing_zeroes(char* num)
 	 	end_pos = from_point + first_last_zero_idx - num;
 	num[end_pos] = '\0';
 		
-	return realloc(num, (strlen(num) + 1) * sizeof(char));
+	return end_pos + 1;
 }
 
 const double tree_modify(const char* tree, const char** subscripts, const unsigned char depth, const char* expr)
 {
-	foint* result = get_element(tree, subscripts, depth);
-	double x = atof(result->s);
+	foint result = get_element(tree, subscripts, depth);
+	double x = atof(result.s);
 
 	// TODO: compare speed / mem if we do branch into just te_interp
 	// if (strchr(expr, 'x') == NULL)
 	
 	te_variable vars[] = { {"x", &x} };
 	int err;
-	char* _expr = malloc((strlen(result->s) + strlen(expr) + 1) * sizeof(char));
-	strcpy(_expr, result->s);
+	char* _expr = malloc((strlen(result.s) + strlen(expr) + 1) * sizeof(char));
+	strcpy(_expr, result.s);
 	strcat(_expr, expr);
 	te_expr* te = te_compile(_expr, vars, 1, &err);
 
@@ -169,9 +168,11 @@ const double tree_modify(const char* tree, const char** subscripts, const unsign
 		te_free(te);
 		free(_expr);
 
-		result->s = realloc(result->s, DBL_DECIMAL_DIG * sizeof(char));
-		sprintf(result->s, "%f", x);
-		result->s = remove_trailing_zeroes(result->s);
+		char buf[DBL_DECIMAL_DIG];
+		sprintf(buf, "%f", x);
+		char value[remove_trailing_zeroes(buf)];
+		strcpy(value, buf);
+		tree_insert(tree, subscripts, (foint){.s=value}, depth);
 
 		return x;
 	}
@@ -184,15 +185,15 @@ const double tree_modify(const char* tree, const char** subscripts, const unsign
 // NOTE: mult is always -1 or 1
 const double increment(const char* tree, const char** args, const unsigned char argc, const char mult)
 {
-	foint _htree;
+	HTREE* htree;
+	unsigned char depth;
+	foint result;
 	double amount = 1;
 	unsigned char amount_digits = 1;
-	foint* result;
 
-	if (STreeLookup(trees, (foint){.s=tree}, &_htree))
+	if (TreeLookup(trees, (foint){.s=tree}, &result))
 	{
-		HTREE* htree = _htree.v;
-		unsigned char depth;
+		htree = result.v;
 
 		if (argc == htree->depth)
 			depth = argc;
@@ -203,26 +204,16 @@ const double increment(const char* tree, const char** args, const unsigned char 
 			depth = argc-1;
 		}
 
-		foint keys[depth];
-		fill_foints(args, keys, depth);
-
 		if (depth != htree->depth)
 		{
 			fatal(ext_id, "tree_increment: Incorrect number of subscripts given for tree depth; treating array as a scalar value");
-		}
-
-		result = HTreeLookup(htree, keys);
-		
-		if (result == NULL)
-		{
-			result = HTreeInsert(htree, keys, (foint){.s="0"});
 		}
 	}
 	else
 	{
 		amount = atof(args[argc-1]);
 		amount_digits = strlen(args[argc-1]);
-		unsigned char depth = argc-1;
+		depth = argc-1;
 
 		if (amount == 0)
 		{
@@ -231,19 +222,26 @@ const double increment(const char* tree, const char** args, const unsigned char 
 			depth = argc;
 		}
 
-		foint keys[depth];
-		fill_foints(args, keys, depth);
-		HTREE* htree = create_tree(tree, depth);
-		result = HTreeInsert(htree, keys, (foint){.s="0"});
+		htree = create_tree(tree, depth);
 	}
 
-	double num = atof(result->s);
-	unsigned int len = (num == 0 ? 1 : strlen(result->s)) + amount_digits + 8;
+	foint keys[depth];
+	fill_foints(args, keys, depth);
+	double num = 0;
+
+	if (HTreeLookup(htree, keys, &result))
+	{
+		num = atof(result.s);
+	}
+
+	unsigned int len = (num == 0 ? 1 : strlen(result.s)) + amount_digits + 8;
 	// + 8 = 1 for '.' and \0, 6 for default precision of %f
 	num += amount * mult;
-	result->s = realloc(result->s, len * sizeof(char));
-	sprintf(result->s, "%f", num);
-	result->s = remove_trailing_zeroes(result->s);
+	char buf[len];
+	sprintf(buf, "%f", num);
+	char value[remove_trailing_zeroes(buf)];
+	strcpy(value, buf);
+	HTreeInsert(htree, keys, (foint){.s=value});
 
 	return num;
 }
@@ -261,26 +259,45 @@ const double tree_decrement(const char* tree, const char** args, const unsigned 
 const bool tree_elem_exists(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	foint _htree;
-	STreeLookup(trees, (foint){.s=tree}, &_htree);
+	TreeLookup(trees, (foint){.s=tree}, &_htree);
 	HTREE* htree = _htree.v;
 	foint _subscripts[depth];
 	fill_foints(subscripts, _subscripts, depth);
 
-	return SHTreeLookup(htree, _subscripts, depth, NULL);
+	unsigned char actual = htree->depth;
+	htree->depth = depth;
+	const bool result = HTreeLookup(htree, _subscripts, NULL);
+	htree->depth = actual;
+	return result;
 }
 
 void tree_remove(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	foint _htree;
 	bool result;
-	bool found = STreeLookup(trees, (foint){.s=tree}, &_htree);
+	bool found = TreeLookup(trees, (foint){.s=tree}, &_htree);
 
 	if (found)
 	{
 		HTREE* htree = _htree.v;
 		foint _subscripts[depth];
 		fill_foints(subscripts, _subscripts, depth);
-		HTreeLookDel(htree, _subscripts, depth, true);
+
+		if (depth < htree->depth)
+		{
+			unsigned char actual = htree->depth;
+			htree->depth = depth; foint result;
+			HTreeLookup(htree, _subscripts, &result);
+			TREETYPE* tree = result.v;
+			htree->n -= tree->n - 1;
+			TreeFree(tree);
+			HTreeDelete(htree, _subscripts);
+			htree->depth = actual;
+		}
+		else
+		{
+			HTreeDelete(htree, _subscripts);
+		}
 	}
 }
 
@@ -288,17 +305,12 @@ const unsigned short is_tree(const char* tree, const char** subscripts, const un
 {
 	foint _subscripts[depth];
 	fill_foints(subscripts, _subscripts, depth);
-	foint _htree;
+	foint htree;
 
-	if (!STreeLookup(trees, (foint){.s=tree}, &_htree))
+	if (!TreeLookup(trees, (foint){.s=tree}, &htree))
 		return 0;
 
-	HTREE* htree = _htree.v;
-
-	if (!SHTreeLookup(htree, _subscripts, depth, NULL))
-		return 0;
-
-	return depth < htree->depth;
+	return depth < ((HTREE*)htree.v)->depth;
 }
 
 typedef struct _iterator
@@ -341,7 +353,7 @@ static LINKED_LIST* get_iterator(const char* tree, const char** subscripts, cons
 {
 	foint _htree;
 
-	if (!STreeLookup(trees, (foint){.s=tree}, &_htree))
+	if (!TreeLookup(trees, (foint){.s=tree}, &_htree))
 		return NULL;
 
 	HTREE* htree = _htree.v;
@@ -375,14 +387,16 @@ static LINKED_LIST* get_iterator(const char* tree, const char** subscripts, cons
 			{
 				foint _subscripts[depth]; foint result;
 				fill_foints(subscripts, _subscripts, depth);
-				SHTreeLookup(htree, _subscripts, depth, &result);
+				unsigned char actual = htree->depth;
+				htree->depth = depth;
+				HTreeLookup(htree, _subscripts, &result);
+				htree->depth = actual;
 				root_node.v = ((TREETYPE*)result.v)->root;
 			}
 
 			LinkedListAppend(new->current, root_node);
 			foint iterator = {.v=new};
 			StackPush(current_iterators, iterator);
-
 			return new->current;
 		}
 	}

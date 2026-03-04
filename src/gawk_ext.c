@@ -220,7 +220,7 @@ static awk_value_t* do_tree_iter_break(const int nargs, awk_value_t* result, str
 	// `break` can't be used in expressions, but we need to fill "result" with something to avoid memory errors
 }
 
-static awk_ext_func_t func_table[] = 
+static awk_ext_func_t func_table[] =
 {
 	{ "create_tree", do_create_tree, 2, 2, awk_false, NULL },
 	{ "delete_tree", do_delete_tree, 1, 1, awk_false, NULL },
