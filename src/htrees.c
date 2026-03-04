@@ -1,7 +1,6 @@
 #include "htrees.h"
 #include "stack.h"
 
-#include <string.h>
 #include <tinyexpr.h>
 #include <stdlib.h>
 #include <float.h>
@@ -11,9 +10,8 @@
 
 Memory for all strings passed into gawk from the extension must come from calling one of gawk_malloc(), gawk_calloc(), or gawk_realloc(), and is managed by gawk from then on */
 
-
 // HTrees, found by their name in a gawk program, are contained here
-TREETYPE* trees = NULL; 
+TREETYPE* trees = NULL;
 
 // Stack of node queues (LL*)
 STACK* current_iterators = NULL;
@@ -105,9 +103,7 @@ static foint* get_element(const char* tree, const char** subscripts, const unsig
 
 		if (depth != htree->depth)
 		{
-			fputs("query_tree: Incorrect number of subscripts given for tree depth; treating array as a scalar value\n", stderr);
-			exit(1);
-			// May have to changes instances of fputs -> exit to a special return value checked by funcs in gawk_ext.c to then use fatal()
+			fatal(ext_id, "query_tree: Incorrect number of subscripts given for tree depth; treating array as a scalar value");
 		}
 
 		result = HTreeLookup(htree, keys);
@@ -126,9 +122,9 @@ static foint* get_element(const char* tree, const char** subscripts, const unsig
 	return result;
 }
 
-const foint query_tree(const char* tree, const char** subscripts, const unsigned char depth)
+const char* query_tree(const char* tree, const char** subscripts, const unsigned char depth)
 {
-	return *get_element(tree, subscripts, depth);
+	return get_element(tree, subscripts, depth)->s;
 }
 
 static char* remove_trailing_zeroes(char* num)
@@ -154,7 +150,7 @@ static char* remove_trailing_zeroes(char* num)
 
 const double tree_modify(const char* tree, const char** subscripts, const unsigned char depth, const char* expr)
 {
-	foint* result = get_element(tree, subscripts, depth); 
+	foint* result = get_element(tree, subscripts, depth);
 	double x = atof(result->s);
 
 	// TODO: compare speed / mem if we do branch into just te_interp
@@ -181,8 +177,7 @@ const double tree_modify(const char* tree, const char** subscripts, const unsign
 	}
 	else
 	{
-		fputs("tree_modify: Invalid expression given; parse error\n", stderr);
-		exit(1);
+		fatal(ext_id, "tree_modify: Invalid expression given; parse error");
 	}
 }
 
@@ -213,8 +208,7 @@ const double increment(const char* tree, const char** args, const unsigned char 
 
 		if (depth != htree->depth)
 		{
-			fputs("tree_increment: Incorrect number of subscripts given for tree depth; treating array as a scalar value\n", stderr);
-			exit(1);
+			fatal(ext_id, "tree_increment: Incorrect number of subscripts given for tree depth; treating array as a scalar value");
 		}
 
 		result = HTreeLookup(htree, keys);
@@ -247,7 +241,7 @@ const double increment(const char* tree, const char** args, const unsigned char 
 	unsigned int len = (num == 0 ? 1 : strlen(result->s)) + amount_digits + 8;
 	// + 8 = 1 for '.' and \0, 6 for default precision of %f
 	num += amount * mult;
-	result->s = realloc(result->s, len * sizeof(char)); 
+	result->s = realloc(result->s, len * sizeof(char));
 	sprintf(result->s, "%f", num);
 	result->s = remove_trailing_zeroes(result->s);
 
@@ -355,8 +349,7 @@ static LINKED_LIST* get_iterator(const char* tree, const char** subscripts, cons
 	
 	if (depth == htree_depth)
 	{
-		fputs("Attempt to iterate through a scalar value\n", stderr);
-		exit(1);
+		fatal(ext_id, "Attempt to iterate through a scalar value");
 	}
 
 	ITERATOR* last;
@@ -429,16 +422,12 @@ const char* tree_next(const char* tree, const char** subscripts, const unsigned 
 		}
 		else
 		{
-			fputs("get_tree_next: Attempt to infinitely iterate through the given tree\n", stderr);
-			exit(1);
+			fatal(ext_id, "get_tree_next: Attempt to infinitely iterate through the given tree");
 		}
 	}
-	else
-	{
-		fputs("get_tree_next: No items in tree\n", stderr); 
-		return "";
-	}
 
+	fatal(ext_id, "get_tree_next: No items in tree");
+	return "";
 }
 
 static void iterators_pop()
@@ -469,8 +458,7 @@ void tree_iter_break()
 {
 	if (StackSize(current_iterators) == 0)
 	{
-		fputs("tree_iter_break: Cannot break if the corresponding iterator does not exist", stderr);
-		exit(1);
+		fatal(ext_id, "tree_iter_break: Cannot break if the corresponding iterator does not exist");
 	}
 
 	iterators_pop();

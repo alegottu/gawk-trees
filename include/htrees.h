@@ -1,11 +1,7 @@
 #ifndef HTREES_H
 #define HTREES_H
 
-#include <string.h>
-#include <stdio.h>
-
 #include <stdbool.h>
-#include <sys/stat.h>
 
 #include "htree.h"
 #include "linked-list.h"
@@ -17,6 +13,14 @@
 #include "bintree.h"
 #define NODETYPE BINTREENODE
 #endif
+
+#include <stdio.h>
+#include <sys/stat.h>
+
+#include "gawkapi.h"
+
+extern const gawk_api_t* api; // for convenience macros to work
+extern awk_ext_id_t ext_id;
 
 void free_htree(const foint tree);
 
@@ -30,7 +34,7 @@ const double tree_length(const char* name);
 
 void tree_insert(const char* tree, const char** subscripts, const foint value, const unsigned char depth);
 
-const foint query_tree(const char* tree, const char** subscripts, const unsigned char depth);
+const char* query_tree(const char* tree, const char** subscripts, const unsigned char depth);
 
 const double tree_modify(const char* tree, const char** subscripts, const unsigned char depth, const char* expr);
 
