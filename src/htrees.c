@@ -401,8 +401,13 @@ static Boolean visit_next_node(LINKED_LIST* iterator, foint* result)
 
 	if (current_node->left != NULL)
 		LinkedListAppend(iterator, (foint){.v=current_node->left});
+#if HTREE_USES_AVL
+	if (getRight(current_node) != NULL)
+		LinkedListAppend(iterator, (foint){.v=getRight(current_node)});
+#else
 	if (current_node->right != NULL)
 		LinkedListAppend(iterator, (foint){.v=current_node->right});
+#endif
 
 	*result = current_node->key;
 	return true;

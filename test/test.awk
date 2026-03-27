@@ -1,5 +1,3 @@
-@load "ghtrees"
-
 function test (result, expected, message)
 {
 	if (result != expected)
