@@ -1,9 +1,5 @@
-#include "htrees.h"
-#include "gawkapi.h"
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
 #include "gawk_ext.h"
+#include "htrees.h"
 
 static awk_bool_t do_at_init()
 {
@@ -45,7 +41,7 @@ static awk_value_t* do_delete_tree(const int nargs, awk_value_t* result, struct 
 		fatal(ext_id, "delete_tree: Invalid arguments");
 
 	// `delete` can't be used in expressions, but we need to fill "result" with something to avoid memory errors
-	return make_null_string(result); 
+	return make_null_string(result);
 }
 
 static awk_value_t* do_tree_length(const int nargs, awk_value_t* result, struct awk_ext_func* _)
@@ -120,10 +116,10 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 	assert(result != NULL);
 
 	query_t query = get_query();
-	foint data = query_tree(query.name, query.subscripts, query.num_subs);
+	const char* data = query_tree(query.name, query.subscripts, query.num_subs);
 
 	free_query(query);
-	return make_const_string(data.s, strlen(data.s), result);
+	return make_const_string(data, strlen(data), result);
 }
 
 static awk_value_t* do_tree_modify(const int nargs, awk_value_t* result, struct awk_ext_func* _)
@@ -168,7 +164,7 @@ static awk_value_t* do_tree_remove(const int nargs, awk_value_t* result, struct 
 	tree_remove(query.name, query.subscripts, query.num_subs);
 
 	free_query(query);
-	return make_null_string(result); 
+	return make_null_string(result);
 	// `delete` can't be used in expressions, but we need to fill "result" with something to avoid memory errors
 }
 
@@ -220,11 +216,11 @@ static awk_value_t* do_tree_iter_break(const int nargs, awk_value_t* result, str
 {
 	assert(result != NULL);
 	tree_iter_break();
-	return make_null_string(result); 
+	return make_null_string(result);
 	// `break` can't be used in expressions, but we need to fill "result" with something to avoid memory errors
 }
 
-static awk_ext_func_t func_table[] = 
+static awk_ext_func_t func_table[] =
 {
 	{ "create_tree", do_create_tree, 2, 2, awk_false, NULL },
 	{ "delete_tree", do_delete_tree, 1, 1, awk_false, NULL },

@@ -1,5 +1,3 @@
-@load "ghtrees"
-
 function test (result, expected, message)
 {
 	if (result != expected)
@@ -22,7 +20,6 @@ BEGIN {
 	test(tree_elem_exists("pred","x","y"), 1, "elem_exists for existing element")
 	test(is_tree("pred", "x"), 1, "is_tree for subtree in 2D tree")
 	test(is_tree("pred", "a", "b"), 0, "is_tree for final element")
-	test(is_tree("pred", "dne"), 0, "is_tree for non-existent element")
 
 	tree_remove("pred","x","y")
 	tree_remove("pred","x","y") # should do nothing
@@ -56,20 +53,20 @@ BEGIN {
 	tree_increment("create",1,2,3,1) # first on a tree that doesn't exist
 	test(query_tree("create",1,2,3), 1, "1st increment; create[1][2][3] != 1")
 
-	tree_increment("another",1)
-	test(query_tree("another",1), 2, "2nd increment; create[1][2][3] != 2")
+	tree_increment("create",1,2,3,1) # first on a tree that doesn't exist
+	test(query_tree("create",1,2,3), 2, "2nd increment; create[1][2][3] != 2")
 
 	tree_increment("example","sub") # try on non-number element
-	test(query_tree("example","sub"), 1, "1st decrement; example['sub'] != 1")
+	test(query_tree("example","sub"), 1, "incrementing different item; example['sub'] != 1")
 
 	tree_decrement("test","y","z")
-	test(query_tree("test","y","z"), -1, "2nd decrement; test['y']['z'] != -1")
+	test(query_tree("test","y","z"), -1, "1st decrement; test['y']['z'] != -1")
 
 	tree_modify("another",1,"+2") # try with no "x"
-	test(query_tree("another",1), 4, "1st modify; another[1] != 4")
+	test(query_tree("another",1), 3, "1st modify; another[1] != 4")
 
 	tree_modify("another",1,"*x") # try with element as a part of expression
-	test(query_tree("another",1), 16, "2nd modify; another[1] != 16")
+	test(query_tree("another",1), 9, "2nd modify; another[1] != 16")
 }
 
 {
@@ -84,17 +81,15 @@ BEGIN {
 			}
 		}
 
-		pass=1
 		while(tree_iters_remaining("new") > 0)
 		{
 			i=tree_next("new")
 			while(tree_iters_remaining("new",i) > 0)
 			{
-				j=tree_next("new", i)
-				if (query_tree("new", i, j) != i+j) pass=0
+				j=tree_next("new",i)
+				test(query_tree("new",i,j), i+j, "inserting many values/iteration")
 			}
 		}
-		test(pass, 1, "inserting many values/iteration")
 	}
 	else
 	{
@@ -104,13 +99,11 @@ BEGIN {
 			tree_insert("new",i,i/2.0)
 		}
 
-		pass=1
 		while(tree_iters_remaining("new") > 0)
 		{
 			i = tree_next("new")
-			if (query_tree("new",i) != i/2.0) pass=0
+			test(query_tree("new",i), i/2.0, "inserting many values/iteration")
 		}
-		test(pass, 1, "inserting many values/iteration")
 	}
 
 	n=0

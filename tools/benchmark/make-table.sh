@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ $# -eq 0 ]]; then
-	echo 'Usage: make-table [--sort-strict] [--bintree] directory search-term'
+	echo 'Usage: make-table [--sort-strict] [--bintree] directory [search-term]'
 	exit
 fi
 
