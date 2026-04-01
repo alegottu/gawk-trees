@@ -6,7 +6,7 @@
 #include "htree.h"
 #include "linked-list.h"
 
-#if HTREE_USES_AVL
+#if TREE_USES_AVL
 #include "avltree.h"
 #define NODETYPE AVLTREENODE
 #else
