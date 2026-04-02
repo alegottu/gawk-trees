@@ -121,7 +121,7 @@ static foint* get_element(const char* tree, const char** subscripts, const unsig
 
 const char* query_tree(const char* tree, const char** subscripts, const unsigned char depth)
 {
-	return get_element(tree, subscripts, depth).s;
+	return get_element(tree, subscripts, depth)->s;
 }
 
 static char* remove_trailing_zeroes(char* num)
@@ -147,16 +147,16 @@ static char* remove_trailing_zeroes(char* num)
 
 const double tree_modify(const char* tree, const char** subscripts, const unsigned char depth, const char* expr)
 {
-	foint result = get_element(tree, subscripts, depth);
-	double x = atof(result.s);
+	foint* result = get_element(tree, subscripts, depth);
+	double x = atof(result->s);
 
 	// TODO: compare speed / mem if we do branch into just te_interp
 	// if (strchr(expr, 'x') == NULL)
 	
 	te_variable vars[] = { {"x", &x} };
 	int err;
-	char* _expr = malloc((strlen(result.s) + strlen(expr) + 1) * sizeof(char));
-	strcpy(_expr, result.s);
+	char* _expr = malloc((strlen(result->s) + strlen(expr) + 1) * sizeof(char));
+	strcpy(_expr, result->s);
 	strcat(_expr, expr);
 	te_expr* te = te_compile(_expr, vars, 1, &err);
 
@@ -166,11 +166,9 @@ const double tree_modify(const char* tree, const char** subscripts, const unsign
 		te_free(te);
 		free(_expr);
 
-		char buf[DBL_DECIMAL_DIG];
-		sprintf(buf, "%f", x);
-		char value[remove_trailing_zeroes(buf)];
-		strcpy(value, buf);
-		tree_insert(tree, subscripts, (foint){.s=value}, depth);
+		result->s = realloc(result->s, DBL_DECIMAL_DIG * sizeof(char));
+		sprintf(result->s, "%f", x);
+		result->s = remove_trailing_zeroes(result->s);
 
 		return x;
 	}
@@ -181,15 +179,15 @@ const double tree_modify(const char* tree, const char** subscripts, const unsign
 // NOTE: mult is always -1 or 1
 const double increment(const char* tree, const char** args, const unsigned char argc, const char mult)
 {
-	HTREE* htree;
-	unsigned char depth;
-	foint result;
+	foint _htree;
 	double amount = 1;
 	unsigned char amount_digits = 1;
+	foint* result;
 
-	if (TreeLookup(trees, (foint){.s=tree}, &result))
+	if (TreeLookup(trees, (foint){.s=tree}, &_htree))
 	{
-		htree = result.v;
+		HTREE* htree = _htree.v;
+		unsigned char depth;
 
 		if (argc == htree->depth)
 			depth = argc;
@@ -199,6 +197,9 @@ const double increment(const char* tree, const char** args, const unsigned char 
 			amount_digits = strlen(args[argc-1]);
 			depth = argc-1;
 		}
+
+		foint keys[depth];
+		fill_foints(args, keys, depth);
 
 		if (depth != htree->depth)
 		{
@@ -216,7 +217,7 @@ const double increment(const char* tree, const char** args, const unsigned char 
 	{
 		amount = atof(args[argc-1]);
 		amount_digits = strlen(args[argc-1]);
-		depth = argc-1;
+		unsigned char depth = argc-1;
 
 		if (amount == 0)
 		{
@@ -278,7 +279,7 @@ const unsigned short is_tree(const char* tree, const char** subscripts, const un
 {
 	foint _subscripts[depth];
 	fill_foints(subscripts, _subscripts, depth);
-	foint htree;
+	foint _htree;
 
 	if (!TreeLookup(trees, (foint){.s=tree}, &_htree))
 		return 0;
