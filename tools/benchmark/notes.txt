@@ -11,6 +11,4 @@ will perform much better than a tree of [10][100][1000], and also than a tree of
 (which contains the same number of elements but spread equally in structure)
 - as gawk's hash table structure fills out more and more with arrays of larger size, there is less
 and less memory to save, and so the larger the tree, the less memory savings; for a completely flat tree / array,
-the savings peak at 41.165% with 500M elements, then fall at a rate of 16.2648% / 250M elements, or 
-10e-7*650592% / element - keep in mind however this relationship is completely different depending on the
-dimensions of the tree
+
