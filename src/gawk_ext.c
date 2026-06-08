@@ -61,30 +61,32 @@ static awk_value_t* do_tree_length(const int nargs, awk_value_t* result, struct 
 	return make_number(ret, result);
 }
 
-static query_t get_query()
+static query_t _get_query(const int nargs)
 {
 	awk_value_t arg;
 	char* name;
-	char** subscripts;
-	subscripts = malloc(1 * sizeof(char*));
-	unsigned char i = 0;
+	const unsigned char num_subs = nargs - 1;
+	char** subscripts = malloc(num_subs * sizeof(char*));
 
 	if (get_argument(0, AWK_STRING, &arg))
-	{
 		name = strdup(arg.str_value.str);
-
-		while (get_argument(i+1, AWK_STRING, &arg))
-		{
-			i++;
-			subscripts = realloc(subscripts, i * sizeof(char*));
-			subscripts[i-1] = strdup(arg.str_value.str);
-		}
-	}
 	else
 		fatal(ext_id, "htrees: No name given");
 
-	return (query_t){name, subscripts, i};
+	for (int i = 0; i < num_subs; ++i)
+	{
+		if (get_argument(i+1, AWK_STRING, &arg))
+			subscripts[i] = strdup(arg.str_value.str);
+		else
+			fatal(ext_id, "htrees: Bad argument");
+	}
+
+	return (query_t){name, subscripts, num_subs};
 }
+#define get_query() _get_query(nargs)
+#define full_query query.name, query.subscripts, query.num_subs
+
+// static const unsigned int get_query_with_size(const int nargs)
 
 static void free_query(query_t query)
 {
@@ -116,7 +118,7 @@ static awk_value_t* do_query_tree(const int nargs, awk_value_t* result, struct a
 	assert(result != NULL);
 
 	query_t query = get_query();
-	const char* data = query_tree(query.name, query.subscripts, query.num_subs);
+	const char* data = query_tree(full_query);
 
 	free_query(query);
 	return make_const_string(data, strlen(data), result);
@@ -139,7 +141,7 @@ static awk_value_t* do_tree_increment(const int nargs, awk_value_t* result, stru
 	assert(result != NULL);
 
 	query_t query = get_query();
-	double ret = tree_increment(query.name, query.subscripts, query.num_subs);
+	double ret = tree_increment(full_query);
 
 	free_query(query);
 	return make_number(ret, result);
@@ -150,7 +152,7 @@ static awk_value_t* do_tree_decrement(const int nargs, awk_value_t* result, stru
 	assert(result != NULL);
 
 	query_t query = get_query();
-	double ret = tree_decrement(query.name, query.subscripts, query.num_subs);
+	double ret = tree_decrement(full_query);
 
 	free_query(query);
 	return make_number(ret, result);
@@ -161,7 +163,7 @@ static awk_value_t* do_tree_remove(const int nargs, awk_value_t* result, struct 
 	assert(result != NULL);
 
 	query_t query = get_query();
-	tree_remove(query.name, query.subscripts, query.num_subs);
+	tree_remove(full_query);
 
 	free_query(query);
 	return make_null_string(result);
@@ -173,7 +175,7 @@ static awk_value_t* do_tree_elem_exists(const int nargs, awk_value_t* result, st
 	assert(result != NULL);
 
 	query_t query = get_query();
-	double ret = tree_elem_exists(query.name, query.subscripts, query.num_subs);
+	double ret = tree_elem_exists(full_query);
 
 	free_query(query);
 	return make_number(ret, result);
@@ -184,7 +186,7 @@ static awk_value_t* do_is_tree(const int nargs, awk_value_t* result, struct awk_
 	assert(result != NULL);
 
 	query_t query = get_query();
-	double ret = is_tree(query.name, query.subscripts, query.num_subs);
+	double ret = is_tree(full_query);
 
 	free_query(query);
 	return make_number(ret, result);
@@ -195,7 +197,7 @@ static awk_value_t* do_tree_next(const int nargs, awk_value_t* result, struct aw
 	assert(result != NULL);
 
 	query_t query = get_query();
-	const char* ret = tree_next(query.name, query.subscripts, query.num_subs);
+	const char* ret = tree_next(full_query);
 
 	free_query(query);
 	return make_const_string(ret, strlen(ret), result);
@@ -206,7 +208,7 @@ static awk_value_t* do_tree_iters_remaining(const int nargs, awk_value_t* result
 	assert(result != NULL);
 
 	query_t query = get_query();
-	bool ret = tree_iters_remaining(query.name, query.subscripts, query.num_subs);
+	bool ret = tree_iters_remaining(full_query);
 	
 	free_query(query);
 	return make_number((double)ret, result);
