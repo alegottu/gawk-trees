@@ -23,9 +23,10 @@ void free_htree(foint tree)
 
 bool init_trees()
 {
-	trees = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree);
-	current_iterators = StackAlloc(4);
 	// NOTE: 4 seems like a reasonable maximum (before the stack has to resize) of for-in loops going at once
+	const int INITIAL_ITERATORS = 4;
+	trees = TreeAlloc((pCmpFcn)strcmp, (pFointCopyFcn)strdup, (pFointFreeFcn)free, NULL, (pFointFreeFcn)free_htree);
+	current_iterators = StackAlloc(INITIAL_ITERATORS);
 
 	on_exit((void*)do_at_exit, NULL);
 	return trees != NULL;
@@ -149,9 +150,6 @@ const double tree_modify(const char* tree, const char** subscripts, const unsign
 {
 	foint* result = get_element(tree, subscripts, depth);
 	double x = atof(result->s);
-
-	// TODO: compare speed / mem if we do branch into just te_interp
-	// if (strchr(expr, 'x') == NULL)
 	
 	te_variable vars[] = { {"x", &x} };
 	int err;
@@ -300,30 +298,27 @@ typedef struct _iterator
 
 static const unsigned int hash_query(const char* tree, const char** subscripts, const unsigned char depth)
 {
-	unsigned int length = strlen(tree);
-	char* query = malloc((length + 1) * sizeof(char));
-	strcpy(query, tree);
+	const unsigned int M = 1e9 + 9;
+	#define hash_step(c) result = (result + (c) * p_raised_i) % M; \
+		p_raised_i = (p_raised_i * 67) % M;
 
-	for (unsigned char i = 0; i < depth; ++i)
-	{
-		length += strlen(subscripts[i]) + 1;
-		query = realloc(query, (length + 1) * sizeof(char)); // TODO: analyze this function and see if one alloc is better (maybe with sprintf or stpcpy)
-		strcat(query, " "); // Delimiter needed to prevent mismatches
-		strcat(query, subscripts[i]);
-	}
-
-	const unsigned char p = 67;
-	const unsigned int m = 1e9 + 9;
 	unsigned int result = 0;
 	unsigned int p_raised_i = 1;
 
-	for (unsigned int i = 0; i < length; ++i)
+	for (unsigned int i = 0; i < strlen(tree); ++i)
 	{
-		result = (result + query[i] * p_raised_i) % m;
-		p_raised_i = (p_raised_i * p) % m;
+		hash_step(tree[i]);
 	}
 
-	free(query);
+	for (unsigned int i = 0; i < depth; ++i)
+	{
+		hash_step(31); // Use some delimiter between subscripts to avoid duplicate hashes
+		for (unsigned int j = 0; j < strlen(subscripts[i]); ++j)
+		{
+			hash_step(subscripts[i][j]);
+		}
+	}
+
 	return result;
 }
 
