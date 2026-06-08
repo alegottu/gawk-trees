@@ -3,11 +3,10 @@
 2. Use `make`
 
 ### Usage
-1. Follow the steps above to compile the file "htrees.so" in your current directory
-2. Make sure to set the environment variable "AWKLIBPATH" to the gawk-trees/bin directory (or wherever you have your "htrees.so" file)
+1. Follow the steps above to compile "htrees.so"
+2. Make sure to set the environment variable "AWKLIBPATH" to the gawk-trees/bin directory (or wherever you have your "htrees.so" file, if you've moved it)
 3. If you have an existing program that you want to use htrees instead of standard gawk arrays, see [tools/convert](https://github.com/alegottu/gawk-trees/tree/main/tools/convert) which can help you convert your script automatically
-4. Otherwise, refer to the table of examples below to use the extension in your awk code; on the left is what you would see in awk code without the extension, on the right a replacement the extension offers using htrees. The
-extension functions behave exactly as standard awk arrays would unless otherwise noted
+4. Otherwise, refer to the table of examples below to use the extension in your awk code; on the left is what you would see in awk code without the extension, on the right a replacement the extension offers using htrees. The extension functions behave exactly as standard awk arrays would unless otherwise noted
 3. To load the extension before runtime and allow the script to run properly, you can either write `@load "htrees"` as the first line of your awk program, or use `-lhtrees` as an option to the gawk command
 
 Note: if you encounter the error `version mismatch with gawk!` upon running, it's likely because you have a
