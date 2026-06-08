@@ -1,18 +1,28 @@
 @load "vhtrees"
-BEGIN { for (i=0;i<1;i++) {
-	for (j=0;j<10;j++) { 
-		tree_insert("op", i, j, i + j);
+
+{
+	for (i=0;i<$1+0;i++) {
+	for (j=0;j<$2+0;j++) {
+		tree_insert("op", i, j, i+j);
 	}
 }
 }
-BEGIN { for (i=0;i<1;i++) {
-	for (j=0;j<10;j++) { 
-		if (j%1==0) { tree_remove("op", i, j); print("remove ", i, j); }
+
+{
+	test=1
+	if ($3!="") { test=$3+0 }
+	for (i=0;i<$1+0;i++) {
+	for (j=0;j<$2+0;j++) {
+		if (j%test==0) { tree_remove("op", i, j); print("remove ", i, j); }
 		else {
 			x = query_tree("op", i, j);
-			if (x == i + j) print "yes";
+			if (x != i+j) {
+				print "failed! op["i"]["j"]!="i+j
+				exit 1
+			}
 		}
 	}
 }
 }
-BEGIN { tree_insert("op", 0, 0, 0); tree_insert("op", 1, 1, 1); tree_remove("op", 0, 0); }
+
+END { tree_insert("op", 0, 0, 0); tree_insert("op", 1, 1, 1); tree_remove("op", 0, 0); }
