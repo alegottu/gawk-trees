@@ -88,8 +88,7 @@ def process_for_in(statement: str) -> str:
 
     return result
 
-# In case of an inline if
-def process_if(statement: str) -> tuple[str, str]:
+def process_inline_conditional(statement: str) -> tuple[str, str]:
     open_paren_pos = statement.find('(')
     close_paren_pos = find_matching(statement, open_paren_pos)
 
@@ -104,7 +103,7 @@ def valid_tree(name: str) -> bool:
 
 # <name> could be a variable; if so, don't put quotes around it
 def get_tree_name(name: str) -> str:
-    if universal or name in trees or name not in current_vars:
+    if universal or (name not in current_vars and name in trees):
         return f'"{name}"'
     else:
         return name
@@ -197,9 +196,9 @@ def process_query(token: str, has_bracket: bool) -> str:
     BUILTINS = ["ARGV", "ENVIRON", "FUNCTAB", "PROCINFO", "SYMTAB"]
 
     if has_bracket and not token[:token.find('[')] in BUILTINS:
-        tree_name, subsripts = process_brackets(token, False, True)
+        tree_name, subscripts = process_brackets(token, False, True)
         log_tree(tree_name)
-        return f"query_tree({get_tree_name(tree_name)}, {subsripts})"
+        return f"query_tree({get_tree_name(tree_name)}, {subscripts})"
     else:
         return token
 
@@ -450,19 +449,18 @@ def process_statements(line: str, line_num: int = 0) -> str:
                     delim = delims.pop(i+1)
                 else:
                     statements[i+1] = next
-        elif keyword_present("while", statement) and statement[0] == 'w':
-            breakers.append(None)
-            # TODO: could be inline while loop, maybe make common function for splitting inline body stuff
-        elif keyword_present("if", statement) and statement[0] == 'i':
+        elif (keyword_present("while", statement) and statement[0] == 'w') or \
+        (keyword_present("if", statement) and statement[0] == 'i'):
             if delim != " { ":
                 close_scope_timer = 1
                 if i+1 < len(statements) and valid_token("else ", statements[i+1]): close_scope_timer = 2
-                translated, body = process_if(statement)
+                translated, body = process_inline_conditional(statement)
                 statements.insert(i+1, body)
                 delims.insert(i+1, delim)
                 delim = ' '
             elif contains_expression(statement):
                 translated = process_expression(statement)
+                if statement[0] == 'w': breakers.append(None)
         # TODO: maybe stricter check for this
         elif valid_token("else ", statement) and statement[0] == 'e':
             if delim != " { ": # In case of an inline else
@@ -520,6 +518,7 @@ def process_statements(line: str, line_num: int = 0) -> str:
         translated = statement
         global current_vars
 
+        # TODO: statements should just have no empty strs instead, change parse
         if len(statement) > 0:
            translated, delim = process_statement(statement, delim)
 

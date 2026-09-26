@@ -311,5 +311,12 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_statements(test)
         self.assertEqual(result, target)
 
+    def test_array_in_expression_at_start_of_parens(self):
+        test = "function BinarySearch(dir,array,z, n,i,L,R,m,x) {\nwhile(m>0 && dir*(array[m]-z) > 0) --m;}"
+        target = 'function BinarySearch(dir,array,z, n,i,L,R,m,x) { \nwhile(m>0 && dir*(query_tree(array, m)-z) > 0) --m;  } '
+        convert.universal = False
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
 if __name__ == '__main__':
     unittest.main()
