@@ -341,13 +341,18 @@ def valid_token(substr: str, statement: str) -> bool:
     elif quote_start == -1:
         return True
     else:
-        quote_end = statement.find('"', quote_start+1)
-        while quote_start != -1 and quote_end != -1:
-            if i > quote_start and i < quote_end: return False
-            quote_start = statement.find('"', quote_end+1)
+        while i != -1:
             quote_end = statement.find('"', quote_start+1)
+            while quote_start != -1 and quote_end != -1:
+                if i > quote_start and i < quote_end:
+                    break
+                quote_start = statement.find('"', quote_end+1)
+                quote_end = statement.find('"', quote_start+1)
+            else:
+                return True
+            i = statement.find(substr, i+1)
 
-    return True
+    return False
 
 # TODO: this doesn't account for being within quotes
 def gen_keyword_pattern(keyword: str) -> str:

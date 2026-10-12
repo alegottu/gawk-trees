@@ -335,5 +335,11 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_statements(test)
         self.assertEqual(result, target)
 
+    def test_query_in_complex_warn(self):
+        test = 'Warn("SpearmanCompute: but first field is not _Spearman_N["name"]="_Spearman_N[name]);'
+        target = 'Warn("SpearmanCompute: but first field is not _Spearman_N["name"]="query_tree("_Spearman_N", name)); '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
 if __name__ == '__main__':
     unittest.main()
