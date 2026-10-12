@@ -435,20 +435,19 @@ def process_statements(line: str, line_num: int = 0) -> str:
                             statements.append('')
                             delims.append(" } ") # Add missing closing brace
             else: # Standard for
-                # TODO: could be expression to process for each part between ';'
-                temp = translated + f"; {statements.pop(i+1)}; {statements[i+1]}"
-                match = find_matching(temp, temp.find('('))
-                translated, next = (temp[:match].rstrip(), temp[match+1:].lstrip())
-                translated += ')'
-                delims.pop(i+1)
-                delim = ' '
-
-                if len(next) == 0:
-                    breakers.append(None)
-                    statements.pop(i+1)
-                    delim = delims.pop(i+1)
-                else:
-                    statements[i+1] = next
+                first = translated.find('(')
+                delim = ""
+                statements.insert(i+1, translated[first+1:])
+                delims.insert(i+1, "; ")
+                whole = translated + statements[i+2] + statements[i+3]
+                match = find_matching(whole, first)
+                if match+1 < len(whole):
+                    statements.insert(i+4, whole[match+1:].lstrip())
+                    delims.insert(i+4, delims[i+3])
+                    statements[i+3] = whole[-len(statements[i+3]):match].rstrip()
+                    delims[i+3] = ") "
+                    close_scope_timer = 3
+                translated = translated[:first+1]
         elif (keyword_present("while", statement) and statement[0] == 'w') or \
         (keyword_present("if", statement) and statement[0] == 'i'):
             if delim != " { ":

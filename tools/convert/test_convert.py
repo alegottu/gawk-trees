@@ -318,5 +318,22 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_statements(test)
         self.assertEqual(result, target)
 
+    def test_array_expression_in_standard_for(self):
+        test = "for (i=0; i<_LS_n[name]; i++) {"
+        target = 'for (i=0; i<query_tree("_LS_n", name); i++) { '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
+    def test_array_expression_at_end_of_standard_for(self):
+        test = "for (; temp[0] < 4; temp[0] += temp[temp[0]]) {"
+        target = 'for (; query_tree("temp", 0) < 4; tree_increment("temp", 0, query_tree("temp", query_tree("temp", 0)))) { '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
+        test = "for (; temp[x+y] < 4; temp[x+y]++) print(temp[x+y]);"
+        target = 'for (; query_tree("temp", x+y) < 4; tree_increment("temp", x+y, 1)) print(query_tree("temp", x+y)); '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
 if __name__ == '__main__':
     unittest.main()
