@@ -347,5 +347,11 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_statements(test)
         self.assertEqual(result, target)
 
+    def test_modify_builtin(self):
+        test = 'PROCINFO["sorted_in"]="@ind_num_asc";'
+        target = 'PROCINFO["sorted_in"]="@ind_num_asc"; '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
 if __name__ == '__main__':
     unittest.main()

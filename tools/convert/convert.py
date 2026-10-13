@@ -4,6 +4,8 @@ from itertools import pairwise
 from typing import Callable
 from sys import argv
 
+BUILTINS = ["ARGV", "ENVIRON", "FUNCTAB", "PROCINFO", "SYMTAB"]
+
 current_vars = dict()
 trees = set()
 breakers = deque()
@@ -185,6 +187,7 @@ def process_equals(statement: str) -> str:
         result = process_modify(tokens, op)
     else:
         result = process_assignment(tokens)
+        if len(result) == 0: result = statement
 
     return f"({result})" if add_parens else result
 
@@ -193,8 +196,6 @@ def log_tree(tree_name: str) -> None:
         trees.add(tree_name)
 
 def process_query(token: str, has_bracket: bool) -> str:
-    BUILTINS = ["ARGV", "ENVIRON", "FUNCTAB", "PROCINFO", "SYMTAB"]
-
     if has_bracket and not token[:token.find('[')] in BUILTINS:
         tree_name, subscripts = process_brackets(token, False, True)
         log_tree(tree_name)
@@ -204,21 +205,27 @@ def process_query(token: str, has_bracket: bool) -> str:
 
 ASSIGNMENT = r"[^!<>=%/*^+-]=[^=]"
 
-def process_assignment(tokens: list) -> str:
+def process_assignment(tokens: list[str]) -> str:
     if re.search(ASSIGNMENT, tokens[1]) != None:
         result = ""
         tokens.extend([ t.strip() for t in tokens.pop().split('=') ])
 
         for t in tokens[:-1]:
-            result += process_assignment([t, tokens[-1]]) + "; "
+            temp = process_assignment([t, tokens[-1]])
+            if len(temp) > 0:
+                result += temp + "; "
+            else:
+                result += f"{t} = {tokens[-1]}; "
         else:
             return result[:-2]
 
     if '[' in tokens[0]:
         value = process_expression(tokens[1])
         tree_name, subscripts = process_brackets(tokens[0], True, True)
-        log_tree(tree_name)
-        return f"tree_insert({get_tree_name(tree_name)}, {subscripts}{value})"
+        if tree_name not in BUILTINS:
+            log_tree(tree_name)
+            return f"tree_insert({get_tree_name(tree_name)}, {subscripts}{value})"
+        else: return ""
     else:
         return f"{tokens[0]} = {process_expression(tokens[1])}"
 
@@ -305,6 +312,7 @@ def process_expression(statement: str) -> str:
         if search := re.search(ASSIGNMENT, statement[end+1:end+4]):
             value = statement[search.start()+1:]
             translated = process_assignment([token, value])
+            if len(translated) == 0: translated = statement
             return result.replace(statement[start:last], translated, 1)
         elif search := re.search(r"([+-])([=+-])", statement[end+1:end+4]):
             value = "1" if search.group(2) != '=' else statement[search.end()+1:].lstrip()
