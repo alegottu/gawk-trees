@@ -264,12 +264,12 @@ def process_delete_element(token: str) -> str:
     all_params = process_brackets(token)
     return f"tree_remove({all_params})"
 
-def process_pattern(pattern: str, statement: str, processor: Callable[[str], str]) -> str:
+def process_pattern(pattern: str, statement: str, head: str, processor: Callable[[str], str]) -> str:
     result = statement
 
     for match in re.finditer(pattern, statement):
         start = match.start()
-        if statement[start] not in ['l', 'i']: start += 1
+        if statement[start] != head: start = statement.find(head, start+1)
         end = find_matching(statement, statement.find('(', start+6)) # 6 = len("length")
         part = statement[start:end+1]
 
@@ -278,16 +278,16 @@ def process_pattern(pattern: str, statement: str, processor: Callable[[str], str
 
     return result
 
-IS_ARRAY = r'(?:is_array|typeof\(.*\)\s*==\s*"array")'
+IS_ARRAY = r'(?:isarray|typeof\(.*\)\s*==\s*"array")'
 
 def process_expression(statement: str) -> str:
     result = process_in(statement)
 
     pattern = gen_keyword_pattern("length")
-    result = process_pattern(pattern, result, process_length)
+    result = process_pattern(pattern, result, "l", process_length)
 
     pattern = gen_keyword_pattern(IS_ARRAY)
-    result = process_pattern(pattern, result, process_is_array)
+    result = process_pattern(pattern, result, "i", process_is_array)
 
     statement = result
     pattern = r"\w+\["

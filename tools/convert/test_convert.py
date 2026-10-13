@@ -341,5 +341,11 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_statements(test)
         self.assertEqual(result, target)
 
+    def test_multiple_isarray(self):
+        test = 'ASSERT(isarray(_statHist[name1]) && isarray(_statHist[name2]), "KSstat needs stats with histograms");'
+        target = 'ASSERT(is_tree("_statHist", name1) && is_tree("_statHist", name2), "KSstat needs stats with histograms"); '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
 if __name__ == '__main__':
     unittest.main()
