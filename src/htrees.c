@@ -13,7 +13,7 @@ Memory for all strings passed into gawk from the extension must come from callin
 // HTrees, found by their name in a gawk program, are contained here
 TREETYPE* trees = NULL;
 
-// Stack of node queues (LL*)
+// Stack of node queues (which are also STACK*)
 STACK* current_iterators = NULL;
 
 void free_htree(foint tree)
@@ -293,7 +293,7 @@ const unsigned short is_tree(const char* tree, const char** subscripts, const un
 typedef struct _iterator
 {
 	unsigned int hash; // Needed to validate if a certain iterator already exists or not
-	LINKED_LIST* current;
+	STACK* current;
 } ITERATOR;
 
 static const unsigned int hash_query(const char* tree, const char** subscripts, const unsigned char depth)
@@ -323,7 +323,7 @@ static const unsigned int hash_query(const char* tree, const char** subscripts, 
 }
 
 // Creates an iterator if one is not found for the given query, and the HTREE of that name has valid elements to create one
-static LINKED_LIST* get_iterator(const char* tree, const char** subscripts, const unsigned char depth)
+static STACK* get_iterator(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	foint _htree;
 
@@ -350,8 +350,9 @@ static LINKED_LIST* get_iterator(const char* tree, const char** subscripts, cons
 		}
 		else
 		{
+			const int INITIAL_ITERATOR_SIZE = 4; // maximum size of the iterator = height of the tree
 			ITERATOR* new = malloc(sizeof(ITERATOR));
-			new->current = LinkedListAlloc(NULL, false);
+			new->current = StackAlloc(INITIAL_ITERATOR_SIZE);
 			new->hash = hash;
 			foint result;
 
@@ -365,7 +366,7 @@ static LINKED_LIST* get_iterator(const char* tree, const char** subscripts, cons
 				result.v = ((TREETYPE*)result.v)->root;
 			}
 
-			LinkedListAppend(new->current, result);
+			StackPush(new->current, result);
 			foint iterator = {.v=new};
 			StackPush(current_iterators, iterator);
 
@@ -378,21 +379,21 @@ static LINKED_LIST* get_iterator(const char* tree, const char** subscripts, cons
 	}
 }
 
-static Boolean visit_next_node(LINKED_LIST* iterator, foint* result)
+static Boolean visit_next_node(STACK* iterator, foint* result)
 {
-	if (LinkedListSize(iterator) == 0)
+	if (StackSize(iterator) == 0)
 		return false;
 
-	NODETYPE* current_node = LinkedListPop(iterator).v;
+	NODETYPE* current_node = StackPop(iterator).v;
 
 	if (current_node->left != NULL)
-		LinkedListAppend(iterator, (foint){.v=current_node->left});
+		StackPush(iterator, (foint){.v=current_node->left});
 #if TREE_USES_AVL
 	if (getRight(current_node) != NULL)
-		LinkedListAppend(iterator, (foint){.v=getRight(current_node)});
+		StackPush(iterator, (foint){.v=getRight(current_node)});
 #else
 	if (current_node->right != NULL)
-		LinkedListAppend(iterator, (foint){.v=current_node->right});
+		StackPush(iterator, (foint){.v=current_node->right});
 #endif
 
 	*result = current_node->key;
@@ -403,7 +404,7 @@ static Boolean visit_next_node(LINKED_LIST* iterator, foint* result)
 const char* tree_next(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	foint result;
-	LINKED_LIST* node_queue = get_iterator(tree, subscripts, depth);
+	STACK* node_queue = get_iterator(tree, subscripts, depth);
 
 	if (node_queue != NULL)
 	{
@@ -424,7 +425,7 @@ const char* tree_next(const char* tree, const char** subscripts, const unsigned 
 static void iterators_pop()
 {
 	ITERATOR* item = StackPop(current_iterators).v;
-	LinkedListFree(item->current);
+	StackFree(item->current);
 	free(item);
 }
 
@@ -432,12 +433,12 @@ static void iterators_pop()
 const unsigned int tree_iters_remaining(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	foint result;
-	LINKED_LIST* node_queue = get_iterator(tree, subscripts, depth);
+	STACK* node_queue = get_iterator(tree, subscripts, depth);
 	
 	if (node_queue == NULL) // No elements found to iterate
 		return 0;
 
-	const int remaining = LinkedListSize(node_queue);
+	const int remaining = StackSize(node_queue);
 
 	if (remaining == 0)
 		iterators_pop();
