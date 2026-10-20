@@ -81,6 +81,7 @@ BEGIN {
 			}
 		}
 
+		n=0;
 		while(tree_iters_remaining("new") > 0)
 		{
 			i=tree_next("new")
@@ -88,8 +89,10 @@ BEGIN {
 			{
 				j=tree_next("new",i)
 				test(query_tree("new",i,j), i+j, "inserting many values/iteration")
+				n++;
 			}
 		}
+		test(n, ($1+0)*($2+0), "number of items hit for iteration")
 	}
 	else
 	{
@@ -99,11 +102,14 @@ BEGIN {
 			tree_insert("new",i,i/2.0)
 		}
 
+		n=0
 		while(tree_iters_remaining("new") > 0)
 		{
-			i = tree_next("new")
+			i=tree_next("new")
 			test(query_tree("new",i), i/2.0, "inserting many values/iteration")
+			n++;
 		}
+		test(n, $1+0, "number of items hit for iteration")
 	}
 
 	n=0

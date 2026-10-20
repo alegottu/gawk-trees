@@ -95,6 +95,8 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	unsigned int n = 0;
+
 	while(tree_iters_remaining("new", NULL, 0) > 0)
 	{
 		char* idx[2] = {tree_next("new", NULL, 0), ""};
@@ -104,13 +106,15 @@ int main(int argc, char *argv[])
 			idx[1] = tree_next("new", idx, 1);
 			char buf[11];
 			sprintf(buf, "%u", atoi(idx[0]) + atoi(idx[1]));
-			char value[strlen(buf)];
+			char value[strlen(buf)+1];
 			strcpy(value, buf);
 			assert(strcmp(query_tree("new", idx, 2), value) == 0);
+			n++;
 		}
 	}
 
-	unsigned int n = 0;
+	assert(n == dimensions[0] * dimensions[1]);
+	n = 0;
 	char* i;
 
 	while(tree_iters_remaining("new", NULL, 0) > 0)

@@ -1,4 +1,5 @@
 BEGIN {
+	# DEPRECATED
 	print "testing basics"
 	pred["a"]["b"] = 1
 	print pred["a"]["b"]

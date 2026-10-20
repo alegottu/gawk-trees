@@ -4,10 +4,6 @@ import os
 import subprocess
 from pathlib import Path
 
-if "benchmark" not in os.getcwd():
-    print("Please run from the benchmark directory")
-    exit()
-
 def concat_args(arg1, arg2):
     return arg1 + ", " + arg2
 
@@ -65,6 +61,7 @@ def create_nested_whiles(n, name):
 
 
 if __name__ == "__main__":
+    assert "benchmark" in os.getcwd(), "Please run from the benchmark directory"
     args = " -lhtrees"
     iteration = False
     massif = False
