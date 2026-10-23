@@ -323,7 +323,7 @@ static const unsigned int hash_query(const char* tree, const char** subscripts, 
 }
 
 // Creates an iterator if one is not found for the given query, and the HTREE of that name has valid elements to create one
-static STACK* get_iterator(const char* tree, const char** subscripts, const unsigned char depth)
+static STACK* get_iterator(const char* tree, const char** subscripts, const unsigned char depth, const bool force_create)
 {
 	foint _htree;
 
@@ -339,10 +339,10 @@ static STACK* get_iterator(const char* tree, const char** subscripts, const unsi
 	}
 
 	ITERATOR* last;
-	unsigned int hash;
+	unsigned int hash = hash_query(tree, subscripts, depth);
 
-	if (StackSize(current_iterators) == 0 ||
-	(hash = hash_query(tree, subscripts, depth)) != (last = StackTop(current_iterators).v)->hash)
+	if (StackSize(current_iterators) == 0 || force_create ||
+		hash != (last = StackTop(current_iterators).v)->hash)
 	{
 		if (htree->tree->root == NULL)
 		{
@@ -404,7 +404,7 @@ static Boolean visit_next_node(STACK* iterator, foint* result)
 const char* tree_next(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	foint result;
-	STACK* node_queue = get_iterator(tree, subscripts, depth);
+	STACK* node_queue = get_iterator(tree, subscripts, depth, false);
 
 	if (node_queue != NULL)
 	{
@@ -433,7 +433,7 @@ static void iterators_pop()
 const unsigned int tree_iters_remaining(const char* tree, const char** subscripts, const unsigned char depth)
 {
 	foint result;
-	STACK* node_queue = get_iterator(tree, subscripts, depth);
+	STACK* node_queue = get_iterator(tree, subscripts, depth, false);
 	
 	if (node_queue == NULL) // No elements found to iterate
 		return 0;
@@ -444,6 +444,13 @@ const unsigned int tree_iters_remaining(const char* tree, const char** subscript
 		iterators_pop();
 
 	return remaining;
+}
+
+bool tree_iter_create(const char* tree, const char** subscripts, const unsigned char depth)
+{
+	// TODO: rename everything referencing queue?
+	STACK* node_queue = get_iterator(tree, subscripts, depth, true);
+	return node_queue != NULL;
 }
 
 void tree_iter_break()

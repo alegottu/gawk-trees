@@ -214,6 +214,17 @@ static awk_value_t* do_tree_iters_remaining(const int nargs, awk_value_t* result
 	return make_number((double)ret, result);
 }
 
+static awk_value_t* do_tree_iter_create(const int nargs, awk_value_t* result, struct awk_ext_func* _)
+{
+	assert(result != NULL);
+
+	query_t query = get_query();
+	bool ret = tree_iter_create(full_query);
+
+	free_query(query);
+	return make_number((double)ret, result);
+}
+
 static awk_value_t* do_tree_iter_break(const int nargs, awk_value_t* result, struct awk_ext_func* _)
 {
 	assert(result != NULL);
@@ -237,6 +248,7 @@ static awk_ext_func_t func_table[] =
 	{ "is_tree", do_is_tree, 0, 2, awk_true, NULL },
 	{ "tree_next", do_tree_next, 0, 1, awk_true, NULL},
 	{ "tree_iters_remaining", do_tree_iters_remaining, 0, 1, awk_true, NULL },
+	{ "tree_iter_create", do_tree_iter_create, 0, 1, awk_true, NULL },
 	{ "tree_iter_break", do_tree_iter_break, 0, 0, awk_false, NULL }
 };
 #if HTREE_USES_AVL

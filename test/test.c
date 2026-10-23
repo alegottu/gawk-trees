@@ -1,6 +1,9 @@
 #include "htrees.h"
+#include "stack.h"
 #include <stdlib.h>
 #include <string.h>
+
+extern STACK* current_iterators;
 
 int main(int argc, char *argv[])
 {
@@ -108,17 +111,44 @@ int main(int argc, char *argv[])
 			sprintf(buf, "%u", atoi(idx[0]) + atoi(idx[1]));
 			char value[strlen(buf)+1];
 			strcpy(value, buf);
+			assert(StackSize(current_iterators) == 2);
 			assert(strcmp(query_tree("new", idx, 2), value) == 0);
 			n++;
 		}
 	}
 
+	assert(StackSize(current_iterators) == 0);
 	assert(n == dimensions[0] * dimensions[1]);
 	n = 0;
-	char* i;
 
 	while(tree_iters_remaining("new", NULL, 0) > 0)
 	{
+		char* idx[2] = {tree_next("new", NULL, 0), ""};
+		n++;
+		tree_iter_create("new", NULL, 0);
+		unsigned int n1 = 0;
+
+		while(tree_iters_remaining("new", NULL, 0) > 0)
+		{
+			idx[1] = tree_next("new", NULL, 0);
+			n1++;
+			assert(StackSize(current_iterators) == 2);
+			assert(n1 <= dimensions[0]);
+		}
+
+		assert(n1 == dimensions[0]);
+		assert(n <= dimensions[0]);
+		// TODO: cannot query_tree if dims are actually 2D
+	}
+
+	assert(n == dimensions[0]);
+	assert(StackSize(current_iterators) == 0);
+	char* i;
+	n = 0;
+
+	while(tree_iters_remaining("new", NULL, 0) > 0)
+	{
+		assert(StackSize(current_iterators) == 1);
 		i = tree_next("new", NULL, 0);
 		n++;
 
@@ -129,6 +159,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	assert(StackSize(current_iterators) == 0);
 	assert(tree_next("new", NULL, 0) != i);
 	return 0;
 }

@@ -110,6 +110,26 @@ BEGIN {
 			n++;
 		}
 		test(n, $1+0, "number of items hit for iteration")
+
+		n=0
+		while(tree_iters_remaining("new") > 0)
+		{
+			i=tree_next("new");
+			n++;
+			tree_iter_create("new");
+			n1=0;
+			while(tree_iters_remaining("new") > 0)
+			{
+				j=tree_next("new");
+				test(query_tree("new",i), i/2.0, "double loop on same tree");
+				test(query_tree("new",j), j/2.0, "double loop on same tree");
+				n1++;
+				if (n > ($1+0)) test(n, ($1+0), "number of items hit for double loop on same tree");
+			}
+			test(n1, ($1+0), "number of items hit for double loop on same tree");
+			if (n > ($1+0)) test(n, ($1+0), "number of items hit for double loop on same tree");
+		}
+		test(n, ($1+0), "number of items hit for double loop on same tree");
 	}
 
 	n=0
