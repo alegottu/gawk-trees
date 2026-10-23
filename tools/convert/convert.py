@@ -530,18 +530,22 @@ def process_statements(line: str, line_num: int = 0) -> str:
         translated = statement
         global current_vars
 
+        scopes_opened = delim.count('{')
+        if scopes_opened > 0 and len(current_vars) != 0:
+            current_vars.update([ (key, val+scopes_opened) for key, val in current_vars.items() ])
+
         # TODO: statements should just have no empty strs instead, change parse
         if len(statement) > 0:
            translated, delim = process_statement(statement, delim)
 
-        if '}' in delim:
-            for i in range(delim.count('}')):
+        scopes_closed = delims[i].count('}')
+        if scopes_closed > 0:
+            for i in range(scopes_closed):
                 if len(breakers) != 0:
                     breakers.pop()
-                if len(current_vars) != 0:
-                    current_vars.update([ (key, val+1) for key, val in current_vars.items() ])
-            else:
-                current_vars = dict( filter(lambda i: i[1] > 0, current_vars.items()) )
+            if len(current_vars) != 0:
+                current_vars.update([ (key, val-scopes_closed) for key, val in current_vars.items() ])
+            current_vars = dict( filter(lambda i: i[1] > 0, current_vars.items()) )
 
         result += translated + delim
 
