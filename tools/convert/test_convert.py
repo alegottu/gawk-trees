@@ -359,5 +359,11 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_statements(test)
         self.assertEqual(result, target)
 
+    def test_getline_into_tree(self):
+        test = "_SpCommand |& getline _SpComputeResult[name]\n"
+        target = '_SpCommand |& getline _SpComputeResult[name]; tree_insert("_SpComputeResult", name, _SpComputeResult[name]); delete _SpComputeResult[name]\n'
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
 if __name__ == '__main__':
     unittest.main()

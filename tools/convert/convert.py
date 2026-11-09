@@ -339,6 +339,16 @@ def process_delete_array(statement: str) -> str:
     else:
         return statement
 
+# Specifically used for getline into an array element
+def process_getline(statement: str) -> str:
+    start = statement.find("getline")
+    prefix = statement[:start]
+    statement = statement[start:]
+    tokens = statement.split(' ', maxsplit=1)
+    insert = f"tree_insert({process_brackets(tokens[1])}, {tokens[1]})"
+
+    return f"{prefix}{statement}; {insert}; delete {tokens[1]}"
+
 # Check if a substring exists within the statement, and that it's not within quotes
 def valid_token(substr: str, statement: str) -> bool:
     i = statement.find(substr)
@@ -519,6 +529,8 @@ def process_statements(line: str, line_num: int = 0) -> str:
             elif valid_token("delete ", statement):
                 token = statement[7:] # Assuming delete is right at the start of the statement
                 translated = process_delete_element(token)
+            elif valid_token("getline", statement):
+                translated = process_getline(statement)
             else: # "[ ]" used within an expression
                 translated = process_expression(statement)
         elif valid_token("delete ", statement):
