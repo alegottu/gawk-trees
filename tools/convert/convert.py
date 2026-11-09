@@ -7,6 +7,7 @@ from sys import argv
 BUILTINS = ["ARGV", "ENVIRON", "FUNCTAB", "PROCINFO", "SYMTAB"]
 
 current_vars = dict()
+current_iterators = deque()
 trees = set()
 breakers = deque()
 
@@ -72,19 +73,18 @@ def process_brackets(token: str, trailing_sep: bool = False, separate: bool = Fa
     if not trailing_sep: parameters = parameters[:-2]
     return f"{get_tree_name(tree_name)}, {parameters}" if not separate else (tree_name, parameters)
 
-def process_for_in(statement: str) -> str:
-    end = statement.find(')')
-    tokens = statement[statement.find('(')+1:end].split(" in ", maxsplit=1)
-
-    var_name = tokens[0]
+def process_for_in(var_name: str, container: str, force_create: bool) -> str:
     current_vars[var_name] = 1
-    container = tokens[1]
     all_params = get_tree_name(container)
     
     if '[' in container:
         all_params = process_brackets(container)
 
-    result = f"while (tree_iters_remaining({all_params}) > 0) " + "{ "
+    result = ""
+    if force_create:
+        result = f"tree_iter_create({all_params}); "
+
+    result += f"while (tree_iters_remaining({all_params}) > 0) " + "{ "
     result += f"{var_name} = tree_next({all_params}); "
     breakers.append("tree_iter_break()")
 
@@ -425,8 +425,13 @@ def process_statements(line: str, line_num: int = 0) -> str:
             if valid_token(" in ", statement):
                 match = find_matching(statement, statement.find('('))
                 parts = [statement[:match], statement[match+1:]]
-                statement = parts.pop(0) + ')'
-                translated = process_for_in(statement)
+                statement = parts.pop(0)
+
+                tokens = statement[statement.find('(')+1:].split(" in ", maxsplit=1)
+                var_name = tokens[0]; container = tokens[1]
+                force_create = container in current_iterators
+                current_iterators.append(container)
+                translated = process_for_in(var_name, container, force_create)
 
                 if len(parts[0].strip()) == 0:
                     delim = '' # Remove extra opening brace
@@ -541,8 +546,10 @@ def process_statements(line: str, line_num: int = 0) -> str:
         scopes_closed = delims[i].count('}')
         if scopes_closed > 0:
             for i in range(scopes_closed):
-                if len(breakers) != 0:
+                if len(breakers) > 0:
                     breakers.pop()
+                if len(current_iterators) > 0:
+                    current_iterators.pop()
             if len(current_vars) != 0:
                 current_vars.update([ (key, val-scopes_closed) for key, val in current_vars.items() ])
             current_vars = dict( filter(lambda i: i[1] > 0, current_vars.items()) )

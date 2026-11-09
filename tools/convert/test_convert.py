@@ -31,14 +31,12 @@ class TestTranslations(unittest.TestCase):
         self.assertEqual(result, target)
 
     def test_for_in(self):
-        test = "for (x in list)"
         target = 'while (tree_iters_remaining("list") > 0) { x = tree_next("list"); '
-        result = convert.process_for_in(test)
+        result = convert.process_for_in("x", "list", False)
         self.assertEqual(result, target)
 
-        test = 'for (x in list[y][2]["abc"])'
         target = 'while (tree_iters_remaining("list", y, 2, "abc") > 0) { x = tree_next("list", y, 2, "abc"); '
-        results = convert.process_for_in(test)
+        results = convert.process_for_in("x", 'list[y][2]["abc"]', False)
         self.assertEqual(results, target)
 
     # NOTE: process_in is a smaller part of process_expression
@@ -350,6 +348,14 @@ class TestTranslations(unittest.TestCase):
     def test_modify_builtin(self):
         test = 'PROCINFO["sorted_in"]="@ind_num_asc";'
         target = 'PROCINFO["sorted_in"]="@ind_num_asc"; '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
+    def test_duplicate_iterator(self):
+        test = "for(u in T) for(v in T) if((u in edge) && (v in edge[u])) { ++D[u]; ++D[v]; ++m; }"
+        target = "while (tree_iters_remaining(T) > 0) { u = tree_next(T); tree_iter_create(T); while (tree_iters_remaining(T) > 0) { v = tree_next(T); if((tree_elem_exists(edge, u)) && (tree_elem_exists(edge, u, v))) { tree_increment(D, u, 1); tree_increment(D, v, 1); ++m;  }  }  } "
+        convert.universal = False
+        convert.process_statements('function InducedEdges(edge,T,D,u,v,m) {')
         result = convert.process_statements(test)
         self.assertEqual(result, target)
 
