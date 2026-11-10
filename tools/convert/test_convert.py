@@ -365,5 +365,11 @@ class TestTranslations(unittest.TestCase):
         result = convert.process_statements(test)
         self.assertEqual(result, target)
 
+    def test_leq_with_standard_for(self):
+        test = "for(i=1;i<=_Spearman_N[name];i++) print _SpearmanSampleX[name][i],_SpearmanSampleY[name][i] |& _SpCommand;"
+        target = 'for(i=1; i<=query_tree("_Spearman_N", name); i++) print query_tree("_SpearmanSampleX", name, i),query_tree("_SpearmanSampleY", name, i) |& _SpCommand; '
+        result = convert.process_statements(test)
+        self.assertEqual(result, target)
+
 if __name__ == '__main__':
     unittest.main()

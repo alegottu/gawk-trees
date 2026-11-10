@@ -179,7 +179,7 @@ def process_equals(statement: str) -> str:
     elif tokens[0][-1] == '-':
         tokens[0] = tokens[0].rstrip(" -")
         result = process_increment(tokens, True)
-    elif tokens[1][0] == '=':
+    elif tokens[1][0] == '=' or tokens[0][-1] in ('<', '>'):
         result = process_expression(statement)
     elif re.match("[%/*^]", tokens[0][-1]) != None:
         op = tokens[0][-1]
